@@ -1,4 +1,4 @@
-<ion-view view-title="Browse">
+<ion-view view-title="Survey">
   <ion-content>
     <h1></h1>
 
@@ -293,13 +293,13 @@
     <div class="item item-text-wrap">
       <ion-list>
 
-  <ion-checkbox ng-model="filter.red">Jerks/Jolts</ion-checkbox>
-  <ion-checkbox ng-model="filter.yellow">Non Delivery</ion-checkbox>
-  <ion-checkbox ng-model="filter.pink">Accident</ion-checkbox>
-  <ion-checkbox ng-model="filter.red">Load/ Unload</ion-checkbox>
-  <ion-checkbox ng-model="filter.yellow">Water Damage</ion-checkbox>
-  <ion-checkbox ng-model="filter.pink">Theft/Shortage</ion-checkbox>
-  <ion-checkbox ng-model="filter.pink">Transshipment</ion-checkbox>
+  <ion-checkbox >Jerks/Jolts</ion-checkbox>
+  <ion-checkbox >Non Delivery</ion-checkbox>
+  <ion-checkbox >Accident</ion-checkbox>
+  <ion-checkbox >Load/ Unload</ion-checkbox>
+  <ion-checkbox >Water Damage</ion-checkbox>
+  <ion-checkbox >Theft/Shortage</ion-checkbox>
+  <ion-checkbox >Transshipment</ion-checkbox>
 
 
 
@@ -377,9 +377,9 @@
   <div class="item item-text-wrap">
     <ion-list>
 
-  <ion-checkbox ng-model="filter.red">Destroyed</ion-checkbox>
-  <ion-checkbox ng-model="filter.yellow">To Destroyed</ion-checkbox>
-  <ion-checkbox ng-model="filter.pink">Disposable</ion-checkbox>
+  <ion-checkbox >Destroyed</ion-checkbox>
+  <ion-checkbox >To Destroyed</ion-checkbox>
+  <ion-checkbox >Disposable</ion-checkbox>
 
 </ion-list>
 
@@ -399,12 +399,12 @@
     <div class="item item-text-wrap">
       <ion-list>
 
-  <ion-checkbox ng-model="filter.red">Invoice (s)</ion-checkbox>
-  <ion-checkbox ng-model="filter.yellow">Packing list</ion-checkbox>
-  <ion-checkbox ng-model="filter.pink">LR/CN</ion-checkbox>
-  <ion-checkbox ng-model="filter.red">FIR</ion-checkbox>
-  <ion-checkbox ng-model="filter.yellow">Vehicle Dox</ion-checkbox>
-  <ion-checkbox ng-model="filter.pink">Test Report</ion-checkbox>
+  <ion-checkbox >Invoice (s)</ion-checkbox>
+  <ion-checkbox >Packing list</ion-checkbox>
+  <ion-checkbox >LR/CN</ion-checkbox>
+  <ion-checkbox >FIR</ion-checkbox>
+  <ion-checkbox >Vehicle Dox</ion-checkbox>
+  <ion-checkbox >Test Report</ion-checkbox>
   </ion-list>
       <div class="list">
     <label class="item item-input item-stacked-label">
@@ -412,6 +412,19 @@
       <input type="text" placeholder="">
     </label>
   </div>
+  </div>
+</div>
+
+
+<div class="card">
+  <div class="item item-divider">
+  <h3>Camera</h3>
+  </div>
+  <div class="item item-text-wrap">
+    <button class = "button" ng-click = "takePicture()">Take Picture</button>
+    <button class = "button" ng-click = "getPicture()">Open Gallery</button>
+    <img ng-src = "{{user.picture}}">
+
   </div>
 </div>
 

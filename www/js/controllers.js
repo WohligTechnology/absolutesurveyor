@@ -65,3 +65,24 @@ angular.module('starter.controllers', [])
 })
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 });
+
+/*.controller('SurveyCtrl', function($scope, Camera) {
+
+   $scope.takePicture = function (options) {
+
+      var options = {
+         quality : 75,
+         targetWidth: 200,
+         targetHeight: 200,
+         sourceType: 1
+      };
+
+      Camera.getPicture(options).then(function(imageData) {
+         $scope.picture = imageData;;
+      }, function(err) {
+         console.log(err);
+      });
+
+   };
+
+})*/
