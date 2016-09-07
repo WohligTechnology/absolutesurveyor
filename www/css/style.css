@@ -1,4 +1,7 @@
 /* Empty. Add your own CSS if you like */
+body {
+  font-family: 'Open Sans';
+}
 .logo {
   max-width: 100%;
   height: auto;
@@ -18,9 +21,32 @@
     height: 40px;
     text-align: center;
     font-size: 12px;
-    border: 1px solid #ddd;
+    border: 1px solid #777;
 }
 .item-calendar .item-content {
     padding-left: 65px;
     height: 60px;
+}
+.item-calendar .month {
+    background-color: #263b97;
+    color: #fff;
+    font-size: 10px;
+}
+
+.item-calendar .date {
+    font-weight: bold;
+    color: #555;
+}
+.list .item.item-accordion {
+  line-height: 38px;
+  padding-top: 0;
+  padding-bottom: 0;
+  transition: 0.09s all linear;
+}
+.list .item.item-accordion.ng-hide {
+  line-height: 0px;
+}
+.list .item.item-accordion.ng-hide-add,
+.list .item.item-accordion.ng-hide-remove {
+  display: block !important;
 }

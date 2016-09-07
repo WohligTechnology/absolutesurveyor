@@ -38,6 +38,26 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     }
   })
 
+  .state('app.photos-documents', {
+    url: '/photos-documents',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/photos-documents.html',
+        controller: 'PhotosDocumentsCtrl'
+      }
+    }
+  })
+
+  .state('app.emergency', {
+    url: '/emergency',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/photos-documents.html',
+        controller: 'EmergencyCtrl'
+      }
+    }
+  })
+
   .state('app.survey', {
     url: '/survey',
     views: {

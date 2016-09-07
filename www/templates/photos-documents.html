@@ -1,0 +1,17 @@
+<ion-view view-title="Photos / Documents">
+  <ion-content>
+
+    <div class="row" ng-if="imageSrc">
+      <div class="col col-25">
+        <img ng-src="{{imageSrc}}" class="full-image">
+      </div>
+    </div>
+
+
+    <div class="text-center padding">
+      <p>No Photos / Documents Uploaded</p>
+      <button class="button button-positive" ng-click="openCamera()">Open Camera</button>
+      <button class="button button-positive" ng-click="openLibrary()">Open Photo Library</button>
+    </div>
+  </ion-content>
+</ion-view>

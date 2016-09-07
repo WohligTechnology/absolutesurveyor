@@ -1,433 +1,250 @@
 <ion-view view-title="Survey">
   <ion-content>
-    <h1></h1>
+
+    <ion-list>
+      <div ng-repeat="group in groups">
+        <ion-item class="item-stable" ng-click="toggleGroup(group)" ng-class="{active: isGroupShown(group)}">
+          <i class="icon" ng-class="isGroupShown(group) ? 'ion-minus' : 'ion-plus'"></i>
+          &nbsp; Group
+          {{group.name}}
+        </ion-item>
+        <ion-item class="item-accordion" ng-repeat="item in group.items" ng-show="isGroupShown(group)">
+          {{item}}
+        </ion-item>
+      </div>
+    </ion-list>
 
     <div class="card">
-      <div class="item item-divider">
+      <div class="item item-divider" ng-click="toggleGroup(1)" ng-class="{active: isGroupShown(1)}">
         <h3>LR/CN</h3>
       </div>
-  <div class="item item-text-wrap">
-    <div class="list">
-  <label class="item item-input item-stacked-label">
-    <span class="input-label">Carrier</span>
-    <input type="text" placeholder="">
-  </label>
-
-  <label class="item item-input item-stacked-label">
-    <span class="input-label">LR/CN#</span>
-    <input type="text" placeholder="">
-  </label>
-
-  <label class="item item-input item-stacked-label">
-    <span class="input-label">LR/CN Date</span>
-    <input type="text" placeholder="">
-  </label>
-
-  <label class="item item-input item-stacked-label">
-    <span class="input-label">Consignor</span>
-    <input type="text" placeholder="">
-  </label>
-
-  <label class="item item-input item-stacked-label">
-    <span class="input-label">Consignee</span>
-    <input type="text" placeholder="">
-  </label>
-
-  <label class="item item-input item-stacked-label">
-    <span class="input-label">Voyage from</span>
-    <input type="text" placeholder="">
-  </label>
-
-  <label class="item item-input item-stacked-label">
-    <span class="input-label">Voyage to</span>
-    <input type="text" placeholder="">
-  </label>
-
-  <label class="item item-input item-stacked-label">
-    <span class="input-label">No. of packages as per LR/CN</span>
-    <input type="text" placeholder="">
-  </label>
-
-  <label class="item item-input item-stacked-label">
-    <span class="input-label">Original Vehicle #</span>
-    <input type="text" placeholder="">
-  </label>
-
-  <label class="item item-input item-stacked-label">
-    <span class="input-label">Delivery Vehicle #</span>
-    <input type="text" placeholder="">
-  </label>
-
-  <label class="item item-input item-stacked-label">
-    <span class="input-label">Transshipment Place</span>
-    <input type="text" placeholder="">
-  </label>
-
-  <label class="item item-input item-stacked-label">
-    <span class="input-label">Reason</span>
-    <input type="text" placeholder="">
-  </label>
-  <ul class="list">
-
-  <li class="item item-toggle">
-     Is it full Truck Load Cargo?
-     <label class="toggle toggle-assertive">
-       <input type="checkbox">
-       <div class="track">
-         <div class="handle"></div>
-       </div>
-     </label>
-  </li>
-
-  <li class="item item-toggle">
-     Overloading found? (Applicable for Accident only)
-     <label class="toggle toggle-assertive">
-       <input type="checkbox">
-       <div class="track">
-         <div class="handle"></div>
-       </div>
-     </label>
-  </li>
-
-  <li class="item item-toggle">
-     Unloaded during survey?
-     <label class="toggle toggle-assertive">
-       <input type="checkbox">
-       <div class="track">
-         <div class="handle"></div>
-       </div>
-     </label>
-  </li>
-
-  <li class="item item-toggle">
-     Is it containerised Cargo/ vehicle?
-     <label class="toggle toggle-assertive">
-       <input type="checkbox">
-       <div class="track">
-         <div class="handle"></div>
-       </div>
-     </label>
-  </li>
-
-  <li class="item item-toggle">
-     Was it covered with tarpaulin?
-     <label class="toggle toggle-assertive">
-       <input type="checkbox">
-       <div class="track">
-         <div class="handle"></div>
-       </div>
-     </label>
-   </li>
-  </ul>
-</div>
-  </div>
-</div>
-
-<div class="card">
-  <div class="item item-divider">
-    <h3>PACKING</h3>
-  </div>
-  <div class="item item-text-wrap">
-    <div class="list">
-    <label class="item item-input item-stacked-label">
-      <span class="input-label">Inner Packing</span>
-      <input type="text" placeholder="">
-    </label>
-
-    <label class="item item-input item-stacked-label">
-      <span class="input-label">Outer Packing</span>
-      <input type="text" placeholder="">
-    </label>
-
-    <label class="item item-input item-stacked-label">
-      <span class="input-label">Condition @ Delivery</span>
-      <input type="text" placeholder="">
-    </label>
-
-    <label class="item item-input item-stacked-label">
-      <span class="input-label">Condition @ Survey</span>
-      <input type="text" placeholder="">
-    </label>
-
-    <ul class="list">
-
-    <li class="item item-toggle">
-       Shown?
-       <label class="toggle toggle-assertive">
-         <input type="checkbox">
-         <div class="track">
-           <div class="handle"></div>
-         </div>
-       </label>
-    </li>
-
-    <li class="item item-toggle">
-       New/ Second Hand?
-       <label class="toggle toggle-assertive">
-         <input type="checkbox">
-         <div class="track">
-           <div class="handle"></div>
-         </div>
-       </label>
-    </li>
-
-    <li class="item item-toggle">
-       Customary?
-       <label class="toggle toggle-assertive">
-         <input type="checkbox">
-         <div class="track">
-           <div class="handle"></div>
-         </div>
-       </label>
-    </li>
-
-    <li class="item item-toggle">
-       Adequate?
-       <label class="toggle toggle-assertive">
-         <input type="checkbox">
-         <div class="track">
-           <div class="handle"></div>
-         </div>
-       </label>
-    </li>
-
-  </ul>
-
+      <div class="item item-text-wrap item-accordion" ng-show="isGroupShown(1)">
+        <div class="list">
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Carrier</span>
+            <input type="text">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">LR/CN#</span>
+            <input type="text">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">LR/CN Date</span>
+            <input type="text">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Consignor</span>
+            <input type="text">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Consignee</span>
+            <input type="text">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Voyage from</span>
+            <input type="text">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Voyage to</span>
+            <input type="text">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">No. of packages as per LR/CN</span>
+            <input type="text">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Original Vehicle #</span>
+            <input type="text">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Delivery Vehicle #</span>
+            <input type="text">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Transshipment Place</span>
+            <input type="text">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Reason</span>
+            <input type="text">
+          </label>
+          <ion-toggle>Is it full Truck Load Cargo?</ion-toggle>
+          <ion-toggle>Overloading found? (Applicable for Accident only)</ion-toggle>
+          <ion-toggle>Unloaded during survey?</ion-toggle>
+          <ion-toggle>Is it containerised Cargo/ vehicle?</ion-toggle>
+          <ion-toggle>Was it covered with tarpaulin?</ion-toggle>
+        </div>
+      </div>
     </div>
 
-</div>
-</div>
+    <div class="card">
+      <div class="item item-divider" ng-click="toggleGroup(2)" ng-class="{active: isGroupShown(2)}">
+        <h3>PACKING</h3>
+      </div>
+      <div class="item item-text-wrap item-accordion" ng-show="isGroupShown(2)">
+        <div class="list">
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Inner Packing</span>
+            <input type="text">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Outer Packing</span>
+            <input type="text">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Condition @ Delivery</span>
+            <input type="text">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Condition @ Survey</span>
+            <input type="text">
+          </label>
+          <ion-toggle>Shown?</ion-toggle>
+          <ion-toggle>New/ Second Hand?</ion-toggle>
+          <ion-toggle>Customary?</ion-toggle>
+          <ion-toggle>Adequate?</ion-toggle>
+          <ion-toggle>Shown?</ion-toggle>
+        </div>
+      </div>
+    </div>
 
-<div class="card">
-  <div class="item item-divider">
-  <h3>DELIVERY</h3>
-  </div>
-  <div class="item item-text-wrap">
-    <div class="list">
-    <label class="item item-input item-stacked-label">
-      <span class="input-label">Date of Delivery</span>
-      <input type="text" placeholder="">
-    </label>
+    <div class="card">
+      <div class="item item-divider" ng-click="toggleGroup(3)" ng-class="{active: isGroupShown(3)}">
+        <h3>DELEVIRY</h3>
+      </div>
+      <div class="item item-text-wrap item-accordion" ng-show="isGroupShown(3)">
+        <div class="list">
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Date of Delivery</span>
+            <input type="text">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Delivery Address</span>
+            <input type="text">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Knowledge of Loss</span>
+            <input type="text">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Delivery Address</span>
+            <input type="text">
+          </label>
+          <ion-toggle>Place other than LR?</ion-toggle>
+          <ion-toggle>LR endorsed with loss?</ion-toggle>
+        </div>
+      </div>
+    </div>
 
-    <label class="item item-input item-stacked-label">
-      <span class="input-label">Delivery Address</span>
-      <input type="text" placeholder="">
-    </label>
+    <div class="card">
+      <div class="item item-divider" ng-click="toggleGroup(4)" ng-class="{active: isGroupShown(4)}">
+        <h3>SURVEY</h3>
+      </div>
+      <div class="item item-text-wrap item-accordion" ng-show="isGroupShown(4)">
+        <div class="list">
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Date of Survey</span>
+            <input type="text">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Survey start time</span>
+            <input type="text">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Survey end time</span>
+            <input type="text">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Person presnet during survey</span>
+            <input type="text">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Survey address</span>
+            <input type="text">
+          </label>
+        </div>
+      </div>
+    </div>
 
-    <label class="item item-input item-stacked-label">
-      <span class="input-label">Knowledge of Loss</span>
-      <input type="text" placeholder="">
-    </label>
+    <div class="card">
+      <div class="item item-divider" ng-click="toggleGroup(5)" ng-class="{active: isGroupShown(5)}">
+        <h3>CAUSE OF LOSS</h3>
+      </div>
+      <div class="item item-text-wrap item-accordion" ng-show="isGroupShown(5)">
+        <ion-list>
+          <ion-checkbox>Jerks/Jolts</ion-checkbox>
+          <ion-checkbox>Non Delivery</ion-checkbox>
+          <ion-checkbox>Accident</ion-checkbox>
+          <ion-checkbox>Load/ Unload</ion-checkbox>
+          <ion-checkbox>Water Damage</ion-checkbox>
+          <ion-checkbox>Theft/Shortage</ion-checkbox>
+          <ion-checkbox>Transshipment</ion-checkbox>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Other</span>
+            <input type="text">
+          </label>
+        </ion-list>
+      </div>
+    </div>
 
-    <label class="item item-input item-stacked-label">
-      <span class="input-label">Delivery Address</span>
-      <input type="text" placeholder="">
-    </label>
+    <div class="card">
+      <div class="item item-divider" ng-click="toggleGroup(6)" ng-class="{active: isGroupShown(6)}">
+        <h3>DAMAGE PRODUCT CAN BE</h3>
+      </div>
+      <div class="item item-text-wrap item-accordion" ng-show="isGroupShown(6)">
+        <div class="list">
+          <ion-toggle>Repaired?</ion-toggle>
+          <ion-toggle>Reprocessed?</ion-toggle>
+          <ion-toggle>Reconditioned?</ion-toggle>
+          <ion-toggle>Canabalised</ion-toggle>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Other</span>
+            <input type="text">
+          </label>
+        </div>
+      </div>
+    </div>
 
-    <ul class="list">
+    <div class="card">
+      <div class="item item-divider" ng-click="toggleGroup(7)" ng-class="{active: isGroupShown(7)}">
+        <h3>SALVAGE</h3>
+      </div>
+      <div class="item item-text-wrap item-accordion" ng-show="isGroupShown(7)">
+        <ion-list>
+          <ion-checkbox >Destroyed</ion-checkbox>
+          <ion-checkbox >To Destroyed</ion-checkbox>
+          <ion-checkbox >Disposable</ion-checkbox>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Salvage Offer</span>
+            <input type="text">
+          </label>
+        </ion-list>
+      </div>
+    </div>
 
-    <li class="item item-toggle">
-       Place other than LR?
-       <label class="toggle toggle-assertive">
-         <input type="checkbox">
-         <div class="track">
-           <div class="handle"></div>
-         </div>
-       </label>
-    </li>
+    <div class="card">
+      <div class="item item-divider" ng-click="toggleGroup(8)" ng-class="{active: isGroupShown(8)}">
+        <h3>DOCUMENETS COLLECTED</h3>
+      </div>
+      <div class="item item-text-wrap item-accordion" ng-show="isGroupShown(8)">
+        <ion-list>
+          <ion-checkbox >Invoice (s)</ion-checkbox>
+          <ion-checkbox >Packing list</ion-checkbox>
+          <ion-checkbox >LR/CN</ion-checkbox>
+          <ion-checkbox >FIR</ion-checkbox>
+          <ion-checkbox >Vehicle Dox</ion-checkbox>
+          <ion-checkbox >Test Report</ion-checkbox>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Other</span>
+            <input type="text">
+          </label>
+        </ion-list>
+      </div>
+    </div>
 
-    <li class="item item-toggle">
-       LR endorsed with loss?
-       <label class="toggle toggle-assertive">
-         <input type="checkbox">
-         <div class="track">
-           <div class="handle"></div>
-         </div>
-       </label>
-    </li>
-
-    </ul>
-  </div>
-</div>
-</div>
-
-<div class="card">
-  <div class="item item-divider">
-  <h3>SURVEY</h3>
-  </div>
-  <div class="item item-text-wrap">
-    <div class="list">
-  <label class="item item-input item-stacked-label">
-    <span class="input-label">Date of Survey</span>
-    <input type="text" placeholder="">
-  </label>
-
-  <label class="item item-input item-stacked-label">
-    <span class="input-label">Survey start time</span>
-    <input type="text" placeholder="">
-  </label>
-
-  <label class="item item-input item-stacked-label">
-    <span class="input-label">Survey end time</span>
-    <input type="text" placeholder="">
-  </label>
-
-  <label class="item item-input item-stacked-label">
-    <span class="input-label">Person presnet during survey</span>
-    <input type="text" placeholder="">
-  </label>
-
-  <label class="item item-input item-stacked-label">
-    <span class="input-label">Survey address</span>
-    <input type="text" placeholder="">
-  </label>
-</div>
-  </div>
-</div>
-
-<div class="card">
-  <div class="item item-divider">
-    <h3>CAUSE OF LOSS</h3>
-  </div>
-  <div class="item item-text-wrap">
-    <div class="item item-text-wrap">
-      <ion-list>
-
-  <ion-checkbox >Jerks/Jolts</ion-checkbox>
-  <ion-checkbox >Non Delivery</ion-checkbox>
-  <ion-checkbox >Accident</ion-checkbox>
-  <ion-checkbox >Load/ Unload</ion-checkbox>
-  <ion-checkbox >Water Damage</ion-checkbox>
-  <ion-checkbox >Theft/Shortage</ion-checkbox>
-  <ion-checkbox >Transshipment</ion-checkbox>
-
-
-
-   </ion-list>
-      <div class="list">
-    <label class="item item-input item-stacked-label">
-      <span class="input-label">Other</span>
-      <input type="text" placeholder="">
-    </label>
-  </div>
-  </div>
-</div>
-</div>
-
-<div class="card">
-  <div class="item item-divider">
-    <h3>DAMAGED PRODUCT CAN BE</h3>
-  </div>
-  <div class="item item-text-wrap">
-    <div class="list">
-    <li class="item item-toggle">
-       Repaired?
-       <label class="toggle toggle-assertive">
-         <input type="checkbox">
-         <div class="track">
-           <div class="handle"></div>
-         </div>
-       </label>
-     </li>
-
-    <li class="item item-toggle">
-       Reprocessed?
-       <label class="toggle toggle-assertive">
-         <input type="checkbox">
-         <div class="track">
-           <div class="handle"></div>
-         </div>
-       </label>
-    </li>
-
-    <li class="item item-toggle">
-       Reconditioned?
-       <label class="toggle toggle-assertive">
-         <input type="checkbox">
-         <div class="track">
-           <div class="handle"></div>
-         </div>
-       </label>
-    </li>
-
-    <li class="item item-toggle">
-       Canabalised
-       <label class="toggle toggle-assertive">
-         <input type="checkbox">
-         <div class="track">
-           <div class="handle"></div>
-         </div>
-       </label>
-    </li>
-  </ul>
-
-  <label class="item item-input item-stacked-label">
-    <span class="input-label">Other</span>
-    <input type="text" placeholder="">
-  </label>
-
-  </div>
-</div>
-</div>
-
-<div class="card">
-  <div class="item item-divider">
-  <h3>SALVAGE</h3>
-  </div>
-  <div class="item item-text-wrap">
-    <ion-list>
-
-  <ion-checkbox >Destroyed</ion-checkbox>
-  <ion-checkbox >To Destroyed</ion-checkbox>
-  <ion-checkbox >Disposable</ion-checkbox>
-
-</ion-list>
-
-<label class="item item-input item-stacked-label">
-  <span class="input-label">Salvage Offer</span>
-  <input type="text" placeholder="">
-</label>
-  </div>
-</div>
-</div>
-
-<div class="card">
-  <div class="item item-divider">
-    <h3>DOCUMENTS COLLECTED</h3>
-  </div>
-  <div class="item item-text-wrap">
-    <div class="item item-text-wrap">
-      <ion-list>
-
-  <ion-checkbox >Invoice (s)</ion-checkbox>
-  <ion-checkbox >Packing list</ion-checkbox>
-  <ion-checkbox >LR/CN</ion-checkbox>
-  <ion-checkbox >FIR</ion-checkbox>
-  <ion-checkbox >Vehicle Dox</ion-checkbox>
-  <ion-checkbox >Test Report</ion-checkbox>
-  </ion-list>
-      <div class="list">
-    <label class="item item-input item-stacked-label">
-      <span class="input-label">Other</span>
-      <input type="text" placeholder="">
-    </label>
-  </div>
-  </div>
-</div>
-
-
-<div class="card">
-  <div class="item item-divider">
-  <h3>Camera</h3>
-  </div>
-  <div class="item item-text-wrap">
-    <button class = "button" ng-click = "takePicture()">Take Picture</button>
-    <button class = "button" ng-click = "getPicture()">Open Gallery</button>
-    <img ng-src = "{{user.picture}}">
-
-  </div>
-</div>
-
+    <div class="text-center">
+      <button class="button button-positive" ui-sref="app.photos-documents">Upload Photos / Documents</button>
+    </div>
 
   </ion-content>
 </ion-view>
