@@ -1,1 +1,26 @@
 /* Empty. Add your own CSS if you like */
+.logo {
+  max-width: 100%;
+  height: auto;
+}
+.tab-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.login-spacer {
+  margin-top: 40px;
+}
+.calendar {
+    position: absolute;
+    left: 15px;
+    top: 10px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 12px;
+    border: 1px solid #ddd;
+}
+.item-calendar .item-content {
+    padding-left: 65px;
+    height: 60px;
+}

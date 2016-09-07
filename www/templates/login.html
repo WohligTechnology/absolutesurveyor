@@ -1,28 +1,22 @@
-
 <ion-view view-title="Login">
   <ion-content>
-    <form ng-submit="doLogin()">
-
-      <div class="row row-center" >
-        <div class="col text-center" >
-            <img alt="Logo" height="100" src="img/Absolute - PNG file logo.png" >
-        </div>
+    <form ng-submit="doLogin(loginData)" class="tab-container login-spacer">
+      <div class="text-center">
+        <img alt="Logo" class="logo" src="img/logo.png">
       </div>
       <div class="list list-inset">
         <label class="item item-input">
-
           <input type="text" placeholder="Username" ng-model="loginData.username">
-        </label></div>
-        <div class="list list-inset">
+        </label>
+      </div>
+      <div class="list list-inset">
         <label class="item item-input">
-
           <input type="password" placeholder="Password" ng-model="loginData.password">
-        </label></div>
-
-        <div class="list list-inset">
-          <button class="button button-block  button-positive" ui-sref="app.search">Log in</button>
-        </div>
-
+        </label>
+      </div>
+      <div class="list list-inset">
+        <button class="button button-block button-positive" ui-sref="app.task">Log in</button>
+      </div>
     </form>
   </ion-content>
 </ion-view>

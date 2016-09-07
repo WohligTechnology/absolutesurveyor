@@ -1,4 +1,12 @@
 {
-  "name": "myfirst",
-  "app_id": ""
+  "name": "absolutesurveyors",
+  "app_id": "",
+  "gulpStartupTasks": [
+    "sass",
+    "watch"
+  ],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*"
+  ]
 }
