@@ -9,7 +9,7 @@
 
 
     <div class="text-center padding">
-      <p>No Photos / Documents Uploaded</p>
+      <p ng-if="!imageSrc">No Photos / Documents Uploaded</p>
       <button class="button button-positive" ng-click="openCamera()">Open Camera</button>
       <button class="button button-positive" ng-click="openLibrary()">Open Photo Library</button>
     </div>

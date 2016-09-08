@@ -1,4 +1,8 @@
 /* Empty. Add your own CSS if you like */
+@font-face {
+    font-family: 'Open Sans';
+    src: url('../fonts/OpenSans-Regular.ttf');
+}
 body {
   font-family: 'Open Sans';
 }
@@ -7,7 +11,7 @@ body {
   height: auto;
 }
 .tab-container {
-  max-width: 900px;
+  max-width: 786px;
   margin: 0 auto;
 }
 .login-spacer {
@@ -50,3 +54,4 @@ body {
 .list .item.item-accordion.ng-hide-remove {
   display: block !important;
 }
+.border-primary { border-top: 20px solid #263b97;}

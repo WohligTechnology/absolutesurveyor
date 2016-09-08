@@ -7,7 +7,6 @@ angular.module('starter.controllers', ['ngCordova'])
 .controller('TaskCtrl', function($scope) {})
 
 .controller('PhotosDocumentsCtrl', function($scope, $cordovaCamera) {
-  console.log();
 
   $scope.openCamera = function() {
     var cameraOptions = {
@@ -22,14 +21,13 @@ angular.module('starter.controllers', ['ngCordova'])
       correctOrientation: true
     };
     $cordovaCamera.getPicture(cameraOptions).then(function(imageData) {
-      var image = document.getElementById('myImage');
-      image.src = "data:image/jpeg;base64," + imageData;
-      $scope.imageSrc = image.src;
-      console.log(image.src);
+      $scope.imageSrc = "data:image/jpeg;base64," + imageData;
+      console.log($scope.imageSrc);
     }, function(err) {
       console.log(err);
     });
   };
+
   $scope.openLibrary = function() {
     var libraryOptions = {
       quality: 90,
@@ -39,20 +37,16 @@ angular.module('starter.controllers', ['ngCordova'])
       encodingType: 0,
       targetWidth: 1200,
       popoverOptions: CameraPopoverOptions,
-      saveToPhotoAlbum: true,
+      saveToPhotoAlbum: false,
       correctOrientation: true
     };
     $cordovaCamera.getPicture(libraryOptions).then(function(imageData) {
-      var image = document.getElementById('myImage');
-      image.src = "data:image/jpeg;base64," + imageData;
-      $scope.imageSrc = image.src;
-      console.log(image.src);
+      $scope.imageSrc = "data:image/jpeg;base64," + imageData;
+      console.log($scope.imageSrc);
     }, function(err) {
       console.log(err);
     });
   };
-
-
 
 })
 
@@ -66,6 +60,7 @@ angular.module('starter.controllers', ['ngCordova'])
       $scope.shownGroup = group;
     }
     $ionicScrollDelegate.resize();
+    $ionicScrollDelegate.$getByHandle('mainScroll').scrollTop();
   };
   $scope.isGroupShown = function(group) {
     return $scope.shownGroup === group;
