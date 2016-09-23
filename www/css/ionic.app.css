@@ -5,17 +5,6 @@ in ionic's _variables.scss file.
 
 For example, you might change some of the default colors:
 */
-.logo {
-  max-width: 100%;
-  height: auto; }
-
-.tab-container {
-  max-width: 900px;
-  margin: 0 auto; }
-
-.login-spacer {
-  margin-top: 40px; }
-
 /*!
   Ionicons, v2.0.1
   Created by Ben Sperry for the Ionic Framework, http://ionicons.com/
@@ -9815,3 +9804,57 @@ a.button {
   opacity: 0;
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url("../fonts/OpenSans-Regular.ttf"); }
+
+body {
+  font-family: 'Open Sans'; }
+
+.logo {
+  max-width: 100%;
+  height: auto; }
+
+.tab-container {
+  max-width: 786px;
+  margin: 0 auto; }
+
+.login-spacer {
+  margin-top: 40px; }
+
+.calendar {
+  position: absolute;
+  left: 15px;
+  top: 10px;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-size: 12px;
+  border: 1px solid #777; }
+
+.item-calendar .item-content {
+  padding-left: 65px;
+  height: 60px; }
+
+.item-calendar .date {
+  font-weight: bold;
+  color: #555; }
+
+.item-calendar .month {
+  background-color: #263b97;
+  color: #fff;
+  font-size: 10px; }
+
+.list .item.item-accordion {
+  line-height: 38px;
+  padding-top: 0;
+  padding-bottom: 0;
+  transition: 0.09s all linear; }
+  .list .item.item-accordion.ng-hide {
+    line-height: 0px; }
+  .list .item.item-accordion.ng-hide-add, .list .item.item-accordion.ng-hide-remove {
+    display: block !important; }
+
+.border-primary {
+  border-top: 20px solid #263b97; }
