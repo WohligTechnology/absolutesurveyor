@@ -1,10 +1,11 @@
 <ion-view view-title="Task">
   <ion-content>
 
-    <ion-list show-delete="false" can-swipe="true">
+    <ion-list  class="tasks" show-delete="false" can-swipe="true">
       <div class="item item-divider">
         September, 2016
       </div>
+         <div class="mutiple-task">
       <ion-item class="item-calendar" ui-sref="app.survey">
         <div class="calendar">
           <div class="month">Sept</div>
@@ -13,6 +14,51 @@
         <div class="mr-no">IN09-1205-1809-2387</div>
         <ion-option-button class="button">Decline</ion-option-button>
       </ion-item>
+      <a class="button button-icon icon ion-ios-information info" ng-click="information();"></a>
+      </div>
+    </ion-list>
+        <ion-list  class="tasks" show-delete="false" can-swipe="true">
+      <div class="item item-divider">
+        September, 2016
+      </div>
+      <div class="mutiple-task">
+      <ion-item class="item-calendar" ui-sref="app.survey">
+        <div class="calendar">
+          <div class="month">Sept</div>
+          <div class="date">7</div>
+        </div>
+        <div class="mr-no">IN09-1205-1809-2387</div>
+        <ion-option-button class="button">Decline</ion-option-button>
+      </ion-item>
+      <a class="button button-icon icon ion-ios-information info" ng-click="information();"></a>
+      </div>
+     <div class="mutiple-task">
+      <ion-item class="item-calendar" ui-sref="app.survey">
+        <div class="calendar">
+          <div class="month">Sept</div>
+          <div class="date">7</div>
+        </div>
+        <div class="mr-no">IN09-1205-1809-2387</div>
+        <ion-option-button class="button">Decline</ion-option-button>
+      </ion-item>
+      <a class="button button-icon icon ion-ios-information info" ng-click="information();"></a>
+      </div>
+    </ion-list>
+        <ion-list class="tasks" show-delete="false" can-swipe="true">
+      <div class="item item-divider">
+        October, 2016
+      </div>
+          <div class="mutiple-task">
+      <ion-item class="item-calendar" ui-sref="app.survey">
+        <div class="calendar">
+          <div class="month">Sept</div>
+          <div class="date">7</div>
+        </div>
+        <div class="mr-no">IN09-1205-1809-2387</div>
+        <ion-option-button class="button">Decline</ion-option-button>
+      </ion-item>
+      <a class="button button-icon icon ion-ios-information info" ng-click="information();"></a>
+      </div>
     </ion-list>
 
   </ion-content>
