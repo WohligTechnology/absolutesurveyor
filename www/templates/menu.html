@@ -19,19 +19,20 @@
     <ion-content>
       <ion-list>
         <ion-item class="item-avatar border-primary" menu-close>
-          <img src="img/ceo.png">
-          <h2>Arun Arora</h2>
-          <p>CEO</p>
+          <img src="img/photo.png" ng-if="!profile.photo">
+          <img ng-src="{{profile.photo}}" ng-if="profile.photo">
+          <h2 ng-if="profile.name">{{profile.name}}</h2>
+          <p ng-if="profile.grade.name">{{profile.grade.name}}</p>
         </ion-item>
         <ion-item class="item-icon-left" menu-close ui-sref="app.task">
           <i class="icon ion-clipboard"></i>
           Tasks
         </ion-item>
-        <ion-item class="item-icon-left" menu-close ui-sref="app.survey">
+        <!-- <ion-item class="item-icon-left" menu-close ui-sref="app.survey">
           <i class="icon ion-compose"></i>
           Survey
-        </ion-item>
-        <ion-item class="item-icon-left" menu-close ui-sref="login">
+        </ion-item> -->
+        <ion-item class="item-icon-left" menu-close ng-click="logout();">
           <i class="icon ion-log-out"></i>
           Logout
         </ion-item>

@@ -9858,3 +9858,84 @@ body {
 
 .border-primary {
   border-top: 20px solid #263b97; }
+
+.login-logo {
+  width: 100%;
+  margin: 10% 0; }
+  .login-logo img {
+    width: 60%; }
+
+.login-div {
+  margin: 20% 10%; }
+
+.card-upload {
+  padding: 10px; }
+  .card-upload h3 {
+    color: #263b97;
+    font-size: 18px; }
+
+.img-upload {
+  height: 60px;
+  margin: 7px; }
+  .img-upload img {
+    height: 100%;
+    width: 100%; }
+
+.mutiple-task {
+  position: relative; }
+  .mutiple-task p {
+    white-space: normal; }
+  .mutiple-task .info {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2; }
+  .mutiple-task .button-icon.icon:before {
+    font-size: 20px; }
+
+.popup-head {
+  border: none;
+  display: none; }
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3; }
+
+.docu {
+  background-color: #f5f5f5;
+  border: 1px solid #dcdcdc;
+  padding: 5px;
+  width: 80%; }
+  .docu label {
+    float: left; }
+  .docu i {
+    float: right; }
+
+.submit {
+  text-align: center;
+  margin: 0 auto;
+  width: 50%; }
+
+.photos {
+  margin-top: -10px; }
+
+.add-button {
+  text-align: right;
+  right: 29px;
+  position: relative;
+  top: 15px;
+  z-index: 66; }
+  .add-button button {
+    background: #263b97;
+    color: white;
+    border: radius;
+    border-radius: 50%;
+    height: 45px;
+    width: 45px;
+    min-width: 40px;
+    min-height: 40px; }
+
+.task .task-name p {
+  font-size: 20px; }

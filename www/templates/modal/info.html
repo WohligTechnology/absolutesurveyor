@@ -4,20 +4,41 @@
       <ion-list  class="tasks" show-delete="false" can-swipe="true">
          <div class="mutiple-task">
       <ion-item>
-        <div class="task-name">
-          <p>Task Name:</p>
+        <div class="">
+          <div class="task-name">
+            <p ng-if="insideData.name">Task Name :{{insideData.name}}</p>
+          </div>
+          <div class="task-name">
+            <p ng-if="insideData.address">Address :{{insideData.address}}</p>
+          </div>
+          <div class="task-name">
+            <p ng-if="insideData.city.name || insideData.city.district.name || insideData.city.district.state.name || insideData.city.district.state.zone.country.name">City :<span ng-if="insideData.city.name">{{insideData.city.name}},</span><b ng-if="insideData.city.district.name">{{insideData.city.district.name}},</b><span ng-if="insideData.city.district.state.name">{{insideData.city.district.state.name}},</span>{{insideData.city.district.state.name}},<b ng-if="insideData.city.district.state.zone.name">{{insideData.city.district.state.zone.name}},</b><span ng-if="insideData.city.district.state.zone.country.name">{{insideData.city.district.state.zone.country.name}}</span></p>
+          </div>
+          <div class="task-name">
+            <p ng-if="insideData.pincode">Pincode :{{insideData.pincode}}</p>
+          </div>
+          <div class="task-name">
+            <p ng-if="insideData.siteEmail">Site Email :{{insideData.siteEmail}}</p>
+          </div>
+          <div class="task-name">
+            <p ng-if="insideData.siteMobile">Site Mobile :{{insideData.siteMobile}}</p>
+          </div>
+          <div class="task-name">
+            <p ng-if="insideData.siteNumber">Site Person :{{insideData.siteNumber}}</p>
+          </div>
+           <div class="date">
+            <p ng-if="insideData.surveyDate">Survey Date : {{insideData.surveyDate| date:'dd MMM yyyy'}}</p>
+          </div>
         </div>
-         <div class="date">
-          <p>Date:</p>
-        </div>
-        <div class="more-info">
+
+        <!-- <div class="more-info">
             <p>Information:</p>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo dolorem unde voluptas, qui, repellendus, corporis nam officia modi dolore suscipit quidem perspiciatis quaerat corrupti maxime illum earum officiis provident. Optio.</p>
-            </div>
+            </div> -->
       </ion-item>
       <!--<a class="button button-icon icon ion-ios-information info" ng-click="information();"></a>-->
       </div>
     </ion-list>
-  
+
   </div>
 </div>

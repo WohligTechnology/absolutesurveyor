@@ -1,22 +1,29 @@
 <ion-view view-title="Login">
   <ion-content>
-    <form ng-submit="doLogin(loginData)" class="tab-container login-spacer padding">
-      <div class="text-center">
+    <form ng-submit="login(formData)" class="tab-container login-spacer padding" name="formName">
+      <div class="text-center login-logo">
         <img alt="Logo" class="logo" src="img/logo.png" width="500">
       </div>
-      <div class="list list-inset">
-        <label class="item item-input">
-          <input type="text" placeholder="Username" ng-model="loginData.username">
-        </label>
+      <div class="login-div">
+          <div class="list list-inset">
+            <label class="item item-input">
+              <input type="email" placeholder="Email" name="emailadd" ng-model="formData.email"  required >
+            </label>
+            <span class="error-msg" ng-show="formName.emailadd.$invalid && formName.emailadd.$touched">Please enter valid Email(for eg.abc@acc.com)</span>
+
+          </div>
+
+          <!-- <div class="list list-inset">
+            <label class="item item-input">
+              <input type="password" placeholder="Password" ng-model="loginData.password">
+            </label>
+          </div> -->
+          <div class="list list-inset">
+            <button class="button button-block button-positive"  type="submit"  >Submit</button>
+          </div>
+
       </div>
-      <div class="list list-inset">
-        <label class="item item-input">
-          <input type="password" placeholder="Password" ng-model="loginData.password">
-        </label>
-      </div>
-      <div class="list list-inset">
-        <button class="button button-block button-positive" ui-sref="app.task">Log in</button>
-      </div>
+
     </form>
   </ion-content>
 </ion-view>
