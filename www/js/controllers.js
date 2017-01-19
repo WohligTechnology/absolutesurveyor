@@ -282,16 +282,16 @@ if ($scope.profile) {
       if (res) {
         console.log('You are sure');
           if (arrayName === 'photos') {
-       $scope.photos= _.remove($scope.photos, function(n) {
+        _.remove($scope.photos, function(n) {
           return n.file === image;
         });
             }
       else if (arrayName === 'Document') {
-         $scope.doc=_.remove($scope.doc, function(n) {
+         _.remove($scope.doc, function(n) {
           return n.file === image;
         });
       } else {
-       $scope.jir = _.remove($scope.jir, function(n) {
+       _.remove($scope.jir, function(n) {
           return n.file === image;
         });
             }
