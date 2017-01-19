@@ -181,6 +181,7 @@ if ($scope.profile) {
   console.log($scope.profile._id);
   $scope.document.empId = $scope.profile._id;
   $scope.document.assignId = $stateParams.assignId;
+  $scope.document.surveyId = $stateParams.surveyId;
   $scope.showAlert = function() {
     var alertPopup = $ionicPopup.alert({
       title: 'oops!',
@@ -296,7 +297,7 @@ if ($scope.profile) {
       quality: 90,
       destinationType: Camera.DestinationType.DATA_URL,
       sourceType: Camera.PictureSourceType.CAMERA,
-      allowEdit: true,
+      allowEdit: false,
       encodingType: 0,
       targetWidth: 1200,
       popoverOptions: CameraPopoverOptions,
@@ -310,13 +311,10 @@ if ($scope.profile) {
       if (arrayName === 'photos') {
 
         $scope.uploadImage($scope.imageSrc, arrayName);
-        // $scope.photos= $scope.photos.concat($scope.imageSrc);
       } else if (arrayName === 'Document') {
         $scope.uploadImage($scope.imageSrc, arrayName);
-        // $scope.doc= $scope.doc.concat($scope.imageSrc);
       } else {
         $scope.uploadImage($scope.imageSrc, arrayName);
-        // $scope.jir= $scope.jir.concat($scope.imageSrc);
       }
     }, function(err) {          $scope.photos = _.flatten($scope.photos);
 
@@ -326,7 +324,7 @@ if ($scope.profile) {
 
   $scope.uploadImage = function(imageURI, arrayName) {
     console.log('imageURI', imageURI);
-    // $scope.showLoading('Uploading Image...', 10000);
+    $scope.showLoading('Uploading Image...', 10000);
     $cordovaFileTransfer.upload(adminurl + 'upload', imageURI)
       .then(function(result) {
         // Success!
@@ -339,30 +337,21 @@ if ($scope.profile) {
           $scope.photos = $scope.photos.concat(result.response.data[0]);
           $scope.photos = _.chunk($scope.photos, 4);
           console.log($scope.photos);
-          //     angular.forEach($scope.photos,function(key){
-          //    this.push({"file":key} )
-          //  },$scope.document.photos);
-          //  console.log($scope.document.photos);
+       
 
         } else if (arrayName === 'Document') {
           $scope.doc = _.flatten($scope.doc);
           $scope.doc = $scope.doc.concat(result.response.data[0]);
           $scope.doc = _.chunk($scope.doc, 4);
           console.log($scope.doc);
-          //     angular.forEach($scope.photos,function(key){
-          //    this.push({"file":key} )
-          //  },$scope.document.doc);
-          //  console.log($scope.document.doc);
+     
 
         } else {
           $scope.jir = _.flatten($scope.jir);
           $scope.jir = $scope.jir.concat(result.response.data[0]);
           $scope.jir = _.chunk($scope.jir, 4);
           console.log($scope.jir);
-          //     angular.forEach($scope.jir,function(key){
-          //    this.push({"file":key} )
-          //  },$scope.document.jir);
-          //  console.log($scope.document.jir);
+        
 
         }
 

@@ -5,35 +5,42 @@
          <div class="mutiple-task">
       <ion-item>
         <div class="">
+          <h3>More info</h3>
           <div class="task-name">
-            <p ng-if="insideData.name">Task Name :{{insideData.name}}</p>
+            <p ng-if="insideData.name">Task Name :<span></span>{{insideData.name}}</p>
           </div>
           <div class="task-name">
-            <p ng-if="insideData.address">Address :{{insideData.address}}</p>
+            <p ng-if="insideData.address">Address :<span></span>{{insideData.address}}</p>
           </div>
           <div class="task-name">
-            <p ng-if="insideData.city ">City :<span ng-if="insideData.city">{{insideData.city}},</span><b ng-if="insideData.district">{{insideData.district}},</b><span ng-if="insideData.state">{{insideData.state}},</span><span ng-if="insideData.country">{{insideData.country}}</span></p>
+            <p ng-if="insideData.city ">City :<span >{{insideData.city}}</span></p>
           </div>
           <div class="task-name">
-            <p ng-if=" insideData.district ">District : <span ng-if="insideData.district">{{insideData.district}}</span></p>
+            <p ng-if=" insideData.district ">District : <span>{{insideData.district}}</span></p>
+          </div>
+            <div class="task-name">
+            <p ng-if=" insideData.state ">State : <span >{{insideData.state}}</span></p>
           </div>
           <div class="task-name">
-            <p ng-if="insideData.city || insideData.district || insideData.state  || insideData.zone.country.name">City :<span ng-if="insideData.city">{{insideData.city}},</span><b ng-if="insideData.district">{{insideData.district}},</b><span ng-if="insideData.state">{{insideData.state}},</span><span ng-if="insideData.country">{{insideData.country}}</span></p>
+            <p ng-if=" insideData.country ">Country : <span >{{insideData.country}}</span></p>
           </div>
           <div class="task-name">
-            <p ng-if="insideData.pincode">Pincode :{{insideData.pincode}}</p>
+            <p ng-if=" insideData.zone ">Zone : <span >{{insideData.zone}}</span></p>
           </div>
           <div class="task-name">
-            <p ng-if="insideData.siteEmail">Site Email :{{insideData.siteEmail}}</p>
+            <p ng-if="insideData.pincode">Pincode :<span></span>{{insideData.pincode}}</p>
           </div>
           <div class="task-name">
-            <p ng-if="insideData.siteMobile">Site Mobile :{{insideData.siteMobile}}</p>
+            <p ng-if="insideData.siteEmail">Site Email :<span></span>{{insideData.siteEmail}}</p>
           </div>
           <div class="task-name">
-            <p ng-if="insideData.siteNumber">Site Person :{{insideData.siteNumber}}</p>
+            <p ng-if="insideData.siteMobile">Site Mobile :<span></span>{{insideData.siteMobile}}</p>
+          </div>
+          <div class="task-name">
+            <p ng-if="insideData.siteNumber">Site Person :<span></span>{{insideData.siteNumber}}</p>
           </div>
            <div class="date">
-            <p ng-if="insideData.surveyDate">Survey Date : {{insideData.surveyDate| date:'dd MMM yyyy'}}</p>
+            <p ng-if="insideData.surveyDate">Survey Date :<span></span> {{insideData.surveyDate| date:'dd MMM yyyy'}}</p>
           </div>
 
         </div>

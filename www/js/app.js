@@ -41,7 +41,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services',])
   })
 
   .state('app.photos-documents', {
-    url: '/photos-documents/:assignId',
+    url: '/photos-documents/:assignId/:surveyId',
     views: {
       'menuContent': {
         templateUrl: 'templates/photos-documents.html',

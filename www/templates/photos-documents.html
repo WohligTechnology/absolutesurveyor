@@ -27,7 +27,7 @@
     <div class="item item-image">
       <div class="row" ng-repeat="pic in photos">
         <div class="img-upload col-20" ng-click="showConfirm(data)" ng-repeat="data in pic">
-          <img ng-src="{{data|uploadpath}}" ng-if="data">
+          <img ng-src="{{data|uploadpath:100:100:'cover'}}" ng-if="data">
         </div>
 
       </div>
@@ -44,7 +44,7 @@
   <div class="item item-image">
       <div class="row" ng-repeat="pic in doc">
         <div class="img-upload col-20" ng-click="showConfirm(data)" ng-repeat="data in pic">
-          <img ng-src="{{data|uploadpath}}" ng-if="data">
+          <img ng-src="{{data|uploadpath:100:100:'cover'}}" ng-if="data">
         </div>
 
       </div>
@@ -62,7 +62,7 @@
   <p ng-if="!photos">no documents</p>
   <div class="row" ng-repeat="pic in jir">
     <div class="img-upload col-20" ng-click="showConfirm(data)" ng-repeat="data in pic">
-      <img ng-src="{{data|uploadpath}}" ng-if="data">
+      <img ng-src="{{data|uploadpath:100:100:'cover'}}" ng-if="data">
     </div>
 
   </div>
