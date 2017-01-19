@@ -147,6 +147,7 @@ if ($scope.profile) {
     //  $scope.decline.empMail =$scope.profile.mai;
      MyServices.Decline($scope.decline, function(data) {
        if (data.value) {
+
          console.log(data);
          $scope.doRefresh()
        }
@@ -168,6 +169,15 @@ if ($scope.profile) {
   $scope.closePopup = function() {
     $scope.infos.close();
   }
+
+
+  $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+    $scope.task = [];
+    console.log("GOOD");
+    $timeout(function(){
+      $scope.doRefresh();
+    },300);
+  });
 
 })
 
