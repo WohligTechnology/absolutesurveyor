@@ -289,7 +289,7 @@ if ($scope.profile) {
           if (arrayName === 'photos') {
             $scope.photos = _.flatten($scope.photos);
             _.remove($scope.photos, function(n) {
-              return n.file === image;
+              return n === image;
             });
             $scope.photos = _.chunk($scope.photos, 4);
         console.log($scope.photos);
@@ -297,7 +297,7 @@ if ($scope.profile) {
       else if (arrayName === 'Document') {
         $scope.doc = _.flatten($scope.doc);
          _.remove($scope.doc, function(n) {
-          return n.file === image;
+          return n === image;
         });
         $scope.doc = _.chunk($scope.doc, 4);
         console.log($scope.doc);
@@ -305,7 +305,7 @@ if ($scope.profile) {
       } else {
         $scope.jir = _.flatten($scope.jir);
        _.remove($scope.jir, function(n) {
-          return n.file === image;
+          return n === image;
         });
         $scope.jir = _.chunk($scope.jir, 4);
         console.log($scope.jir);
