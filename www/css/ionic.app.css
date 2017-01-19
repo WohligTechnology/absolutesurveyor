@@ -9937,8 +9937,10 @@ body {
     min-width: 40px;
     min-height: 40px; }
 
-.task .task-name p {
-  font-size: 20px; }
+.task .task-name {
+  padding: 5px; }
+  .task .task-name p {
+    font-size: 20px; }
 
 .decline {
   background: #263b97;
@@ -9952,3 +9954,16 @@ body {
 
 .platform-android .action-sheet-group .button {
   height: 50px; }
+
+.task-name {
+  padding: 3px; }
+  .task-name p {
+    font-size: 14px; }
+
+.more {
+  color: #263b97;
+  margin: 5px !important;
+  font-size: 20px !important; }
+
+.popup {
+  width: 90% !important; }

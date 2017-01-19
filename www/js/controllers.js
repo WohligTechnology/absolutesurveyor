@@ -242,7 +242,7 @@ if ($scope.profile) {
       }else{
         $scope.showAlert('please add jir ');
       }
-      
+
     } else {
       $scope.showAlert('please add attachments ');
     }
@@ -287,20 +287,31 @@ if ($scope.profile) {
       if (res) {
         console.log('You are sure');
           if (arrayName === 'photos') {
-        _.remove($scope.photos, function(n) {
-          return n.file === image;
-        });
+            $scope.photos = _.flatten($scope.photos);
+            _.remove($scope.photos, function(n) {
+              return n.file === image;
+            });
+            $scope.photos = _.chunk($scope.photos, 4);
+        console.log($scope.photos);
             }
       else if (arrayName === 'Document') {
+        $scope.doc = _.flatten($scope.doc);
          _.remove($scope.doc, function(n) {
           return n.file === image;
         });
+        $scope.doc = _.chunk($scope.doc, 4);
+        console.log($scope.doc);
+
       } else {
+        $scope.jir = _.flatten($scope.jir);
        _.remove($scope.jir, function(n) {
           return n.file === image;
         });
+        $scope.jir = _.chunk($scope.jir, 4);
+        console.log($scope.jir);
+
             }
-      
+
 
       } else {
         console.log('You are not sure');
@@ -354,21 +365,21 @@ if ($scope.profile) {
           $scope.photos = $scope.photos.concat(result.response.data[0]);
           $scope.photos = _.chunk($scope.photos, 4);
           console.log($scope.photos);
-       
+
 
         } else if (arrayName === 'Document') {
           $scope.doc = _.flatten($scope.doc);
           $scope.doc = $scope.doc.concat(result.response.data[0]);
           $scope.doc = _.chunk($scope.doc, 4);
           console.log($scope.doc);
-     
+
 
         } else {
           $scope.jir = _.flatten($scope.jir);
           $scope.jir = $scope.jir.concat(result.response.data[0]);
           $scope.jir = _.chunk($scope.jir, 4);
           console.log($scope.jir);
-        
+
 
         }
 

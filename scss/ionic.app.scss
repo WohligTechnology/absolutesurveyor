@@ -183,6 +183,7 @@ min-height: 40px;
 }
 .task{
   .task-name{
+      padding: 5px;
     p{
       font-size: 20px;
     }
@@ -200,4 +201,18 @@ font-weight: 600;
 }
 .platform-android .action-sheet-group .button  {
 height: 50px;
+}
+.task-name{
+    padding: 3px;
+    p{
+      font-size: 14px;
+    }
+}
+.more{
+  color: $positive;
+  margin: 5px!important;
+  font-size: 20px!important;
+}
+.popup{
+  width: 90%!important;
 }
