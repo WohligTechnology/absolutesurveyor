@@ -9939,3 +9939,7 @@ body {
 
 .task .task-name p {
   font-size: 20px; }
+
+.decline {
+  background: #263b97;
+  color: white; }

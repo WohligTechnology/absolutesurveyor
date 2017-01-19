@@ -1,22 +1,29 @@
 <ion-view view-title="Task">
   <ion-content>
+    <ion-refresher on-refresh="doRefresh()">
 
+         </ion-refresher>
     <ion-list  class="tasks" show-delete="false" can-swipe="true">
       <div class="" ng-repeat="monthlyGroup in monthWiseGroup" ng-init="parentIndex = $index">
       <div class="item item-divider" >
         {{monthlyGroup.month}}
       </div>
          <div class="mutiple-task" ng-repeat="item in monthlyGroup.items">
-      <ion-item class="item-calendar"  ui-sref="app.photos-documents({assignId:item.assignment._id})">
-
-        <div class="calendar">
-          <div class="month">{{item.assignment.surveyDate| date:'MMM'}}</div>
-          <div class="date">{{item.assignment.surveyDate| date:'dd'}}</div>
+      <ion-item class="item-calendar"  >
+        <div class="" ui-sref="app.photos-documents({assignId:item.assignment._id})">
+          <div class="calendar">
+            <div class="month">{{item.assignment.surveyDate| date:'MMM'}}</div>
+            <div class="date">{{item.assignment.surveyDate| date:'dd'}}</div>
+          </div>
+          <div class="mr-no">{{item.assignment.name}}</div>
         </div>
-        <div class="mr-no">{{item.assignment.name}}</div>
-        <ion-option-button class="button">Decline</ion-option-button>
+
+        <ion-option-button class="button decline">Decline</ion-option-button>
+        <div class="">
+          <a class="button button-icon icon ion-ios-information info" ng-click="information($index,parentIndex);"></a>
+        </div>
+
       </ion-item>
-      <a class="button button-icon icon ion-ios-information info" ng-click="information($index,parentIndex);"></a>
       </div>
     </div>
     </ion-list>

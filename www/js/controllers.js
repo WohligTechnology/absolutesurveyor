@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['ngCordova'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $ionicModal,$state, $timeout) {
   $scope.profile = $.jStorage.get('profile');
 
   $scope.logout= function(){
@@ -19,6 +19,7 @@ if($.jStorage.get('profile')=== null){
 $scope.profile = $.jStorage.get('profile');
 if ($scope.profile) {
   $state.go('app.task');
+  console.log("hi");
 }
 
   $scope.showAlert = function() {
@@ -49,83 +50,83 @@ if ($scope.profile) {
 
 })
 
-.controller('TaskCtrl', function($scope, $ionicPopup, MyServices) {
-  $scope.profile = $.jStorage.get('profile');
-  if ($scope.profile) {
-    $state.go('login');
-  }
+.controller('TaskCtrl', function($scope, $ionicPopup,$state, MyServices,$timeout) {
+
   $scope.profile = $.jStorage.get('profile');
   $scope.id = $scope.profile._id;
   console.log($scope.id);
-  MyServices.Task($scope.id, function(data) {
-    if (data.value) {
-      console.log(data);
-      $scope.task = data.data;
-      var
-        monthLabels = ["Jan", "Feb", "March",
-          "April", "May", "June",
-          "July", "Aug", "Sep",
-          "Oct", "Nov", "Dec"
-        ],
-        items = $scope.task;
-      console.log(items);
-      var itemsGroupedByMonth = function(items) {
+
+  $scope.taskfun = function () {
+    MyServices.Task($scope.id, function(data) {
+      if (data.value) {
+        console.log(data);
+        $scope.task = data.data;
         var
-          groups = [
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
+          monthLabels = ["Jan", "Feb", "March",
+            "April", "May", "June",
+            "July", "Aug", "Sep",
+            "Oct", "Nov", "Dec"
           ],
-          itemGroupedByMonths = [];
+          items = $scope.task;
+        console.log(items);
+        var itemsGroupedByMonth = function(items) {
+          var
+            groups = [
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+            ],
+            itemGroupedByMonths = [];
 
-        for (var i = 0; i < items.length; i++) {
-          groups[new Date(items[i].assignment.surveyDate).getMonth()].push(items[i]);
-        }
-        console.log(groups);
-
-
-        for (var i = 0; i < groups.length; i++) {
-          if (groups[i].length) {
-            itemGroupedByMonths.push({
-              month: monthLabels[i],
-              items: groups[i]
-            });
-
+          for (var i = 0; i < items.length; i++) {
+            groups[new Date(items[i].assignment.surveyDate).getMonth()].push(items[i]);
           }
-        }
-        return itemGroupedByMonths;
-      };
+          console.log(groups);
 
-      $scope.monthWiseGroup = itemsGroupedByMonth(items);
-      console.log($scope.monthWiseGroup);
 
-      //     var log = [];
-      //       var items=[];
-      //     for (var i = 0; i < $scope.task.length; i++) {
-      //   $scope.task[ $scope.task[i].assignment.surveyDate.getMonth()].push(items[i]);
-      //
-      // }
-      // angular.forEach($scope.task, function(value, key) {
-      //   this.push(moment(key.assignment.surveyDate,'MMM').toDate + ': ' + value);
-      // }, log);
-      // console.log(log);
-      // $scope.content = _.groupBy($scope.task.assignment[n].surveyDate, "type.month");
-      // console.log($scope.content);
+          for (var i = 0; i < groups.length; i++) {
+            if (groups[i].length) {
+              itemGroupedByMonths.push({
+                month: monthLabels[i],
+                items: groups[i]
+              });
 
-    } else {
-      $scope.showAlert();
-    }
-  });
+            }
+          }
+          return itemGroupedByMonths;
+        };
 
+        $scope.monthWiseGroup = itemsGroupedByMonth(items);
+        console.log($scope.monthWiseGroup);
+
+      } else {
+        $scope.showAlert();
+      }
+    });
+  }
+
+  $scope.taskfun();
+  $scope.doRefresh = function() {
+
+     console.log('Refreshing!');
+     $timeout( function() {
+       //simulate async response
+       $scope.taskfun();
+       //Stop the ion-refresher from spinning
+       $scope.$broadcast('scroll.refreshComplete');
+
+     }, 1000);
+
+   };
   $scope.information = function(index, parent) {
     console.log($scope.monthWiseGroup[parent].items[index], 'inside match');
     $scope.insideData = $scope.monthWiseGroup[parent].items[index].assignment;
