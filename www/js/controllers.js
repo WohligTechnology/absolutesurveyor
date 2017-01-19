@@ -55,7 +55,7 @@ if ($scope.profile) {
 
 })
 
-.controller('TaskCtrl', function($scope, $ionicPopup,$state, MyServices,$timeout) {
+.controller('TaskCtrl', function($scope, $ionicPopup,$state, MyServices,$timeout,$ionicLoading) {
 
   $scope.profile = $.jStorage.get('profile');
   $scope.id = $scope.profile._id;
@@ -139,17 +139,31 @@ if ($scope.profile) {
      }, 1000);
 
    };
+     $scope.show = function() {
+    $ionicLoading.show({
+      template: 'Loading...',
+      duration: 3000
+    }).then(function(){
+       console.log("The loading indicator is now displayed");
+    });
+  };
+  $scope.hide = function(){
+    $ionicLoading.hide().then(function(){
+       console.log("The loading indicator is now hidden");
+    });
+  };
    $scope.decline={};
    $scope.declinetask = function (surveyId,assignId) {
+      $scope.show();
      $scope.decline.surveyId =surveyId;
      $scope.decline.assignId =assignId;
      $scope.decline.empId =$scope.id;
     //  $scope.decline.empMail =$scope.profile.mai;
      MyServices.Decline($scope.decline, function(data) {
        if (data.value) {
-
+         $scope.hide();
          console.log(data);
-         $scope.doRefresh()
+         $scope.doRefresh();
        }
      });
    };
@@ -207,7 +221,7 @@ if ($scope.profile) {
 
     if (!(_.isEmpty($scope.photos) && _.isEmpty($scope.doc) && _.isEmpty($scope.jir))) {
       if(!( _.isEmpty($scope.jir))){
-//photos
+    //photos
       $scope.document.photos = [];
       $scope.photos = _.flatten($scope.photos);
       _.forEach($scope.photos, function(value) {
@@ -236,9 +250,6 @@ if ($scope.profile) {
       });
       console.log($scope.document.jir);
       console.log($scope.document);
-      // $scope.uploadImage($scope.photos,'photos');
-      // $scope.uploadImage($scope.doc,'Document');
-      // $scope.uploadImage($scope.jir,'JIR');
 
 
       MyServices.mobileSubmit($scope.document, function(data) {
@@ -250,11 +261,11 @@ if ($scope.profile) {
         }
       });
       }else{
-        $scope.showAlert('please add jir ');
+        $scope.showAlert('Please add JIR ');
       }
 
     } else {
-      $scope.showAlert('please add attachments ');
+      $scope.showAlert('Please add attachments ');
     }
   };
   $scope.showActionsheet = function(arrayName) {
