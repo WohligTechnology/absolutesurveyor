@@ -182,10 +182,10 @@ if ($scope.profile) {
   $scope.document.empId = $scope.profile._id;
   $scope.document.assignId = $stateParams.assignId;
   $scope.document.surveyId = $stateParams.surveyId;
-  $scope.showAlert = function() {
+  $scope.showAlert = function(text) {
     var alertPopup = $ionicPopup.alert({
       title: 'oops!',
-      template: 'please add attachments '
+      template: text
 
     });
 
@@ -196,7 +196,8 @@ if ($scope.profile) {
   $scope.mobileSubmit = function() {
 
     if (!(_.isEmpty($scope.photos) && _.isEmpty($scope.doc) && _.isEmpty($scope.jir))) {
-      //photos
+      if(!( _.isEmpty($scope.jir))){
+//photos
       $scope.document.photos = [];
       $scope.photos = _.flatten($scope.photos);
       _.forEach($scope.photos, function(value) {
@@ -238,8 +239,12 @@ if ($scope.profile) {
           console.log(data.value);
         }
       });
+      }else{
+        $scope.showAlert('please add jir ');
+      }
+      
     } else {
-      $scope.showAlert();
+      $scope.showAlert('please add attachments ');
     }
   };
   $scope.showActionsheet = function(arrayName) {
