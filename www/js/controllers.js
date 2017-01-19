@@ -273,7 +273,7 @@ if ($scope.profile) {
   };
 
 
-  $scope.showConfirm = function(image) {
+  $scope.showConfirm = function(image,arrayName) {
 
     var confirmPopup = $ionicPopup.confirm({
       template: ' Are you sure you want to remove this?'
@@ -281,9 +281,21 @@ if ($scope.profile) {
     confirmPopup.then(function(res) {
       if (res) {
         console.log('You are sure');
-        _.remove($scope.pic, function(n) {
+          if (arrayName === 'photos') {
+       $scope.photos= _.remove($scope.photos, function(n) {
           return n.file === image;
         });
+            }
+      else if (arrayName === 'Document') {
+         $scope.doc=_.remove($scope.doc, function(n) {
+          return n.file === image;
+        });
+      } else {
+       $scope.jir = _.remove($scope.jir, function(n) {
+          return n.file === image;
+        });
+            }
+      
 
       } else {
         console.log('You are not sure');
