@@ -324,7 +324,7 @@ if ($scope.profile) {
 
   $scope.uploadImage = function(imageURI, arrayName) {
     console.log('imageURI', imageURI);
-    $scope.showLoading('Uploading Image...', 10000);
+    // $scope.showLoading('Uploading Image...', 10000);
     $cordovaFileTransfer.upload(adminurl + 'upload', imageURI)
       .then(function(result) {
         // Success!
