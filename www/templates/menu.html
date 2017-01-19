@@ -5,7 +5,7 @@
       </ion-nav-back-button>
 
       <ion-nav-buttons side="left">
-        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left" ng-click="getprofile();">
         </button>
       </ion-nav-buttons>
     </ion-nav-bar>
@@ -20,7 +20,7 @@
       <ion-list>
         <ion-item class="item-avatar border-primary" menu-close>
           <img src="img/photo.png" ng-if="!profile.photo">
-          <img ng-src="{{profile.photo}}" ng-if="profile.photo">
+          <img ng-src="{{profile.photo|uploadpath}}" ng-if="profile.photo">
           <h2 ng-if="profile.name">{{profile.name}}</h2>
           <p ng-if="profile.grade.name">{{profile.grade.name}}</p>
         </ion-item>

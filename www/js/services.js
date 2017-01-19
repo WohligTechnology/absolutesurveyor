@@ -23,7 +23,17 @@ angular.module('starter.services', [])
         id : id
       };
         $http({
-          url: adminurl + 'Employee/getTask',
+          url: adminurl + 'Assignment/tasklist',
+          method: 'POST',
+          withCredentials: true,
+          data: data
+        }).success(callback);
+      },
+
+    Decline: function (data,callback) {
+
+        $http({
+          url: adminurl + 'Assignment/decline',
           method: 'POST',
           withCredentials: true,
           data: data
@@ -32,7 +42,7 @@ angular.module('starter.services', [])
     mobileSubmit: function (data,callback) {
 
         $http({
-          url: adminurl + 'Employee/mobileSubmit',
+          url: adminurl + 'Assignment/mobileSubmit',
           method: 'POST',
           withCredentials: true,
           data: data

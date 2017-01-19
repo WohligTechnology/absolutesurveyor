@@ -3,13 +3,18 @@ angular.module('starter.controllers', ['ngCordova'])
 .controller('AppCtrl', function($scope, $ionicModal,$state, $timeout) {
   $scope.profile = $.jStorage.get('profile');
 
+  $scope.getprofile =function(){
+    $scope.profile = $.jStorage.get('profile');
+  };
+// $state.go($state.current, {}, { reload: true });
   $scope.logout= function(){
     $.jStorage.set('profile',null);
     $.jStorage.deleteKey('profile');
     $.jStorage.flush();
 
 if($.jStorage.get('profile')=== null){
-  $state.go('login')
+  $state.go('login');
+
 }
   };
 
@@ -58,6 +63,12 @@ if ($scope.profile) {
 
   $scope.taskfun = function () {
     MyServices.Task($scope.id, function(data) {
+      $scope.notask=false;
+      console.log(data.data.length);
+      if(data.data.length === 0){
+        $scope.notask=true;
+        console.log(data);
+      }
       if (data.value) {
         console.log(data);
         $scope.task = data.data;
@@ -88,7 +99,7 @@ if ($scope.profile) {
             itemGroupedByMonths = [];
 
           for (var i = 0; i < items.length; i++) {
-            groups[new Date(items[i].assignment.surveyDate).getMonth()].push(items[i]);
+            groups[new Date(items[i].surveyDate).getMonth()].push(items[i]);
           }
           console.log(groups);
 
@@ -109,7 +120,8 @@ if ($scope.profile) {
         console.log($scope.monthWiseGroup);
 
       } else {
-        $scope.showAlert();
+        // $scope.showAlert();
+        $scope.notask=true;
       }
     });
   }
@@ -127,11 +139,25 @@ if ($scope.profile) {
      }, 1000);
 
    };
+   $scope.decline={};
+   $scope.declinetask = function (surveyId,assignId) {
+     $scope.decline.surveyId =surveyId;
+     $scope.decline.assignId =assignId;
+     $scope.decline.empId =$scope.id;
+    //  $scope.decline.empMail =$scope.profile.mai;
+     MyServices.Decline($scope.decline, function(data) {
+       if (data.value) {
+         console.log(data);
+         $scope.doRefresh()
+       }
+     });
+   };
+
   $scope.information = function(index, parent) {
     console.log($scope.monthWiseGroup[parent].items[index], 'inside match');
-    $scope.insideData = $scope.monthWiseGroup[parent].items[index].assignment;
+    $scope.insideData = $scope.monthWiseGroup[parent].items[index];
     console.log(index, 'index');
-    $scope.insideData.surveyDate = new Date($scope.monthWiseGroup[parent].items[index].assignment.surveyDate);
+    $scope.insideData.surveyDate = new Date($scope.monthWiseGroup[parent].items[index].surveyDate);
     console.log($scope.insideData.surveyDate);
     $scope.infos = $ionicPopup.show({
       templateUrl: 'templates/modal/info.html',

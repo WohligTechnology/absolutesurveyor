@@ -9943,3 +9943,9 @@ body {
 .decline {
   background: #263b97;
   color: white; }
+
+.notask {
+  padding: 40px 10px;
+  font-size: 20px;
+  color: #263b97;
+  font-weight: 600; }
