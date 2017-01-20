@@ -61,13 +61,13 @@ if ($scope.profile) {
 
 .controller('TaskCtrl', function($scope, $ionicPopup,$state, MyServices,$timeout,$ionicLoading) {
 
-  $scope.profile = {};
-  $scope.id = {};
 
-  $scope.profile = $.jStorage.get('profile');
-  $scope.id = $scope.profile._id;
   $scope.taskfun = function () {
- 
+    $scope.profile = {};
+    $scope.id = {};
+    $scope.profile = $.jStorage.get('profile');
+    $scope.id = null;
+    $scope.id = $scope.profile._id;
     MyServices.Task($scope.id, function(data) {
       console.log($scope.id);
       $scope.notask=false;
