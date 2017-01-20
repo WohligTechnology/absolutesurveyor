@@ -42,8 +42,11 @@ if ($scope.profile) {
   $scope.formData = {};
   $scope.validEmail = /^[a-z]+[@][a-z]+[.]+[a-z]*$/;
   $scope.login = function(email) {
-    console.log("hi", email);
-    MyServices.Login(email, function(data) {
+  $.jStorage.set('profile',null);
+  $.jStorage.deleteKey('profile');
+  $.jStorage.flush();
+  console.log("hi");
+        MyServices.Login(email, function(data) {
       if (data.value) {
         $.jStorage.set('profile', data.data);
         $state.go('app.task');
@@ -63,6 +66,7 @@ if ($scope.profile) {
 
   $scope.taskfun = function () {
     MyServices.Task($scope.id, function(data) {
+      console.log($scope.id);
       $scope.notask=false;
       console.log(data.data.length);
       if(data.data.length === 0){
