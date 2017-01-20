@@ -21,6 +21,7 @@ if($.jStorage.get('profile')=== null){
 })
 
 .controller('LoginCtrl', function($scope, $ionicPopup, $state, MyServices) {
+  $scope.profile={};
 $scope.profile = $.jStorage.get('profile');
 if ($scope.profile) {
   $state.go('app.task');
@@ -60,11 +61,12 @@ if ($scope.profile) {
 
 .controller('TaskCtrl', function($scope, $ionicPopup,$state, MyServices,$timeout,$ionicLoading) {
 
-  $scope.profile = $.jStorage.get('profile');
-  $scope.id = $scope.profile._id;
-  console.log($scope.id);
+  $scope.profile = {};
+  $scope.id = {};
 
   $scope.taskfun = function () {
+      $scope.profile = $.jStorage.get('profile');
+    $scope.id = $scope.profile._id;
     MyServices.Task($scope.id, function(data) {
       console.log($scope.id);
       $scope.notask=false;
