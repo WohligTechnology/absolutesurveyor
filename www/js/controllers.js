@@ -64,9 +64,10 @@ if ($scope.profile) {
   $scope.profile = {};
   $scope.id = {};
 
+  $scope.profile = $.jStorage.get('profile');
+  $scope.id = $scope.profile._id;
   $scope.taskfun = function () {
-      $scope.profile = $.jStorage.get('profile');
-    $scope.id = $scope.profile._id;
+ 
     MyServices.Task($scope.id, function(data) {
       console.log($scope.id);
       $scope.notask=false;
