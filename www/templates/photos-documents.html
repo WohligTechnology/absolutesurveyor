@@ -26,13 +26,33 @@
     </div>
     <div class="item item-image">
       <div class="row" ng-repeat="pic in photos">
-        <div class=" col" ng-click="showConfirm(data,'photos')" ng-repeat="data in pic">
-          <img ng-src="{{data|uploadpath:100:100:'cover'}}" ng-if="data">
+        <div class=" col-33" ng-click="showConfirm(data,'photos')" ng-repeat="data in pic">
+          <div class="img-upload">
+            <img ng-src="{{data|uploadpath:100:100:'cover'}}" ng-if="data">
+          </div>
         </div>
       </div>
       <!-- <div class="row" ng-repeat="pic in photos">
         <div class="img-upload col-33" ng-click="showConfirm(data,'photos')" ng-repeat="data in pic">
           <img ng-src="{{data|uploadpath:100:100:'cover'}}" ng-if="data">
+        </div>
+
+      </div> -->
+      <!-- <div class="row">
+        <div class="col-33">
+          <div class="img-upload">
+            <img src="img/fundpic.jpg" alt="">
+          </div>
+        </div>
+        <div class="col-33">
+          <div class="img-upload">
+            <img src="img/fundpic.jpg" alt="">
+          </div>
+        </div>
+        <div class="col-33">
+          <div class="img-upload">
+            <img src="img/fundpic.jpg" alt="">
+          </div>
         </div>
 
       </div> -->
