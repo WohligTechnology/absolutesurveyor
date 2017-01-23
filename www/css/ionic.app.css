@@ -9893,7 +9893,7 @@ body {
   .mutiple-task .button-icon.icon:before {
     font-size: 20px; }
 
-.hide .popup-head {
+.remove .popup .popup-head {
   border: none;
   display: none; }
 

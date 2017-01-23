@@ -133,9 +133,11 @@ h3{
     }
 }
 
-.hide .popup-head {
-   border: none;
-   display: none;
+.remove .popup {
+  .popup-head{
+    border: none;
+    display: none
+  }
 }
 .declinepop .popup-head {
   h3

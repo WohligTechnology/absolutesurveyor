@@ -345,7 +345,7 @@ if ($scope.profile) {
 
     var confirmPopup = $ionicPopup.confirm({
       template: ' Are you sure you want to remove this?',
-      cssClass:'hide'
+      cssClass:'remove'
     });
     confirmPopup.then(function(res) {
       if (res) {
