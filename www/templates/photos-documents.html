@@ -26,11 +26,17 @@
     </div>
     <div class="item item-image">
       <div class="row" ng-repeat="pic in photos">
+        <div class=" col" ng-click="showConfirm(data,'photos')" ng-repeat="data in pic">
+          <img ng-src="{{data|uploadpath:100:100:'cover'}}" ng-if="data">
+        </div>
+      </div>
+      <!-- <div class="row" ng-repeat="pic in photos">
         <div class="img-upload col-33" ng-click="showConfirm(data,'photos')" ng-repeat="data in pic">
           <img ng-src="{{data|uploadpath:100:100:'cover'}}" ng-if="data">
         </div>
 
-      </div>
+      </div> -->
+
         </div>
   </div>
   <div class="add-button">
