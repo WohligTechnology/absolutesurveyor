@@ -9875,8 +9875,9 @@ body {
     font-size: 18px; }
 
 .img-upload {
-  height: 90px;
-  padding: 5px; }
+  height: 100px;
+  padding: 5px 3px;
+  width: 100px; }
   .img-upload img {
     height: 100%;
     width: 100%; }
