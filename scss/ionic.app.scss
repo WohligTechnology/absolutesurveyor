@@ -133,9 +133,15 @@ h3{
     }
 }
 
-.popup-head {
+.hide .popup-head {
    border: none;
    display: none;
+}
+.declinepop .popup-head {
+  h3
+  {
+    color: $positive;
+  }
 }
 
 .close{
@@ -215,4 +221,8 @@ height: 50px;
 }
 .popup{
   width: 90%!important;
+}
+.decline-input{
+  height: 75px;
+  padding: 10px;
 }

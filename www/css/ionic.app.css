@@ -9893,9 +9893,12 @@ body {
   .mutiple-task .button-icon.icon:before {
     font-size: 20px; }
 
-.popup-head {
+.hide .popup-head {
   border: none;
   display: none; }
+
+.declinepop .popup-head h3 {
+  color: #263b97; }
 
 .close {
   position: absolute;
@@ -9967,3 +9970,7 @@ body {
 
 .popup {
   width: 90% !important; }
+
+.decline-input {
+  height: 75px;
+  padding: 10px; }

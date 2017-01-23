@@ -162,11 +162,13 @@ if ($scope.profile) {
     });
   };
    $scope.decline={};
-   $scope.declinetask = function (surveyId,assignId) {
+   $scope.declinetask = function (surveyId,assignId,message) {
       $scope.show();
      $scope.decline.surveyId =surveyId;
      $scope.decline.assignId =assignId;
      $scope.decline.empId =$scope.id;
+     $scope.decline.message=message;
+     console.log($scope.decline);
     //  $scope.decline.empMail =$scope.profile.mai;
      MyServices.Decline($scope.decline, function(data) {
        if (data.value) {
@@ -193,7 +195,42 @@ if ($scope.profile) {
     $scope.infos.close();
   }
 
+  $scope.showPopup = function(surveyId,assignId) {
+    $scope.data = {};
 
+    // An elaborate, custom popup
+    var myPopup = $ionicPopup.show({
+      template: '<textarea placeholder="Reason" ng-model="data.message" class="decline-input"></textarea>',
+      title: 'Please submit the reason for decline the task',
+      cssClass :'declinepop',
+      // subTitle: 'Please use normal things',
+      scope: $scope,
+      buttons: [
+        { text: 'Cancel' },
+        {
+          text: '<b>Submit</b>',
+          type: 'button-positive',
+          onTap: function(e) {
+            if (!$scope.data.message) {
+              //don't allow the user to close unless he enters wifi password
+              e.preventDefault();
+            } else {
+              $scope.declinetask(surveyId,assignId,$scope.data.message);
+
+            }
+          }
+        }
+      ]
+    });
+
+    myPopup.then(function(res) {
+      console.log('Tapped!', res);
+    });
+
+    // $timeout(function() {
+    //    myPopup.close(); //close the popup after 3 seconds for some reason
+    // }, 10000);
+   };
   $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
     $scope.task = [];
     console.log("GOOD");
@@ -238,7 +275,6 @@ if ($scope.profile) {
           "file": value
         });
       });
-      console.log($scope.document.photos);
       //doc
       $scope.document.doc = [];
       $scope.doc = _.flatten($scope.doc);
@@ -247,7 +283,6 @@ if ($scope.profile) {
           "file": value
         });
       });
-      console.log($scope.document.doc);
       //jir
       $scope.document.jir = [];
       $scope.jir = _.flatten($scope.jir);
@@ -257,8 +292,6 @@ if ($scope.profile) {
           "file": value
         });
       });
-      console.log($scope.document.jir);
-      console.log($scope.document);
 
 
       MyServices.mobileSubmit($scope.document, function(data) {
@@ -311,7 +344,8 @@ if ($scope.profile) {
   $scope.showConfirm = function(image,arrayName) {
 
     var confirmPopup = $ionicPopup.confirm({
-      template: ' Are you sure you want to remove this?'
+      template: ' Are you sure you want to remove this?',
+      cssClass:'hide'
     });
     confirmPopup.then(function(res) {
       if (res) {
@@ -321,7 +355,7 @@ if ($scope.profile) {
             _.remove($scope.photos, function(n) {
               return n === image;
             });
-            $scope.photos = _.chunk($scope.photos, 4);
+            $scope.photos = _.chunk($scope.photos, 3);
         console.log($scope.photos);
             }
       else if (arrayName === 'Document') {
@@ -329,7 +363,7 @@ if ($scope.profile) {
          _.remove($scope.doc, function(n) {
           return n === image;
         });
-        $scope.doc = _.chunk($scope.doc, 4);
+        $scope.doc = _.chunk($scope.doc, 3);
         console.log($scope.doc);
 
       } else {
@@ -337,7 +371,7 @@ if ($scope.profile) {
        _.remove($scope.jir, function(n) {
           return n === image;
         });
-        $scope.jir = _.chunk($scope.jir, 4);
+        $scope.jir = _.chunk($scope.jir, 3);
         console.log($scope.jir);
 
             }
@@ -393,22 +427,19 @@ if ($scope.profile) {
         if (arrayName === 'photos') {
           $scope.photos = _.flatten($scope.photos);
           $scope.photos = $scope.photos.concat(result.response.data[0]);
-          $scope.photos = _.chunk($scope.photos, 4);
-          console.log($scope.photos);
+          $scope.photos = _.chunk($scope.photos, 3);
 
 
         } else if (arrayName === 'Document') {
           $scope.doc = _.flatten($scope.doc);
           $scope.doc = $scope.doc.concat(result.response.data[0]);
-          $scope.doc = _.chunk($scope.doc, 4);
-          console.log($scope.doc);
+          $scope.doc = _.chunk($scope.doc, 3);
 
 
         } else {
           $scope.jir = _.flatten($scope.jir);
           $scope.jir = $scope.jir.concat(result.response.data[0]);
-          $scope.jir = _.chunk($scope.jir, 4);
-          console.log($scope.jir);
+          $scope.jir = _.chunk($scope.jir, 3);
 
 
         }
@@ -439,9 +470,7 @@ if ($scope.profile) {
         _.forEach(results, function(value) {
           $scope.uploadImage(value, arrayName);
         });
-        console.log($scope.photos);
-        // $scope.photos= $scope.photos.concat(results);
-        $scope.photos = _.chunk($scope.photos, 4);
+        $scope.photos = _.chunk($scope.photos, 3);
 
       } else if (arrayName === 'Document') {
         $scope.doc = _.flatten($scope.doc);
@@ -449,14 +478,16 @@ if ($scope.profile) {
         _.forEach(results, function(value) {
           $scope.uploadImage(value, arrayName);
         });
-        console.log($scope.doc);
-        // $scope.doc= $scope.doc.concat(results);
-        $scope.doc = _.chunk($scope.doc, 4);
+        $scope.doc = _.chunk($scope.doc, 3);
 
       } else {
+        $scope.jir = _.flatten($scope.jir);
+
         _.forEach(results, function(value) {
           $scope.uploadImage(value, arrayName);
         });
+        $scope.jir = _.chunk($scope.jir, 3);
+
       }
 
     }, function(error) {
