@@ -24,16 +24,16 @@
 </label> -->
 <label class="item item-input ">
         <span class="input-label ">Start time</span>
-        <input type="time" name="timeInput2" ng-model="newUser.startTime" min="00:00:00" max="23:00:00" step="30" required />
+        <input type="time" name="timeInput2" ng-model="newUser.startTime" min="00:00:00" max="23:59:59" step="1" required />
 
       </label>
       <label class="item item-input ">
         <span class="input-label ">End time</span>
         <!-- {{newUser.startTime | date : "HH:mm:ss"}} -->
-         <input type="time" name="timeInput3" ng-model="newUser.endTime" min="{{newUser.startTime | date:'HH:mm:ss'}}" max="20:00:00" step="30" required />
+         <input type="time" name="timeInput3" ng-model="newUser.endTime" min="{{newUser.startTime | date:'HH:mm:ss'}}" max="23:59:59" step="1" required />
         <!-- {{myForm.timeInput3.$valid}} -->
       </label>
-      <p ng-if="!myForm.timeInput3.$valid">Please enter corrrect time</p>
+      <!-- <p ng-if="!myForm.timeInput3.$valid">Please enter corrrect time</p> -->
 
        </label>
        <label class="item item-input ">
