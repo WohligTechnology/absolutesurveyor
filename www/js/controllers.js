@@ -46,7 +46,6 @@ if ($scope.profile) {
   $.jStorage.set('profile',null);
   $.jStorage.deleteKey('profile');
   $.jStorage.flush();
-  console.log("hi");
         MyServices.Login(email, function(data) {
       if (data.value) {
         $.jStorage.set('profile', data.data);
@@ -241,7 +240,7 @@ if ($scope.profile) {
 
 })
 
-.controller('PhotosDocumentsCtrl', function($scope, $cordovaCamera, $ionicActionSheet, $cordovaFileTransfer, $state,$stateParams, $ionicPopup, $rootScope, MyServices, $cordovaImagePicker) {
+.controller('PhotosDocumentsCtrl', function($scope, $cordovaCamera, $ionicModal,$ionicPopup,$ionicActionSheet, $cordovaFileTransfer, $state,$stateParams, $ionicPopup, $rootScope, MyServices, $cordovaImagePicker) {
   $scope.photos = [];
   $scope.doc = [];
   $scope.jir = [];
@@ -254,7 +253,6 @@ if ($scope.profile) {
   $scope.document.surveyId = $stateParams.surveyId;
   $scope.showAlert = function(text) {
     var alertPopup = $ionicPopup.alert({
-      title: 'oops!',
       template: text
 
     });
@@ -263,7 +261,10 @@ if ($scope.profile) {
       // $state.go('app.task');
     });
   };
-  $scope.mobileSubmit = function() {
+  $scope.newUser={};
+  $scope.newUser.surveyDate=new Date();
+  $scope.surveyOpen = function() {
+
 
     if (!(_.isEmpty($scope.photos) && _.isEmpty($scope.doc) && _.isEmpty($scope.jir))) {
       if(!( _.isEmpty($scope.jir))){
@@ -293,15 +294,11 @@ if ($scope.profile) {
         });
       });
 
-
-      MyServices.mobileSubmit($scope.document, function(data) {
-        if (data.value) {
-          console.log(data);
-          $state.go('app.task');
-        } else {
-          console.log(data.value);
-        }
+      $scope.survey = $ionicPopup.show({
+        templateUrl: 'templates/modal/survey-form.html',
+        scope: $scope,
       });
+
       }else{
         $scope.showAlert('Please add JIR ');
       }
@@ -401,14 +398,19 @@ if ($scope.profile) {
       console.log(arrayName);
 
       if (arrayName === 'photos') {
-
+        $scope.photos = _.flatten($scope.photos);
         $scope.uploadImage($scope.imageSrc, arrayName);
+        $scope.photos = _.chunk($scope.photos, 3);
       } else if (arrayName === 'Document') {
+        $scope.doc = _.flatten($scope.doc);
         $scope.uploadImage($scope.imageSrc, arrayName);
+        $scope.doc = _.chunk($scope.doc, 3);
       } else {
+        $scope.jir = _.flatten($scope.jir);
         $scope.uploadImage($scope.imageSrc, arrayName);
+        $scope.jir = _.chunk($scope.jir, 3);
       }
-    }, function(err) {          $scope.photos = _.flatten($scope.photos);
+    }, function(err) {
 
       console.log(err);
     });
@@ -440,8 +442,6 @@ if ($scope.profile) {
           $scope.jir = _.flatten($scope.jir);
           $scope.jir = $scope.jir.concat(result.response.data[0]);
           $scope.jir = _.chunk($scope.jir, 3);
-
-
         }
 
       }, function(err) {
@@ -494,6 +494,33 @@ if ($scope.profile) {
       console.log('Error: ' + JSON.stringify(error)); // In case of error
     });
   };
+  $ionicModal.fromTemplateUrl('templates/modal/survey-form.html', {
+  scope: $scope
+}).then(function(modal) {
+  $scope.modal = modal;
+});
+$scope.surveyform={};
+
+$scope.mobileSubmit = function(newuser) {
+  $scope.surveyform = newuser;
+  $scope.document.surveyDate = $scope.surveyform.surveyDate;
+  $scope.document.startTime=$scope.surveyform.startTime;
+  $scope.document.endTime=$scope.surveyform.endTime;
+  $scope.document.address=$scope.surveyform.address;
+  console.log($scope.document);
+  MyServices.mobileSubmit($scope.document, function(data) {
+    if (data.value) {
+      console.log(data);
+      $scope.surveyClose();
+      $state.go('app.task');
+    } else {
+      console.log(data.value);
+    }
+  });
+}
+$scope.surveyClose = function() {
+  $scope.survey.close();
+}
 
 })
 

@@ -1,0 +1,46 @@
+<!-- <ion-view> -->
+   <ion-header-bar class="bar bar-header bar-positive">
+     <h1 class="title">SURVEY FORM</h1>
+     <button class="button button-clear button-primary cancel" ng-click="surveyClose()">Cancel</button>
+   </ion-header-bar>
+   <!-- <ion-content class="padding"> -->
+     <form class="list" ng-submit="mobileSubmit(newUser)">
+
+       <label class="item item-input ">
+         <span class="input-label ">Date of Survey</span>
+         <input ng-model="newUser.surveyDate" type="date" class="onlyread" readonly>
+       </label>
+       <!-- <label class="item item-input ">
+         <span class="input-label ">Start time</span>
+         <input type="time" name="timeInput2" ng-model="newUser.startTime" step="30" required />
+
+       </label>
+       <label class="item item-input ">
+         <span class="input-label ">End time</span>
+         {{newUser.startTime | date : "HH:mm:ss"}}
+          <input type="time" name="timeInput3" ng-model="newUser.endTime" min="{{newUser.startTime | date : 'HH:mm:ss'}}" max="20:00:00"  required />
+  {{myForm.timeInput3.$valid}}
+
+</label> -->
+<label class="item item-input ">
+        <span class="input-label ">Start time</span>
+        <input type="time" name="timeInput2" ng-model="newUser.startTime" min="00:00:00" max="23:00:00" step="30" required />
+
+      </label>
+      <label class="item item-input ">
+        <span class="input-label ">End time</span>
+        <!-- {{newUser.startTime | date : "HH:mm:ss"}} -->
+         <input type="time" name="timeInput3" ng-model="newUser.endTime" min="{{newUser.startTime | date:'HH:mm:ss'}}" max="20:00:00" step="30" required />
+        <!-- {{myForm.timeInput3.$valid}} -->
+      </label>
+      <p ng-if="!myForm.timeInput3.$valid">Please enter corrrect time</p>
+
+       </label>
+       <label class="item item-input ">
+         <span class="input-label ">Address</span>
+         <textarea placeholder="Address" ng-model="newUser.address" class="" required></textarea>
+       </label>
+       <button class="button button-full button-positive" type="Submit">Submit</button>
+     </form>
+   <!-- </ion-content> -->
+ <!-- </ion-view> -->

@@ -1,6 +1,7 @@
-// var adminurl = "http://192.168.0.104:1337/"; //local
+var adminurl = "http://192.168.0.137:80/api/"; //local
 
-var adminurl = "http://104.155.238.145:80/api/"; //server
+// var adminurl = "http://104.155.238.145:80/api/"; //server
+
 // var imgpath = adminurl + "uploadfile/getupload?file=";
 var imgurl = adminurl + "upload/";
 var imgpath = imgurl + "readFile?file=";
