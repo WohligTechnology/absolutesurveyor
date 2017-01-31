@@ -110,10 +110,14 @@ h3{
   height: 100px;
   padding:  5px 3px;
   width: 100px;
-  img{
-    height: 100%;
-    width: 100%;
-  }
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  // img{
+  //   height: 100%;
+  //   width: 100%;
+  //
+  // }
 }
 
 .mutiple-task{

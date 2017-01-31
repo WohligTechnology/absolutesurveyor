@@ -27,8 +27,8 @@
     <div class="item item-image">
       <div class="row" ng-repeat="pic in photos">
         <div class=" col-33" ng-click="showConfirm(data,'photos')" ng-repeat="data in pic">
-          <div class="img-upload">
-            <img ng-src="{{data|uploadpath:100:100:'cover'}}" ng-if="data">
+          <div class="img-upload" ng-if="data" ng-style="{'background-image':'url({{data|uploadpath:100:100:'cover'}})'}">
+            <!-- <img ng-src="{{data|uploadpath:100:100:'cover'}}" ng-if="data"> -->
           </div>
         </div>
       </div>
@@ -70,8 +70,10 @@
   <div class="item item-image">
       <div class="row" ng-repeat="pic in doc">
         <div class="img-upload col-33" ng-click="showConfirm(data,'Document')" ng-repeat="data in pic">
-          <img ng-src="{{data|uploadpath:100:100:'cover'}}" ng-if="data">
-        </div>
+          <div class="img-upload" ng-if="data" ng-style="{'background-image':'url({{data|uploadpath:100:100:'cover'}})'}">
+            <!-- <img ng-src="{{data|uploadpath:100:100:'cover'}}" ng-if="data"> -->
+          </div>
+                </div>
 
       </div>
       </div>
@@ -88,8 +90,10 @@
   <p ng-if="!photos">no documents</p>
   <div class="row" ng-repeat="pic in jir">
     <div class="img-upload col-33" ng-click="showConfirm(data,'JIR')" ng-repeat="data in pic">
-      <img ng-src="{{data|uploadpath:100:100:'cover'}}" ng-if="data">
-    </div>
+      <div class="img-upload" ng-if="data" ng-style="{'background-image':'url({{data|uploadpath:100:100:'cover'}})'}">
+        <!-- <img ng-src="{{data|uploadpath:100:100:'cover'}}" ng-if="data"> -->
+      </div>
+        </div>
 
   </div>
 
