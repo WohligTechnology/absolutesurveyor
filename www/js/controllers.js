@@ -240,7 +240,7 @@ if ($scope.profile) {
 
 })
 
-.controller('PhotosDocumentsCtrl', function($scope, $cordovaCamera, $ionicModal,$ionicPopup,$ionicActionSheet, $cordovaFileTransfer, $state,$stateParams, $ionicPopup, $rootScope, MyServices, $cordovaImagePicker) {
+.controller('PhotosDocumentsCtrl', function($scope, $cordovaCamera,$ionicLoading, $ionicModal,$ionicPopup,$ionicActionSheet, $cordovaFileTransfer, $state,$stateParams, $ionicPopup, $rootScope, MyServices, $cordovaImagePicker) {
   $scope.photos = [];
   $scope.doc = [];
   $scope.jir = [];
@@ -500,7 +500,15 @@ if ($scope.profile) {
   $scope.modal = modal;
 });
 $scope.surveyform={};
-
+$scope.showLoading = function (value, time) {
+  $ionicLoading.show({
+    template: value,
+    duration: time
+  });
+};
+$scope.hideLoading = function () {
+  $ionicLoading.hide();
+};
 $scope.mobileSubmit = function(newuser) {
   $scope.surveyform = newuser;
   $scope.document.surveyDate = $scope.surveyform.surveyDate;
@@ -508,13 +516,18 @@ $scope.mobileSubmit = function(newuser) {
   $scope.document.endTime=$scope.surveyform.endTime;
   $scope.document.address=$scope.surveyform.address;
   console.log($scope.document);
+  $scope.showLoading('Please wait...', 15000);
+
   MyServices.mobileSubmit($scope.document, function(data) {
+
     if (data.value) {
+      $scope.hideLoading();
       console.log(data);
       $scope.surveyClose();
       $state.go('app.task');
     } else {
       console.log(data.value);
+      $scope.hideLoading();
     }
   });
 }
