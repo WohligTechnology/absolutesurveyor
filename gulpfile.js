@@ -6,14 +6,17 @@ var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
+var create = require('gulp-cordova-create');
+var plugin = require('gulp-cordova-plugin');
+var android = require('gulp-cordova-build-android');
 
 var paths = {
-  sass: ['./scss/*.scss']
+  sass: ['./scss/**/*.scss']
 };
 
 gulp.task('default', ['sass']);
 
-gulp.task('sass', function(done) {
+gulp.task('sass', function (done) {
   gulp.src('./scss/ionic.app.scss')
     .pipe(sass())
     .on('error', sass.logError)
@@ -21,36 +24,37 @@ gulp.task('sass', function(done) {
     .pipe(minifyCss({
       keepSpecialComments: 0
     }))
-    .pipe(rename({ extname: '.min.css' }))
+    .pipe(rename({
+      extname: '.min.css'
+    }))
     .pipe(gulp.dest('./www/css/'))
     .on('end', done);
 });
-var build = require('gulp-build');
 
-var options = {
-  helpers: [{
-    name: 'addition',
-    fn: function(a, b) { return a + b; }
-  }]
-};
-
-gulp.task('build', function() {
-  gulp.src('pages/*.html')
-      .pipe(build({ title: 'Some page' }, options))
-      .pipe(gulp.dest('dist'))
-});
-gulp.task('watch', function() {
+gulp.task('watch', function () {
   gulp.watch(paths.sass, ['sass']);
 });
-
-gulp.task('install', ['git-check'], function() {
+gulp.task('install', ['git-check'], function () {
   return bower.commands.install()
-    .on('log', function(data) {
+    .on('log', function (data) {
       gutil.log('bower', gutil.colors.cyan(data.id), data.message);
     });
 });
 
-gulp.task('git-check', function(done) {
+gulp.task('build', function () {
+  return gulp.src('dist')
+    .pipe(create())
+    .pipe(android({
+      release: true,
+      storeFile: 'wohlig.keystore',
+      keyAlias: 'wohlig'
+    }))
+    .pipe(gulp.dest('apk'));
+});
+// ~/Library/Android/sdk/build-tools/23.0.1/zipalign -v 4 platforms/android/build/outputs/apk/android-release.apk app-publish.apk
+// ~/Library/Android/sdk/build-tools/23.0.1/zipalign -v 4 apk/android-release.apk app-publish.apk
+
+gulp.task('git-check', function (done) {
   if (!sh.which('git')) {
     console.log(
       '  ' + gutil.colors.red('Git is not installed.'),
