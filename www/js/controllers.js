@@ -20,7 +20,7 @@ if($.jStorage.get('profile')=== null){
 
 })
 
-.controller('LoginCtrl', function($scope, $ionicPopup, $state, MyServices) {
+.controller('LoginCtrl', function($scope, $ionicPopup, $state, MyServices,$ionicLoading) {
   $scope.profile={};
 $scope.profile = $.jStorage.get('profile');
 if ($scope.profile) {
@@ -43,19 +43,30 @@ if ($scope.profile) {
   $scope.formData = {};
   $scope.validEmail = /^[a-z]+[@][a-z]+[.]+[a-z]*$/;
   $scope.login = function(email) {
+    $scope.showLoading('Please wait...', 10000);
   $.jStorage.set('profile',null);
   $.jStorage.deleteKey('profile');
   $.jStorage.flush();
         MyServices.Login(email, function(data) {
       if (data.value) {
+          $scope.hideLoading();
         $.jStorage.set('profile', data.data);
         $state.go('app.task');
       } else {
+          $scope.hideLoading();
         $scope.showAlert();
       }
     });
   }
-
+  $scope.showLoading = function (value, time) {
+    $ionicLoading.show({
+      template: value,
+      duration: time
+    });
+  };
+  $scope.hideLoading = function () {
+    $ionicLoading.hide();
+  };
 })
 
 .controller('TaskCtrl', function($scope, $ionicPopup,$state, MyServices,$timeout,$ionicLoading) {
