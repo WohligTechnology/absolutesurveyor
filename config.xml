@@ -76,10 +76,6 @@
     <splash src="resources/android/splash/drawable-port-xxhdpi-screen.png" density="port-xxhdpi"/>
     <splash src="resources/android/splash/drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
   </platform>
-<<<<<<< HEAD
   <icon src="resources\android\icon\drawable-xhdpi-icon.png"/>
 </widget>
-=======
-  <icon src="resources/android/icon/drawable-xhdpi-icon.png"/>
-</widget>
->>>>>>> 1efe65c30699c10fac9e9edeba669929b85e5410
+
