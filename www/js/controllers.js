@@ -255,6 +255,9 @@ if ($scope.profile) {
   $scope.photos = [];
   $scope.doc = [];
   $scope.jir = [];
+  $scope.photos1 = [];
+  $scope.doc1 = [];
+  $scope.jir1 = [];
   $scope.document = {};
   $scope.profile = $.jStorage.get('profile');
   console.log($scope.profile);
@@ -281,25 +284,25 @@ if ($scope.profile) {
       if(!( _.isEmpty($scope.jir))){
     //photos
       $scope.document.photos = [];
-      $scope.photos = _.flatten($scope.photos);
-      _.forEach($scope.photos, function(value) {
+      $scope.photos1 = _.flatten($scope.photos);
+      _.forEach($scope.photos1, function(value) {
         $scope.document.photos.push({
           "file": value
         });
       });
       //doc
       $scope.document.doc = [];
-      $scope.doc = _.flatten($scope.doc);
-      _.forEach($scope.doc, function(value) {
+      $scope.doc1 = _.flatten($scope.doc);
+      _.forEach($scope.doc1, function(value) {
         $scope.document.doc.push({
           "file": value
         });
       });
       //jir
       $scope.document.jir = [];
-      $scope.jir = _.flatten($scope.jir);
+      $scope.jir1 = _.flatten($scope.jir);
 
-      _.forEach($scope.jir, function(value) {
+      _.forEach($scope.jir1, function(value) {
         $scope.document.jir.push({
           "file": value
         });
