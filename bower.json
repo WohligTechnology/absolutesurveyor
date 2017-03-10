@@ -8,6 +8,7 @@
   "dependencies": {
     "ngCordova": "^0.1.27-alpha",
     "jquery": "^3.1.1",
-    "jStorage": "^0.4.12"
+    "jStorage": "^0.4.12",
+    "async": "^2.1.5"
   }
 }

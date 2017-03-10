@@ -2,35 +2,52 @@
   <ion-content>
     <ion-refresher on-refresh="doRefresh()">
 
-         </ion-refresher>
-         <p class="text-center notask" ng-if="notask">There is no task for you</p>
+    </ion-refresher>
+    <p class="text-center notask" ng-if="notask">There is no task for you</p>
 
-    <ion-list  class="tasks" show-delete="false" can-swipe="true">
+    <ion-list class="tasks" show-delete="false" can-swipe="true">
       <div class="" ng-repeat="monthlyGroup in monthWiseGroup" ng-init="parentIndex = $index">
-      <div class="item item-divider" >
-        {{monthlyGroup.month}}
-      </div>
-         <div class="mutiple-task" ng-repeat="item in monthlyGroup.items">
-      <ion-item class="item-calendar"  >
-        <div class="" ui-sref="app.photos-documents({assignId:item._id,surveyId:item.survey._id})">
-          <div class="calendar">
-            <div class="month">{{item.surveyDate| date:'MMM'}}</div>
-            <div class="date">{{item.surveyDate| date:'dd'}}</div>
-          </div>
-          <div class="mr-no">{{item.name}}</div>
+        <div class="item item-divider">
+          {{monthlyGroup.month}}
         </div>
+        <div class="mutiple-task" ng-repeat="item in monthlyGroup.items">
+          {{item.status}}
+          <ion-item class="item-calendar" ng-if="!item.status">
+            <div class="" ui-sref="app.photos-documents({assignId:item._id,surveyId:item.survey._id})">
+              <div class="calendar">
+                <div class="month">{{item.surveyDate| date:'MMM'}}</div>
+                <div class="date">{{item.surveyDate| date:'dd'}}</div>
+              </div>
+              <div class="mr-no">{{item.name}}</div>
+            </div>
 
-        <ion-option-button class="button decline" ng-click="showPopup(item.survey._id,item._id)">Decline</ion-option-button>
-        <!-- <ion-option-button class="button decline" ng-click="declinetask(item.survey._id,item._id)">Decline</ion-option-button> -->
-        <div class="">
-          <a class="button button-icon icon ion-ios-information info" ng-click="information($index,parentIndex);"></a>
+            <ion-option-button class="button decline" ng-click="showPopup(item.survey._id,item._id)">Decline</ion-option-button>
+            <!-- <ion-option-button class="button decline" ng-click="declinetask(item.survey._id,item._id)">Decline</ion-option-button> -->
+            <div class="">
+              <a class="button button-icon icon ion-ios-information info" ng-click="information($index,parentIndex);"></a>
+            </div>
+
+          </ion-item>
+          <ion-item class="item-calendar disabled-color" ng-if="item.status">
+            <div class="">
+              <div class="calendar">
+                <div class="month">{{item.surveyDate| date:'MMM'}}</div>
+                <div class="date">{{item.surveyDate| date:'dd'}}</div>
+              </div>
+              <div class="mr-no">{{item.name}}</div>
+            </div>
+
+            <ion-option-button class="button decline" ng-click="showPopup(item.survey._id,item._id)">Decline</ion-option-button>
+            <!-- <ion-option-button class="button decline" ng-click="declinetask(item.survey._id,item._id)">Decline</ion-option-button> -->
+            <div class="">
+              <a class="button button-icon icon ion-ios-information info" ng-click="information($index,parentIndex);"></a>
+            </div>
+
+          </ion-item>
         </div>
-
-      </ion-item>
       </div>
-    </div>
     </ion-list>
-        <!-- <ion-list  class="tasks" show-delete="false" can-swipe="true">
+    <!-- <ion-list  class="tasks" show-delete="false" can-swipe="true">
       <div class="item item-divider">
         September, 2016
       </div>
@@ -57,7 +74,7 @@
       <a class="button button-icon icon ion-ios-information info" ng-click="information();"></a>
       </div>
     </ion-list> -->
-        <!-- <ion-list class="tasks" show-delete="false" can-swipe="true">
+    <!-- <ion-list class="tasks" show-delete="false" can-swipe="true">
       <div class="item item-divider">
         October, 2016
       </div>

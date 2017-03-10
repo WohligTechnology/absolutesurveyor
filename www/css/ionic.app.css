@@ -9877,10 +9877,10 @@ body {
 .img-upload {
   height: 100px;
   padding: 5px 3px;
-  width: 100px; }
-  .img-upload img {
-    height: 100%;
-    width: 100%; }
+  width: 100px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat; }
 
 .mutiple-task {
   position: relative; }
@@ -9981,3 +9981,6 @@ body {
 
 .onlyread {
   background-color: white !important; }
+
+.disabled-color .item-content {
+  background: rgba(0, 0, 0, 0.12); }

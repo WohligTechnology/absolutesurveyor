@@ -18,7 +18,7 @@
     </ion-header-bar> -->
     <ion-content>
       <ion-list>
-        <ion-item class="item-avatar border-primary" menu-close>
+        <ion-item class="item-avatar " menu-close>
           <img src="img/photo.png" ng-if="!profile.photo">
           <img ng-src="{{profile.photo|uploadpath}}" ng-if="profile.photo">
           <h2 ng-if="profile.name">{{profile.name}}</h2>
