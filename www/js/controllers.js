@@ -27,7 +27,6 @@ angular.module('starter.controllers', ['ngCordova'])
 
       console.log($rootScope.document);
       $state.go('app.task');
-      console.log("hi");
     }
 
     $scope.showAlert = function () {
@@ -60,7 +59,7 @@ angular.module('starter.controllers', ['ngCordova'])
           $scope.showAlert();
         }
       });
-    }
+    };
     $scope.showLoading = function (value, time) {
       $ionicLoading.show({
         template: value,
@@ -88,41 +87,44 @@ angular.module('starter.controllers', ['ngCordova'])
     console.log($scope.taskpending);
     document.addEventListener("deviceready", function () {
 
-      var type = $cordovaNetwork.getNetwork()
+      var type = $cordovaNetwork.getNetwork();
 
-      var isOnline = $cordovaNetwork.isOnline()
+      var isOnline = $cordovaNetwork.isOnline();
 
-      var isOffline = $cordovaNetwork.isOffline()
+      var isOffline = $cordovaNetwork.isOffline();
 
       $scope.taskcomplete = [];
       $scope.taskIncomplete = [];
+      var shouldUpload = true;
       // listen for Online event
       $rootScope.$on('$cordovaNetwork:online', function (event, networkState) {
         var onlineState = networkState;
-        console.log(onlineState);
-        console.log($rootScope.document);
-        async.eachSeries($rootScope.document, function (value, callback) {
-          uploadData(value, callback);
-        }, function (err, data) {
-          callback(null, data);
-        });
-
-
-        _.forEach($scope.taskcomplete, function (value) {
-          _.remove($rootScope.document, function (n) {
-            return n.assignId == value.assignId;
+        if (shouldUpload) {
+          shouldUpload = false;
+          async.eachSeries(_.cloneDeep($rootScope.document), function (value, callback) {
+            uploadData(value, function (err, data) {
+              if (err) {
+                callback(err);
+              } else {
+                $rootScope.document.shift();
+                callback(null, data);
+              }
+            });
+          }, function (err, data) {
+            shouldUpload = true;
+            callback(null, data);
+            $scope.doRefresh();
           });
-          $scope.doRefresh();
-        });
+        }
         $scope.doRefresh();
-      })
+      });
 
       // listen for Offline event
       $rootScope.$on('$cordovaNetwork:offline', function (event, networkState) {
         var offlineState = networkState;
         console.log(offlineState);
         $scope.doRefresh();
-      })
+      });
 
     }, false);
 
@@ -165,11 +167,6 @@ angular.module('starter.controllers', ['ngCordova'])
           });
         }
       }, function (err, data) {
-
-        console.log($scope.photos1);
-        console.log($scope.doc1);
-        console.log($scope.jir1);
-
         $scope.document.photos = [];
         $scope.document.doc = [];
         $scope.document.jir = [];
@@ -232,7 +229,7 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.task = {};
         console.log($scope.id);
         $scope.notask = false;
-        $rootScope.document=[];
+        $rootScope.document = [];
 
         console.log(data.data.length);
         if (data.data.length === 0) {
@@ -249,11 +246,11 @@ angular.module('starter.controllers', ['ngCordova'])
           $scope.notask = true;
         }
       });
-    }
+    };
     $scope.offtask = function (task) {
       console.log("i am in the offline man");
       $scope.task = task;
-      if ($rootScope.document.length != 0 && $scope.task.length != 0) {
+      if ($rootScope.document.length !== 0 && $scope.task.length !== 0) {
         var i = 0;
         _.each($rootScope.document, function (values) {
           var val1 = values.assignId.toString();
@@ -412,10 +409,10 @@ angular.module('starter.controllers', ['ngCordova'])
         scope: $scope,
 
       });
-    }
+    };
     $scope.closePopup = function () {
       $scope.infos.close();
-    }
+    };
 
     $scope.showPopup = function (surveyId, assignId) {
       $scope.data = {};
@@ -473,7 +470,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
   })
 
-  .controller('PhotosDocumentsCtrl', function ($scope, $cordovaCamera, $ionicLoading, $cordovaNetwork, $ionicModal, $ionicPopup, $ionicActionSheet, $cordovaFileTransfer, $state, $stateParams, $ionicPopup, $rootScope, MyServices, $cordovaImagePicker) {
+  .controller('PhotosDocumentsCtrl', function ($scope, $cordovaCamera, $ionicLoading, $cordovaNetwork, $ionicModal, $ionicActionSheet, $cordovaFileTransfer, $state, $stateParams, $ionicPopup, $rootScope, MyServices, $cordovaImagePicker) {
     //initialize all objects start-----------------------------------------------
     $scope.photos = [];
     $scope.doc = [];
@@ -510,7 +507,7 @@ angular.module('starter.controllers', ['ngCordova'])
         },
         buttonClicked: function (index) {
           console.log('BUTTON CLICKED', index);
-          if (index == 0) {
+          if (index === 0) {
             $scope.getImageSaveContact(arrayName);
           } else {
             $scope.openCamera(arrayName);
@@ -541,7 +538,7 @@ angular.module('starter.controllers', ['ngCordova'])
         },
         buttonClicked: function (index) {
           console.log('BUTTON CLICKED', index);
-          if (index == 0) {
+          if (index === 0) {
             $scope.getImageSaveContact(arrayName);
           } else {
             $scope.openCamera(arrayName);
@@ -691,7 +688,7 @@ angular.module('starter.controllers', ['ngCordova'])
     //survey popup close----------------------------------------------------------
     $scope.surveyClose = function () {
       $scope.survey.close();
-    }
+    };
 
     // alert popup for all---------------------------------------------------------
     $scope.showAlert = function (text) {
@@ -800,7 +797,7 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.msg = true;
 
       }
-    }
+    };
 
     function uploadData() {
       console.log($scope.photos);
@@ -891,7 +888,7 @@ angular.module('starter.controllers', ['ngCordova'])
     $scope.msgsubmit = function () {
       $scope.surveyClose();
       $state.go('app.task');
-    }
+    };
     //upload image----------------------------------------------------------------
     $scope.uploadImage = function (imageURI, arrayName, callback) {
       console.log('imageURI', imageURI);
