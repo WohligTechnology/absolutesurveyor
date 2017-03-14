@@ -107,17 +107,16 @@ h3{
 }
 }
 .img-upload{
-  height: 100px;
   padding:  5px 3px;
   width: 100px;
+  height: 100px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  // img{
-  //   height: 100%;
-  //   width: 100%;
-  //
-  // }
+  img{
+    height: 100%;
+    width: 100%;
+  }
 }
 
 .mutiple-task{
@@ -241,4 +240,12 @@ height: 50px;
 }
 .disabled-color  .item-content{
 background: rgba(0, 0, 0, 0.12);
+}
+.cloud{
+  display: inline-block;
+  font-size: 30px;
+  margin: 0 10px;
+}
+.dis-in{
+  display: inline-block;
 }

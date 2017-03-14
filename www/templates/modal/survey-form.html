@@ -4,7 +4,7 @@
      <button class="button button-clear button-primary cancel" ng-click="surveyClose()">Cancel</button>
    </ion-header-bar>
    <!-- <ion-content class="padding"> -->
-     <form class="list" ng-submit="mobileSubmit(newUser)">
+     <form class="list" ng-submit="mobileSubmit(newUser)" ng-if="!msg">
 
        <label class="item item-input ">
          <span class="input-label ">Date of Survey</span>
@@ -42,5 +42,9 @@
        </label>
        <button class="button button-full button-positive" type="Submit">Submit</button>
      </form>
+     <div class="msg" ng-if="msg">
+       <p class="text-center notask" >Survey has been done successfully</p>
+       <button class="button button-full button-positive" ng-click="msgsubmit()">ok</button>
+     </div>
    <!-- </ion-content> -->
  <!-- </ion-view> -->

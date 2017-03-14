@@ -2,7 +2,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
   .controller('AppCtrl', function ($scope, $rootScope, $ionicModal, $state, $timeout) {
     $scope.profile = $.jStorage.get('profile');
-    // $rootScope.document=[];
+    // $rootScope.document = [];
     $scope.getprofile = function () {
       $scope.profile = $.jStorage.get('profile');
     };
@@ -24,7 +24,7 @@ angular.module('starter.controllers', ['ngCordova'])
     $scope.profile = {};
     $scope.profile = $.jStorage.get('profile');
     if ($scope.profile) {
-      $rootScope.document = [];
+
       console.log($rootScope.document);
       $state.go('app.task');
       console.log("hi");
@@ -52,6 +52,7 @@ angular.module('starter.controllers', ['ngCordova'])
       MyServices.Login(email, function (data) {
         if (data.value) {
           $scope.hideLoading();
+          $rootScope.document = [];
           $.jStorage.set('profile', data.data);
           $state.go('app.task');
         } else {
@@ -73,6 +74,13 @@ angular.module('starter.controllers', ['ngCordova'])
 
   .controller('TaskCtrl', function ($scope, $ionicPopup, $state, $rootScope, $cordovaFileTransfer, $cordovaNetwork, MyServices, $timeout, $ionicLoading) {
     $scope.task = {};
+    $rootScope.task = {};
+    $scope.photos = [];
+    $scope.doc = [];
+    $scope.jir = [];
+    $scope.photos1 = [];
+    $scope.doc1 = [];
+    $scope.jir1 = [];
 
 
     console.log($rootScope.document);
@@ -93,96 +101,44 @@ angular.module('starter.controllers', ['ngCordova'])
         var onlineState = networkState;
         console.log(onlineState);
         console.log($rootScope.document);
-        $scope.taskpending = $.jStorage.get('taskpending');
-        console.log($scope.taskpending);
-
-        _.forEach($rootScope.document, function (value) {
-
-          // $scope.document.photos = [];
-          //
-          // _.forEach($scope.photos, function (value) {
-          //   console.log(value);
-          //   $scope.uploadImage(value[0], 'photos');
-          // });
-          //
-
-          // $scope.document.doc = [];
-          //
-          // _.forEach($scope.doc, function (value) {
-          //   $scope.uploadImage(value[0], 'Document');
-          // });
-          //
-
-          // $scope.document.jir = [];
-          //
-          // _.forEach($scope.jir, function (value) {
-          //   $scope.uploadImage(value[0], 'JIR');
-          // });
-          //
-          // //photos
-          // $scope.document.photos = [];
-          // $scope.photos1 = _.flatten($scope.photos);
-          // _.forEach($scope.photos1, function (value) {
-          //   $scope.document.photos.push({
-          //     "file": value
-          //   });
-          // });
-          // //doc
-          // $scope.document.doc = [];
-          // $scope.doc1 = _.flatten($scope.doc);
-          // _.forEach($scope.doc1, function (value) {
-          //   $scope.document.doc.push({
-          //     "file": value
-          //   });
-          // });
-          // //jir
-          // $scope.document.jir = [];
-          // $scope.jir1 = _.flatten($scope.jir);
-          //
-          // _.forEach($scope.jir1, function (value) {
-          //   $scope.document.jir.push({
-          //     "file": value
-          //   });
-          // });
-          //
-          //
-          // MyServices.mobileSubmit($scope.document, function (data) {
-          //
-          //   if (data.value) {
-          //     console.log(data);
-          //     $scope.doRefresh();
-          //     $scope.taskcomplete = $scope.document;
-          //   } else {
-          //     console.log(data.value);
-          //     $scope.taskIncomplete = $scope.document;
-          //
-          //   }
-          // });
-          uploadData(value);
+        async.eachSeries($rootScope.document, function (value, callback) {
+          uploadData(value, callback);
+        }, function (err, data) {
+          callback(null, data);
         });
-        $rootScope.document = $scope.taskIncomplete;
-        // $scope.offtask($scope.task);
 
+
+        _.forEach($scope.taskcomplete, function (value) {
+          _.remove($rootScope.document, function (n) {
+            return n.assignId == value.assignId;
+          });
+          $scope.doRefresh();
+        });
+        $scope.doRefresh();
       })
 
       // listen for Offline event
       $rootScope.$on('$cordovaNetwork:offline', function (event, networkState) {
         var offlineState = networkState;
         console.log(offlineState);
+        $scope.doRefresh();
       })
 
     }, false);
-    function uploadData(value) {
-      $scope.document=value;
-      $scope.photos=$scope.document.photos;
-      $scope.doc=$scope.document.doc;
-      $scope.jir=$scope.document.jir;
+
+    function uploadData(value, callback) {
+      $scope.document = value;
+      console.log(value);
+      console.log($scope.document);
+      $scope.photos = $scope.document.photos;
+      $scope.doc = $scope.document.doc;
+      $scope.jir = $scope.document.jir;
       console.log($scope.photos);
       console.log($scope.doc);
       console.log($scope.jir);
       async.parallel({
         photos: function (callback) {
-          async.each( _.flatten($scope.photos), function (value, callback) {
+          async.each(_.flatten($scope.photos), function (value, callback) {
             console.log(value);
             $scope.uploadImage(value, 'photos', callback);
 
@@ -214,9 +170,9 @@ angular.module('starter.controllers', ['ngCordova'])
         console.log($scope.doc1);
         console.log($scope.jir1);
 
-        $scope.document.photos= [];
-        $scope.document.doc= [];
-        $scope.document.jir= [];
+        $scope.document.photos = [];
+        $scope.document.doc = [];
+        $scope.document.jir = [];
         $scope.document.photos.length = 0;
         // $scope.photos1 = _.flatten($scope.photos);
         _.forEach($scope.photos1, function (value) {
@@ -244,13 +200,24 @@ angular.module('starter.controllers', ['ngCordova'])
 
           if (data.value) {
             console.log(data);
+            $scope.taskcomplete.push($scope.document);
+            $scope.photos = [];
+            $scope.doc = [];
+            $scope.jir = [];
+            $scope.photos1 = [];
+            $scope.doc1 = [];
+            $scope.jir1 = [];
+            // _.remove($rootScope.document, function(n) {
+            //   return  n.assignId==$scope.document.assignId;
+            // });
+            callback(null, $scope.taskcomplete);
           } else {
             console.log(data.value);
+            callback(null, data);
           }
         });
+
       });
-
-
 
     }
 
@@ -265,6 +232,7 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.task = {};
         console.log($scope.id);
         $scope.notask = false;
+        $rootScope.document=[];
 
         console.log(data.data.length);
         if (data.data.length === 0) {
@@ -273,7 +241,8 @@ angular.module('starter.controllers', ['ngCordova'])
         }
         if (data.value) {
           console.log(data);
-          $scope.offtask(data.data);
+          $rootScope.task = data.data;
+          $scope.offtask($rootScope.task);
 
         } else {
           // $scope.showAlert();
@@ -284,18 +253,20 @@ angular.module('starter.controllers', ['ngCordova'])
     $scope.offtask = function (task) {
       console.log("i am in the offline man");
       $scope.task = task;
+      if ($rootScope.document.length != 0 && $scope.task.length != 0) {
+        var i = 0;
+        _.each($rootScope.document, function (values) {
+          var val1 = values.assignId.toString();
+          var val2 = $scope.task[i]._id;
+          if (val1 == val2) {
+            $scope.task[i].status = true;
+          } else {
+            $scope.task[i].status = false;
+          }
+          i++;
+        });
+      }
 
-      // var i = 0;
-      // _.each($rootScope.document, function (values) {
-      //   var val1 = values.assignId.toString();
-      //   var val2 = $scope.task[i]._id;
-      //   if (val1 == val2) {
-      //     $scope.task[i].status = true;
-      //   } else {
-      //     $scope.task[i].status = false;
-      //   }
-      //   i++;
-      // });
       var
         monthLabels = ["Jan", "Feb", "March",
           "April", "May", "June",
@@ -346,7 +317,11 @@ angular.module('starter.controllers', ['ngCordova'])
       console.log('Refreshing!');
       $timeout(function () {
         //simulate async response
-        $scope.taskfun();
+        if ($cordovaNetwork.isOnline()) {
+          $scope.taskfun();
+        } else {
+          $scope.offtask($rootScope.task);
+        }
         //Stop the ion-refresher from spinning
         $scope.$broadcast('scroll.refreshComplete');
       }, 1000);
@@ -486,6 +461,15 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.doRefresh();
       }, 300);
     });
+
+    $scope.showAlert = function (text) {
+      var alertPopup = $ionicPopup.alert({
+        template: text
+      });
+      alertPopup.then(function (res) {
+        // $state.go('app.task');
+      });
+    };
 
   })
 
@@ -721,6 +705,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
     //survey form open popup-------------------------------------------------------------------
     $scope.surveyOpen = function () {
+      $scope.msg = false;
       if (!(_.isEmpty($scope.photos) && _.isEmpty($scope.doc) && _.isEmpty($scope.jir))) {
         if (!(_.isEmpty($scope.jir))) {
           // //photos
@@ -805,15 +790,15 @@ angular.module('starter.controllers', ['ngCordova'])
       $scope.document.assignId = $stateParams.assignId;
       $scope.document.surveyId = $stateParams.surveyId;
       console.log($scope.document);
-      $scope.showLoading('Please wait...', 15000);
+      // $scope.showLoading('Please wait...', 15000);
       if ($cordovaNetwork.isOnline()) {
         uploadData();
       } else {
         $rootScope.document.push($scope.document);
-        $.jStorage.set('taskpending', $rootScope.document);
-        $scope.hideLoading();
-        $scope.surveyClose();
-        $state.go('app.task');
+        // $.jStorage.set('taskpending', $rootScope.document);
+        // $scope.hideLoading();
+        $scope.msg = true;
+
       }
     }
 
@@ -823,7 +808,7 @@ angular.module('starter.controllers', ['ngCordova'])
       console.log($scope.jir);
       async.parallel({
         photos: function (callback) {
-          async.each( _.flatten($scope.photos), function (value, callback) {
+          async.each(_.flatten($scope.photos), function (value, callback) {
             console.log(value);
             $scope.uploadImage(value, 'photos', callback);
 
@@ -854,10 +839,10 @@ angular.module('starter.controllers', ['ngCordova'])
         console.log($scope.photos1);
         console.log($scope.doc1);
         console.log($scope.jir1);
-//
-        $scope.document.photos= [];
-        $scope.document.doc= [];
-        $scope.document.jir= [];
+        //
+        $scope.document.photos = [];
+        $scope.document.doc = [];
+        $scope.document.jir = [];
         $scope.document.photos.length = 0;
 
         // $scope.photos1 = _.flatten($scope.photos);
@@ -885,13 +870,14 @@ angular.module('starter.controllers', ['ngCordova'])
         MyServices.mobileSubmit($scope.document, function (data) {
 
           if (data.value) {
-            $scope.hideLoading();
+            // $scope.hideLoading();
             console.log(data);
-            $scope.surveyClose();
-            $state.go('app.task');
+            $scope.msg = true;
+            // $scope.surveyClose();
+            // $state.go('app.task');
           } else {
             console.log(data.value);
-            $scope.hideLoading();
+            // $scope.hideLoading();
           }
         });
       });
@@ -900,14 +886,20 @@ angular.module('starter.controllers', ['ngCordova'])
 
     }
 
+    //msg----------------------------------------------------------------------00
+
+    $scope.msgsubmit = function () {
+      $scope.surveyClose();
+      $state.go('app.task');
+    }
     //upload image----------------------------------------------------------------
     $scope.uploadImage = function (imageURI, arrayName, callback) {
       console.log('imageURI', imageURI);
-      $scope.showLoading('Uploading Image...', 10000);
+      // $scope.showLoading('Uploading Image...', 10000);
       $cordovaFileTransfer.upload(adminurl + 'upload', imageURI)
         .then(function (result) {
           // Success!
-          $scope.hideLoading();
+          // $scope.hideLoading();
           result.response = JSON.parse(result.response);
           console.log(result.response.data[0]);
 
