@@ -25,7 +25,7 @@ angular.module('starter.controllers', ['ngCordova'])
     $scope.profile = $.jStorage.get('profile');
     if ($scope.profile) {
 
-      console.log($rootScope.document);
+      // console.log($rootScope.document);
       $state.go('app.task');
     }
 
@@ -51,7 +51,7 @@ angular.module('starter.controllers', ['ngCordova'])
       MyServices.Login(email, function (data) {
         if (data.value) {
           $scope.hideLoading();
-          $rootScope.document = [];
+          $rootScope.taskpending = [];
           $.jStorage.set('profile', data.data);
           $state.go('app.task');
         } else {
@@ -72,19 +72,19 @@ angular.module('starter.controllers', ['ngCordova'])
   })
 
   .controller('TaskCtrl', function ($scope, $ionicPopup, $state, $rootScope, $cordovaFileTransfer, $cordovaNetwork, MyServices, $timeout, $ionicLoading) {
-    $scope.task = {};
-    $rootScope.task = {};
-    $scope.photos = [];
-    $scope.doc = [];
-    $scope.jir = [];
+    $scope.task = [];
+    // $rootScope.task = {};
+    $scope.photos = {};
+    $scope.doc = {};
+    $scope.jir = {};
     $scope.photos1 = [];
     $scope.doc1 = [];
     $scope.jir1 = [];
 
 
-    console.log($rootScope.document);
-    $scope.taskpending = $.jStorage.get('taskpending');
-    console.log($scope.taskpending);
+    // console.log($rootScope.document);
+    // $scope.taskpending = $.jStorage.get('taskpending');
+    // console.log($scope.taskpending);
     document.addEventListener("deviceready", function () {
 
       var type = $cordovaNetwork.getNetwork();
@@ -98,29 +98,36 @@ angular.module('starter.controllers', ['ngCordova'])
       var shouldUpload = true;
       // listen for Online event
       $rootScope.$on('$cordovaNetwork:online', function (event, networkState) {
+        $rootScope.taskpending = $.jStorage.get('taskpending');
+        console.log($rootScope.taskpending);
+
         var onlineState = networkState;
         if (shouldUpload) {
           shouldUpload = false;
-          async.eachSeries(_.cloneDeep($rootScope.document), function (value, callback) {
+          async.eachSeries(_.cloneDeep($rootScope.taskpending), function (value, callback) {
             uploadData(value, function (err, data) {
               if (err) {
                 callback(err);
               } else {
-                $rootScope.document.shift();
+                $rootScope.taskpending.shift();
                 callback(null, data);
               }
             });
           }, function (err, data) {
             shouldUpload = true;
             callback(null, data);
-            $scope.doRefresh();
+            // $scope.doRefresh();
           });
         }
-        $scope.doRefresh();
+        // $scope.doRefresh();
       });
 
       // listen for Offline event
       $rootScope.$on('$cordovaNetwork:offline', function (event, networkState) {
+        $rootScope.taskpending = [];
+        $rootScope.taskpending = $.jStorage.get('taskpending');
+        console.log($rootScope.taskpending);
+
         var offlineState = networkState;
         console.log(offlineState);
         $scope.doRefresh();
@@ -132,9 +139,9 @@ angular.module('starter.controllers', ['ngCordova'])
       $scope.document = value;
       console.log(value);
       console.log($scope.document);
-      $scope.photos = $scope.document.photos;
-      $scope.doc = $scope.document.doc;
-      $scope.jir = $scope.document.jir;
+      $scope.photos = _.cloneDeep($scope.document.photos);
+      $scope.doc = _.cloneDeep($scope.document.doc);
+      $scope.jir = _.cloneDeep($scope.document.jir);
       console.log($scope.photos);
       console.log($scope.doc);
       console.log($scope.jir);
@@ -171,6 +178,7 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.document.doc = [];
         $scope.document.jir = [];
         $scope.document.photos.length = 0;
+        console.log("done");
         // $scope.photos1 = _.flatten($scope.photos);
         _.forEach($scope.photos1, function (value) {
           $scope.document.photos.push({
@@ -193,6 +201,7 @@ angular.module('starter.controllers', ['ngCordova'])
             "file": value
           });
         });
+        console.log("hry",$scope.document);
         MyServices.mobileSubmit($scope.document, function (data) {
 
           if (data.value) {
@@ -224,13 +233,11 @@ angular.module('starter.controllers', ['ngCordova'])
       $scope.profile = $.jStorage.get('profile');
       $scope.id = null;
       $scope.id = $scope.profile._id;
-      $scope.task = {};
+      // $scope.task = [];
       MyServices.Task($scope.id, function (data) {
-        $scope.task = {};
+        $scope.task = [];
         console.log($scope.id);
         $scope.notask = false;
-        $rootScope.document = [];
-
         console.log(data.data.length);
         if (data.data.length === 0) {
           $scope.notask = true;
@@ -238,8 +245,10 @@ angular.module('starter.controllers', ['ngCordova'])
         }
         if (data.value) {
           console.log(data);
-          $rootScope.task = data.data;
-          $scope.offtask($rootScope.task);
+          $.jStorage.set('task', data.data);
+          $scope.task =$.jStorage.get('task');
+          $.jStorage.set('taskpending',[]);
+          $scope.offtask();
 
         } else {
           // $scope.showAlert();
@@ -247,12 +256,14 @@ angular.module('starter.controllers', ['ngCordova'])
         }
       });
     };
-    $scope.offtask = function (task) {
+    $scope.offtask = function () {
+      $scope.task =$.jStorage.get('task');
+      $rootScope.taskpending = $.jStorage.get('taskpending');
+
       console.log("i am in the offline man");
-      $scope.task = task;
-      if ($rootScope.document.length !== 0 && $scope.task.length !== 0) {
+      if ( _.isArray($rootScope.taskpending) && _.isArray($scope.task)) {
         var i = 0;
-        _.each($rootScope.document, function (values) {
+        _.each($rootScope.taskpending, function (values) {
           var val1 = values.assignId.toString();
           var val2 = $scope.task[i]._id;
           if (val1 == val2) {
@@ -263,6 +274,7 @@ angular.module('starter.controllers', ['ngCordova'])
           i++;
         });
       }
+      $.jStorage.set('task', $scope.task);
 
       var
         monthLabels = ["Jan", "Feb", "March",
@@ -317,7 +329,7 @@ angular.module('starter.controllers', ['ngCordova'])
         if ($cordovaNetwork.isOnline()) {
           $scope.taskfun();
         } else {
-          $scope.offtask($rootScope.task);
+          $scope.offtask();
         }
         //Stop the ion-refresher from spinning
         $scope.$broadcast('scroll.refreshComplete');
@@ -399,6 +411,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
 
     $scope.information = function (index, parent) {
+
       console.log($scope.monthWiseGroup[parent].items[index], 'inside match');
       $scope.insideData = $scope.monthWiseGroup[parent].items[index];
       console.log(index, 'index');
@@ -703,6 +716,7 @@ angular.module('starter.controllers', ['ngCordova'])
     //survey form open popup-------------------------------------------------------------------
     $scope.surveyOpen = function () {
       $scope.msg = false;
+      $scope.msgSub = false;
       if (!(_.isEmpty($scope.photos) && _.isEmpty($scope.doc) && _.isEmpty($scope.jir))) {
         if (!(_.isEmpty($scope.jir))) {
           // //photos
@@ -760,6 +774,8 @@ angular.module('starter.controllers', ['ngCordova'])
     $scope.mobileSubmit = function (newuser) {
       // $scope.surveyform = newuser;
       $scope.document = newuser;
+      $scope.msgSub = true;
+
       // $scope.document.surveyDate = $scope.surveyform.surveyDate;
       // $scope.document.startTime = $scope.surveyform.startTime;
       // $scope.document.endTime = $scope.surveyform.endTime;
@@ -780,21 +796,28 @@ angular.module('starter.controllers', ['ngCordova'])
       //   );
       // });
 
-      $scope.document.photos = $scope.photos;
-      $scope.document.doc = $scope.doc;
-      $scope.document.jir = $scope.jir;
+      $scope.document.photos = {};
+      $scope.document.doc = {};
+      $scope.document.jir = {};
+      $scope.document.photos = _.clone($scope.photos);
+      $scope.document.doc = _.clone($scope.doc);
+      $scope.document.jir = _.clone($scope.jir);
       $scope.document.empId = $scope.profile._id;
       $scope.document.assignId = $stateParams.assignId;
       $scope.document.surveyId = $stateParams.surveyId;
       console.log($scope.document);
-      // $scope.showLoading('Please wait...', 15000);
+      $scope.showLoading('Please wait...', 15000);
+
       if ($cordovaNetwork.isOnline()) {
         uploadData();
       } else {
-        $rootScope.document.push($scope.document);
-        // $.jStorage.set('taskpending', $rootScope.document);
-        // $scope.hideLoading();
+
+        $rootScope.taskpending.push($scope.document);
+        $.jStorage.set('taskpending', $rootScope.taskpending);
         $scope.msg = true;
+        $scope.hideLoading();
+        $scope.msgSub = true;
+
 
       }
     };
@@ -867,14 +890,16 @@ angular.module('starter.controllers', ['ngCordova'])
         MyServices.mobileSubmit($scope.document, function (data) {
 
           if (data.value) {
-            // $scope.hideLoading();
+            $scope.hideLoading();
             console.log(data);
             $scope.msg = true;
+            $scope.msgSub = true;
+
             // $scope.surveyClose();
             // $state.go('app.task');
           } else {
             console.log(data.value);
-            // $scope.hideLoading();
+            $scope.hideLoading();
           }
         });
       });

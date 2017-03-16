@@ -40,7 +40,7 @@
          <span class="input-label ">Address</span>
          <textarea placeholder="Address" ng-model="newUser.address" class="" required></textarea>
        </label>
-       <button class="button button-full button-positive" type="Submit">Submit</button>
+       <button class="button button-full button-positive" type="Submit" ng-disabled="msgSub">Submit</button>
      </form>
      <div class="msg" ng-if="msg">
        <p class="text-center notask" >Survey has been done successfully</p>
