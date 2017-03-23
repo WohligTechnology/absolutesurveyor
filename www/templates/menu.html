@@ -17,7 +17,7 @@
       <h1 class="title">Menu</h1>
     </ion-header-bar> -->
     <ion-content>
-      <ion-list>
+      <ion-list style="border-top: 20px solid #263b97;">
         <ion-item class="item-avatar " menu-close>
           <img src="img/photo.png" ng-if="!profile.photo">
           <img ng-src="{{profile.photo|uploadpath}}" ng-if="profile.photo">
@@ -25,16 +25,14 @@
           <p ng-if="profile.grade.name">{{profile.grade.name}}</p>
         </ion-item>
         <ion-item class="item-icon-left" menu-close ui-sref="app.task">
-          <i class="icon ion-clipboard"></i>
-          Tasks
+          <i class="icon ion-clipboard"></i> Tasks
         </ion-item>
         <!-- <ion-item class="item-icon-left" menu-close ui-sref="app.survey">
           <i class="icon ion-compose"></i>
           Survey
         </ion-item> -->
         <ion-item class="item-icon-left" menu-close ng-click="logout();">
-          <i class="icon ion-log-out"></i>
-          Logout
+          <i class="icon ion-log-out"></i> Logout
         </ion-item>
       </ion-list>
     </ion-content>
