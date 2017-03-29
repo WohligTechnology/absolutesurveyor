@@ -1,4 +1,4 @@
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services',])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','ngCordova','ngCordovaOauth'])
 
 .run(function($ionicPlatform,$ionicPopup) {
   $ionicPlatform.ready(function() {
@@ -32,12 +32,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services',])
   $stateProvider
 
     .state('login', {
+      cache: false,
     url: '/login',
     templateUrl: 'templates/login.html',
     controller: 'LoginCtrl'
   })
 
   .state('app', {
+    cache: false,
     url: '/app',
     abstract: true,
     templateUrl: 'templates/menu.html',
@@ -45,6 +47,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services',])
   })
 
   .state('app.task', {
+    cache: false,
     url: '/task',
     views: {
       'menuContent': {
@@ -55,6 +58,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services',])
   })
 
   .state('app.photos-documents', {
+    cache: false,
     url: '/photos-documents/:assignId/:surveyId',
     views: {
       'menuContent': {

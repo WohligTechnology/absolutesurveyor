@@ -4,11 +4,11 @@
      <button class="button button-clear button-primary cancel" ng-click="surveyClose()">Cancel</button>
    </ion-header-bar>
    <!-- <ion-content class="padding"> -->
-     <form class="list" ng-submit="mobileSubmit(newUser)" ng-if="!msg">
+     <form class="list" ng-submit="mobileSubmit(newUser)" ng-if="!msg" name="user">
 
        <label class="item item-input ">
          <span class="input-label ">Date of Survey</span>
-         <input ng-model="newUser.surveyDate" type="date" class="onlyread" readonly>
+         <input ng-model="newUser.surveyDate" type="date" name="surveyDate" class="onlyread" readonly>
        </label>
        <!-- <label class="item item-input ">
          <span class="input-label ">Start time</span>
@@ -24,13 +24,13 @@
 </label> -->
 <label class="item item-input ">
         <span class="input-label ">Start time</span>
-        <input type="time" name="timeInput2" ng-model="newUser.startTime" min="00:00:00" max="23:59:59" step="1" required />
+        <input type="time" name="timeInput2" ng-model="newUser.startTime" name="startTime" min="00:00:00" max="23:59:59" step="1" required />
 
       </label>
       <label class="item item-input ">
         <span class="input-label ">End time</span>
         <!-- {{newUser.startTime | date : "HH:mm:ss"}} -->
-         <input type="time" name="timeInput3" ng-model="newUser.endTime" min="{{newUser.startTime | date:'HH:mm:ss'}}" max="23:59:59" step="1" required />
+         <input type="time" name="timeInput3" ng-model="newUser.endTime" name="endTime" min="{{newUser.startTime | date:'HH:mm:ss'}}" max="23:59:59" step="1" required />
         <!-- {{myForm.timeInput3.$valid}} -->
       </label>
       <!-- <p ng-if="!myForm.timeInput3.$valid">Please enter corrrect time</p> -->
@@ -38,13 +38,13 @@
        </label>
        <label class="item item-input ">
          <span class="input-label ">Address</span>
-         <textarea placeholder="Address" ng-model="newUser.address" class="" required></textarea>
+         <textarea placeholder="Address" ng-model="newUser.address" name="address" class="" required></textarea>
        </label>
-       <button class="button button-full button-positive" type="Submit" ng-disabled="msgSub">Submit</button>
+       <button class="button button-full button-positive" type="Submit" ng-disabled="user.$invalid && msgSub">Submit</button>
      </form>
      <div class="msg" ng-if="msg">
        <p class="text-center notask" >Survey has been done successfully</p>
-       <button class="button button-full button-positive" ng-click="msgsubmit()">ok</button>
+       <button class="button button-full button-positive" ng-click="msgsubmit()" >ok</button>
      </div>
    <!-- </ion-content> -->
  <!-- </ion-view> -->
