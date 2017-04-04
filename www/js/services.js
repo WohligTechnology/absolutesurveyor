@@ -1,6 +1,7 @@
 // var adminurl = "http://192.168.0.130:80/api/"; //local
 
-var adminurl = "http://104.155.232.79:80/api/"; //server
+// var adminurl = "http://104.198.28.29:80/api/"; //server
+var adminurl = "http://absolutesurveyors.com/api/"; //server
 
 // var imgpath = adminurl + "uploadfile/getupload?file=";
 var imgurl = adminurl + "upload/";
