@@ -47,12 +47,14 @@ gulp.task('build', function () {
     .pipe(android({
       release: true,
       storeFile: 'wohlig.keystore',
-      keyAlias: 'wohlig'
+      keyAlias: 'wohlig',
+      storePassword: 'chintan123',
+      keyPassword: 'chintan123'
     }))
     .pipe(gulp.dest('apk'));
 });
 // ~/Library/Android/sdk/build-tools/23.0.1/zipalign -v 4 platforms/android/build/outputs/apk/android-release.apk app-publish.apk
-// ~/Library/Android/sdk/build-tools/23.0.1/zipalign -v 4 apk/android-release.apk app-publish.apk
+// ~/Library/Android/sdk/build-tools/25.0.0/zipalign -v 4 apk/android-release.apk app-publish.apk
 
 gulp.task('git-check', function (done) {
   if (!sh.which('git')) {
