@@ -49,7 +49,7 @@ gulp.task('build', function () {
       storeFile: 'wohlig.keystore',
       keyAlias: 'wohlig',
       storePassword: 'chintan123',
-      keyPassword: 'chintan123'
+      keyPassword: 'chintan123',
     }))
     .pipe(gulp.dest('apk'));
 });
