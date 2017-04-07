@@ -54,7 +54,8 @@ body {
 
 .item-calendar {
     .item-content {
-        padding-left: 65px;
+        // padding-left: 65px;
+        padding: 0;
         height: 60px;
     }
     .date {
@@ -65,6 +66,10 @@ body {
         background-color: $positive;
         color: #fff;
         font-size: 10px;
+    }
+    .mr-no{
+        margin-left: 65px;
+        margin-top: 20px;
     }
 }
 

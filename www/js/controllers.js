@@ -116,8 +116,9 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
       var onlineState = networkState;
       if ($rootScope.shouldUpload) {
         $rootScope.shouldUpload = false;
+        var i =0;
         async.eachSeries(_.cloneDeep($rootScope.taskpending), function(value, callback) {
-          uploadData(value, function(err, data) {
+          uploadData(value, i, function(err, data) {
             if (err) {
               callback(err);
             } else {
@@ -149,155 +150,160 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
 
   }, false);
 
-  function uploadData(value, callback) {
+  function uploadData(value, i, callback) {
     $scope.document = value;
-    console.log(value);
-    console.log($scope.document);
-    $scope.photos = _.cloneDeep($scope.document.photos);
-    $scope.doc = _.cloneDeep($scope.document.doc);
-    $scope.jir = _.cloneDeep($scope.document.jir);
-    console.log($scope.photos);
-    console.log($scope.doc);
-    console.log($scope.jir);
-    async.parallel({
-      photos: function(callback) {
-        async.each(_.flatten($scope.photos), function(value, callback) {
-          console.log(value);
-          uploadImage(value, 'photos', callback);
+    console.log($scope.document.status);
+    if (!value.status) {
+      $rootScope.taskpending[i].status = true;
+      console.log(value);
+      console.log($scope.document);
+      $scope.photos = _.cloneDeep($scope.document.photos);
+      $scope.doc = _.cloneDeep($scope.document.doc);
+      $scope.jir = _.cloneDeep($scope.document.jir);
+      console.log($scope.photos);
+      console.log($scope.doc);
+      console.log($scope.jir);
+      async.parallel({
+        photos: function(callback) {
+          async.each(_.flatten($scope.photos), function(value, callback) {
+            console.log(value);
+            uploadImage(value, 'photos', callback);
 
-        }, function(err, data) {
-          callback(null, data);
-        });
-      },
-      document: function(callback) {
-        async.each(_.flatten($scope.doc), function(value, callback) {
-          console.log(value);
-          uploadImage(value, 'Document', callback);
+          }, function(err, data) {
+            callback(null, data);
+          });
+        },
+        document: function(callback) {
+          async.each(_.flatten($scope.doc), function(value, callback) {
+            console.log(value);
+            uploadImage(value, 'Document', callback);
 
-        }, function(err, data) {
-          callback(null, data);
-        });
-      },
-      jir: function(callback) {
-        async.each(_.flatten($scope.jir), function(value, callback) {
-          console.log(value);
-          uploadImage(value, 'JIR', callback);
+          }, function(err, data) {
+            callback(null, data);
+          });
+        },
+        jir: function(callback) {
+          async.each(_.flatten($scope.jir), function(value, callback) {
+            console.log(value);
+            uploadImage(value, 'JIR', callback);
 
-        }, function(err, data) {
-          callback(null, data);
-        });
-      }
-    }, function(err, data) {
-      $scope.document.photos = [];
-      $scope.document.doc = [];
-      $scope.document.jir = [];
-      $scope.document.photos.length = 0;
-      console.log("done");
-      // $scope.photos1 = _.flatten($scope.photos);
-      _.forEach($scope.photos1, function(value) {
-        $scope.document.photos.push({
-          "file": value
-        });
-      });
-      //doc
-      $scope.document.doc.length = 0;
-      // $scope.doc1 = _.flatten($scope.doc);
-      _.forEach($scope.doc1, function(value) {
-        $scope.document.doc.push({
-          "file": value
-        });
-      });
-      //jir
-      $scope.document.jir.length = 0;
-      // $scope.jir1 = _.flatten($scope.jir)
-      _.forEach($scope.jir1, function(value) {
-        $scope.document.jir.push({
-          "file": value
-        });
-      });
-      console.log("hry", $scope.document);
-      MyServices.mobileSubmit($scope.document, function(data) {
-        if (data.value) {
-          console.log(data);
-          $scope.taskcomplete.push($scope.document);
-          $scope.photos = [];
-          $scope.doc = [];
-          $scope.jir = [];
-          $scope.photos1 = [];
-          $scope.doc1 = [];
-          $scope.jir1 = [];
-          // _.remove($rootScope.document, function(n) {
-          //   return  n.assignId==$scope.document.assignId;
-          // });
-          $rootScope.taskpending.shift();
-          callback(null, $scope.taskcomplete);
-        } else {
-          console.log(data.value);
-          callback(null, data);
+          }, function(err, data) {
+            callback(null, data);
+          });
         }
+      }, function(err, data) {
+        $scope.document.photos = [];
+        $scope.document.doc = [];
+        $scope.document.jir = [];
+        $scope.document.photos.length = 0;
+        console.log("done");
+        // $scope.photos1 = _.flatten($scope.photos);
+        _.forEach($scope.photos1, function(value) {
+          $scope.document.photos.push({
+            "file": value
+          });
+        });
+        //doc
+        $scope.document.doc.length = 0;
+        // $scope.doc1 = _.flatten($scope.doc);
+        _.forEach($scope.doc1, function(value) {
+          $scope.document.doc.push({
+            "file": value
+          });
+        });
+        //jir
+        $scope.document.jir.length = 0;
+        // $scope.jir1 = _.flatten($scope.jir)
+        _.forEach($scope.jir1, function(value) {
+          $scope.document.jir.push({
+            "file": value
+          });
+        });
+        console.log("hry", $scope.document);
+        MyServices.mobileSubmit($scope.document, function(data) {
+          if (data.value) {
+            console.log(data);
+            $scope.taskcomplete.push($scope.document);
+            $scope.photos = [];
+            $scope.doc = [];
+            $scope.jir = [];
+            $scope.photos1 = [];
+            $scope.doc1 = [];
+            $scope.jir1 = [];
+            // _.remove($rootScope.document, function(n) {
+            //   return  n.assignId==$scope.document.assignId;
+            // });
+            // $rootScope.taskpending.shift();
+            callback(null, $scope.taskcomplete);
+          } else {
+            console.log(data.value);
+            callback(null, data);
+          }
+        });
+
       });
-
-    });
-
+    }
   }
 
   $scope.taskfun = function() {
     console.log("online status", $rootScope.isOnline);
     // if ($rootScope.isOnline) {
-      //
-      // $rootScope.taskpending = $.jStorage.get('taskpending');
-      console.log($rootScope.taskpending);
+    //
+    // $rootScope.taskpending = $.jStorage.get('taskpending');
+    console.log($rootScope.taskpending);
 
-      // var onlineState = networkState;
-      if (_.isEmpty($rootScope.taskpending)) {
+    // var onlineState = networkState;
+    if (_.isEmpty($rootScope.taskpending)) {
 
-        console.log("empty", $rootScope.taskpending);
-        // $scope.doRefresh();
-        $scope.profile = {};
-        $scope.id = {};
-        $scope.profile = $.jStorage.get('profile');
-        $scope.id = null;
-        $scope.id = $scope.profile._id;
-        // $scope.task = [];
-        MyServices.Task($scope.id, function(data) {
-          $scope.task = [];
-          console.log($scope.id);
-          $scope.notask = false;
-          console.log(data.data.length);
-          if (data.data.length === 0) {
-            $scope.notask = true;
-            console.log(data);
-          }
-          if (data.value) {
-            console.log(data);
-            $.jStorage.set('task', data.data);
-            $scope.task = $.jStorage.get('task');
-            $.jStorage.set('taskpending', []);
-            $scope.offtask();
-          } else {
-            // $scope.showAlert();
-            $scope.notask = true;
-          }
-        });
-      }
-       else {
-        if ($rootScope.isOnline) {
-          $rootScope.shouldUpload = true;
+      console.log("empty", $rootScope.taskpending);
+      // $scope.doRefresh();
+      $scope.profile = {};
+      $scope.id = {};
+      $scope.profile = $.jStorage.get('profile');
+      $scope.id = null;
+      $scope.id = $scope.profile._id;
+      // $scope.task = [];
+      MyServices.Task($scope.id, function(data) {
+        $scope.task = [];
+        console.log($scope.id);
+        $scope.notask = false;
+        console.log(data.data.length);
+        if (data.data.length === 0) {
+          $scope.notask = true;
+          console.log(data);
+        }
+        if (data.value) {
+          console.log(data);
+          $.jStorage.set('task', data.data);
+          $scope.task = $.jStorage.get('task');
+          $.jStorage.set('taskpending', []);
+          $scope.offtask();
+        } else {
+          // $scope.showAlert();
+          $scope.notask = true;
+        }
+      });
+    } else {
+      if ($rootScope.isOnline) {
+        $rootScope.shouldUpload = true;
 
-          if ($rootScope.shouldUpload) {
+        if ($rootScope.shouldUpload) {
 
           $rootScope.shouldUpload = false;
           // debugger;
+          var i = 0;
           async.eachSeries(_.cloneDeep($rootScope.taskpending), function(value, callback) {
-            uploadData(value, function(err, data) {
+
+            uploadData(value,i, function(err, data) {
               if (err) {
                 callback(err);
               } else {
-                // $rootScope.taskpending.shift();
+                $rootScope.taskpending.shift();
                 console.log("$rootScope.taskpending", $rootScope.taskpending);
                 callback(null, data);
               }
             });
+            i++;
           }, function(err, data) {
             $rootScope.shouldUpload = true;
             // $scope.doRefresh();
@@ -333,10 +339,9 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
 
           // $scope.doRefresh();
         }
-      }}
-
+      }
+    }
     // }
-
   };
   $scope.offtask = function() {
     $scope.task = $.jStorage.get('task');
@@ -406,7 +411,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
     }
   };
   $scope.offtask();
-  // $scope.taskfun();
+  $scope.taskfun();
   $scope.doRefresh = function() {
 
     console.log('Refreshing!');
@@ -683,6 +688,27 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
       console.log(err);
     });
   };
+  $rootScope.checkPermission = function() {
+    cordova.plugins.diagnostic.isCameraAuthorized(function(authorized) {
+      console.log("App is " + (authorized ? "authorized" : "denied") + " access to the camera");
+      if (authorized) {
+        cordova.plugins.diagnostic.getCameraAuthorizationStatus(function(status) {
+          if (status === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
+            console.log("Camera use is authorized");
+            cordova.plugins.diagnostic.requestCameraAuthorization(function(status) {
+              console.log("Authorization request for camera use was " + (status == cordova.plugins.diagnostic.permissionStatus.GRANTED ? "granted" : "denied"));
+            }, function(error) {
+              console.error(error);
+            });
+          }
+        }, function(error) {
+          console.error("The following error occurred: " + error);
+        });
+      }
+    }, function(error) {
+      console.error("The following error occurred: " + error);
+    });
+  };
 
   //cordovaImagePicker function------------------------------------------------------
   $scope.getImageSaveContact = function(arrayName) {
@@ -694,6 +720,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
       height: 800,
       quality: 80 // Higher is better
     };
+    $rootScope.checkPermission();
     $cordovaImagePicker.getPictures(options).then(function(results) {
       console.log(results);
       console.log(arrayName);
@@ -883,6 +910,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
     $scope.document.empId = $scope.profile._id;
     $scope.document.assignId = $stateParams.assignId;
     $scope.document.surveyId = $stateParams.surveyId;
+    $scope.document.status = false;
     console.log($scope.document);
     $scope.showLoading('Please wait...', 15000);
     //

@@ -9834,7 +9834,7 @@ body {
   border: 1px solid #777; }
 
 .item-calendar .item-content {
-  padding-left: 65px;
+  padding: 0;
   height: 60px; }
 
 .item-calendar .date {
@@ -9845,6 +9845,10 @@ body {
   background-color: #263b97;
   color: #fff;
   font-size: 10px; }
+
+.item-calendar .mr-no {
+  margin-left: 65px;
+  margin-top: 20px; }
 
 .list .item.item-accordion {
   line-height: 38px;
