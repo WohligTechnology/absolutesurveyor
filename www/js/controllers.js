@@ -127,10 +127,36 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             }
           });
         }, function(err, data) {
-          $.jStorage.set('taskpending', []);
           $rootScope.shouldUpload = true;
           callback(null, data);
-          $scope.doRefresh();
+          $.jStorage.set('taskpending', []);
+          $scope.profile = {};
+          $scope.id = {};
+          $scope.profile = $.jStorage.get('profile');
+          $scope.id = null;
+          $scope.id = $scope.profile._id;
+          // $scope.task = [];
+          MyServices.Task($scope.id, function(data) {
+            $scope.task = [];
+            console.log($scope.id);
+            $scope.notask = false;
+            console.log(data.data.length);
+            if (data.data.length === 0) {
+              $scope.notask = true;
+              console.log(data);
+            }
+            if (data.value) {
+              console.log(data);
+              $.jStorage.set('task', data.data);
+              $scope.task = $.jStorage.get('task');
+              $.jStorage.set('taskpending', []);
+              $scope.offtask();
+            } else {
+              // $scope.showAlert();
+              $scope.notask = true;
+            }
+          });
+          // callback(null, data);
         });
       }
       // $scope.taskfun();
