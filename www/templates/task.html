@@ -1,4 +1,17 @@
 <ion-view view-title="Task">
+  <ion-nav-bar class="bar-positive">
+
+    <ion-nav-buttons side="left">
+      <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+      </button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+      <button class="button button-icon button-clear search-btn ion-loop padings" ng-click="doRefresh();">
+      </button>
+
+
+    </ion-nav-buttons>
+  </ion-nav-bar>
   <ion-content>
     <ion-refresher on-refresh="doRefresh()">
 
@@ -11,7 +24,7 @@
           {{monthlyGroup.month}}
         </div>
         <div class="mutiple-task" ng-repeat="item in monthlyGroup.items">
-          <ion-item class="item-calendar" ng-if="!item.status" >
+          <ion-item class="item-calendar" ng-if="!item.status">
             <div class="item-content" ui-sref="app.photos-documents({assignId:item._id,surveyId:item.survey._id})">
               <div class="calendar">
                 <div class="month">{{item.surveyDate| date:'MMM'}}</div>
@@ -27,7 +40,7 @@
             </div>
 
           </ion-item>
-          <ion-item class="item-calendar disabled-color" ng-if="item.status" >
+          <ion-item class="item-calendar disabled-color" ng-if="item.status">
             <div class="" ng-click="showAlert('Task has been done. waiting for internet...');">
               <div class="calendar">
                 <div class="month">{{item.surveyDate| date:'MMM'}}</div>

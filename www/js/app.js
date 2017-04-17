@@ -1,6 +1,6 @@
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','ngCordova','ngCordovaOauth'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'ngCordovaOauth'])
 
-.run(function($ionicPlatform,$ionicPopup) {
+.run(function($ionicPlatform, $ionicPopup) {
   $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -10,29 +10,29 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
       StatusBar.styleDefault();
     }
     if (window.Connection) {
-  if (navigator.connection.type == Connection.NONE) {
-    $ionicPopup.confirm({
-        title: "Internet Disconnected",
-        content: "The internet is disconnected on your device."
-      })
-      .then(function (result) {
-        if (!result) {
-          ionic.Platform.exitApp();
-        }
-      });
-  }
-}
+      if (navigator.connection.type == Connection.NONE) {
+        $ionicPopup.confirm({
+            title: "Internet Disconnected",
+            content: "The internet is disconnected on your device."
+          })
+          .then(function(result) {
+            if (!result) {
+              ionic.Platform.exitApp();
+            }
+          });
+      }
+    }
 
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
   $ionicConfigProvider.views.maxCache(2);
-
+  $ionicConfigProvider.views.swipeBackEnabled(false)
   $stateProvider
 
     .state('login', {
-      cache: false,
+    cache: false,
     url: '/login',
     templateUrl: 'templates/login.html',
     controller: 'LoginCtrl'
@@ -86,32 +86,31 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
         controller: 'SurveyCtrl'
       }
     }
-  })
-;
+  });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/login');
+  $urlRouterProvider.otherwise('/app/task');
 })
 
 
-.filter('uploadpath', function () {
-    return function (input, width, height, style) {
-      var other = "";
-      if (width && width != "") {
-        other += "&width=" + width;
-      }
-      if (height && height != "") {
-        other += "&height=" + height;
-      }
-      if (style && style != "") {
-        other += "&style=" + style;
-      }
-      if (input) {
-        if (input.indexOf('https://') == -1) {
-          return imgpath + input + other;
+.filter('uploadpath', function() {
+  return function(input, width, height, style) {
+    var other = "";
+    if (width && width != "") {
+      other += "&width=" + width;
+    }
+    if (height && height != "") {
+      other += "&height=" + height;
+    }
+    if (style && style != "") {
+      other += "&style=" + style;
+    }
+    if (input) {
+      if (input.indexOf('https://') == -1) {
+        return imgpath + input + other;
 
-        } else {
-          return input;
-        }
+      } else {
+        return input;
       }
-    };
-  });
+    }
+  };
+});

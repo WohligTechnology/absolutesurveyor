@@ -84,6 +84,14 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
 })
 
 .controller('TaskCtrl', function($scope, $ionicPopup, $state, $rootScope, $cordovaFileTransfer, $cordovaNetwork, MyServices, $timeout, $ionicLoading) {
+  $scope.profile = {};
+  $scope.profile = $.jStorage.get('profile');
+  if ($scope.profile) {
+    console.log($scope.profile);
+  }else{
+      $state.go('login');
+  }
+
   $scope.task = [];
   // $rootScope.task = {};
   $scope.photos = {};
