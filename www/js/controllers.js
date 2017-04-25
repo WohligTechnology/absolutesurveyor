@@ -88,8 +88,8 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
   $scope.profile = $.jStorage.get('profile');
   if ($scope.profile) {
     console.log($scope.profile);
-  }else{
-      $state.go('login');
+  } else {
+    $state.go('login');
   }
 
   $scope.task = [];
@@ -124,7 +124,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
       var onlineState = networkState;
       if ($rootScope.shouldUpload) {
         $rootScope.shouldUpload = false;
-        var i =0;
+        var i = 0;
         async.eachSeries(_.cloneDeep($rootScope.taskpending), function(value, callback) {
           uploadData(value, i, function(err, data) {
             if (err) {
@@ -328,7 +328,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
           var i = 0;
           async.eachSeries(_.cloneDeep($rootScope.taskpending), function(value, callback) {
 
-            uploadData(value,i, function(err, data) {
+            uploadData(value, i, function(err, data) {
               if (err) {
                 callback(err);
               } else {
@@ -722,27 +722,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
       console.log(err);
     });
   };
-  $rootScope.checkPermission = function() {
-    cordova.plugins.diagnostic.isCameraAuthorized(function(authorized) {
-      console.log("App is " + (authorized ? "authorized" : "denied") + " access to the camera");
-      if (authorized) {
-        cordova.plugins.diagnostic.getCameraAuthorizationStatus(function(status) {
-          if (status === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
-            console.log("Camera use is authorized");
-            cordova.plugins.diagnostic.requestCameraAuthorization(function(status) {
-              console.log("Authorization request for camera use was " + (status == cordova.plugins.diagnostic.permissionStatus.GRANTED ? "granted" : "denied"));
-            }, function(error) {
-              console.error(error);
-            });
-          }
-        }, function(error) {
-          console.error("The following error occurred: " + error);
-        });
-      }
-    }, function(error) {
-      console.error("The following error occurred: " + error);
-    });
-  };
+
 
   //cordovaImagePicker function------------------------------------------------------
   $scope.getImageSaveContact = function(arrayName) {
@@ -754,41 +734,97 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
       height: 800,
       quality: 80 // Higher is better
     };
-    $rootScope.checkPermission();
-    $cordovaImagePicker.getPictures(options).then(function(results) {
-      console.log(results);
-      console.log(arrayName);
-      if (arrayName === 'photos') {
-        $scope.photos = _.flatten($scope.photos);
-        // _.forEach(results, function(value) {
-        //   $scope.uploadImage(value, arrayName);
-        // });
-        _.forEach(results, function(value) {
-          $scope.photos.push(value);
-        });
-        $scope.photos = _.chunk($scope.photos, 3);
-      } else if (arrayName === 'Document') {
-        $scope.doc = _.flatten($scope.doc);
-        // _.forEach(results, function(value) {
-        //   $scope.uploadImage(value, arrayName);
-        // });
-        _.forEach(results, function(value) {
-          $scope.doc.push(value);
-        });
-        $scope.doc = _.chunk($scope.doc, 3);
-      } else {
-        $scope.jir = _.flatten($scope.jir);
-        // _.forEach(results, function(value) {
-        //   $scope.uploadImage(value, arrayName);
-        // });
-        _.forEach(results, function(value) {
-          $scope.jir.push(value);
-        });
-        $scope.jir = _.chunk($scope.jir, 3);
-      }
-    }, function(error) {
-      console.log('Error: ' + JSON.stringify(error)); // In case of error
-    });
+
+cordova.plugins.diagnostic.isCameraAuthorized({
+    successCallback: function(authorized){
+      console.log("authorized jsfhdfjsjdf",authorized);
+        console.log("App is " + (authorized ? "authorized" : "denied") + " access to the camera");
+        if(authorized == false){
+          cordova.plugins.diagnostic.requestCameraAuthorization({
+            successCallback: function(status){
+              console.log("Authorization request for camera use was " + (status == cordova.plugins.diagnostic.permissionStatus.GRANTED ? "granted" : "denied"));
+              $cordovaImagePicker.getPictures(options).then(function(results) {
+                console.log(results);
+                console.log(arrayName);
+                if (arrayName === 'photos') {
+                  $scope.photos = _.flatten($scope.photos);
+                  // _.forEach(results, function(value) {
+                  //   $scope.uploadImage(value, arrayName);
+                  // });
+                  _.forEach(results, function(value) {
+                    $scope.photos.push(value);
+                  });
+                  $scope.photos = _.chunk($scope.photos, 3);
+                } else if (arrayName === 'Document') {
+                  $scope.doc = _.flatten($scope.doc);
+                  // _.forEach(results, function(value) {
+                  //   $scope.uploadImage(value, arrayName);
+                  // });
+                  _.forEach(results, function(value) {
+                    $scope.doc.push(value);
+                  });
+                  $scope.doc = _.chunk($scope.doc, 3);
+                } else {
+                  $scope.jir = _.flatten($scope.jir);
+                  // _.forEach(results, function(value) {
+                  //   $scope.uploadImage(value, arrayName);
+                  // });
+                  _.forEach(results, function(value) {
+                    $scope.jir.push(value);
+                  });
+                  $scope.jir = _.chunk($scope.jir, 3);
+                }
+              }, function(error) {
+                console.log('Error: ' + JSON.stringify(error));
+              });
+            },
+            errorCallback: function(error){
+              console.error(error);
+            }
+          });
+        }else{
+          console.log("jdkjdlfjskdfjklasdjfkl");
+          $cordovaImagePicker.getPictures(options).then(function(results) {
+            console.log(results);
+            console.log(arrayName);
+            if (arrayName === 'photos') {
+              $scope.photos = _.flatten($scope.photos);
+              // _.forEach(results, function(value) {
+              //   $scope.uploadImage(value, arrayName);
+              // });
+              _.forEach(results, function(value) {
+                $scope.photos.push(value);
+              });
+              $scope.photos = _.chunk($scope.photos, 3);
+            } else if (arrayName === 'Document') {
+              $scope.doc = _.flatten($scope.doc);
+              // _.forEach(results, function(value) {
+              //   $scope.uploadImage(value, arrayName);
+              // });
+              _.forEach(results, function(value) {
+                $scope.doc.push(value);
+              });
+              $scope.doc = _.chunk($scope.doc, 3);
+            } else {
+              $scope.jir = _.flatten($scope.jir);
+              // _.forEach(results, function(value) {
+              //   $scope.uploadImage(value, arrayName);
+              // });
+              _.forEach(results, function(value) {
+                $scope.jir.push(value);
+              });
+              $scope.jir = _.chunk($scope.jir, 3);
+            }
+          }, function(error) {
+            console.log('Error: ' + JSON.stringify(error));
+          });
+        }
+    },
+    errorCallback: function(error){
+        console.error("The following error occurred: "+error);
+    }
+});
+
   };
 
 

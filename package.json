@@ -32,7 +32,9 @@
     "cordova-plugin-file-transfer",
     "cordova-plugin-image-picker",
     "cordova-plugin-network-information",
-    "cordova-plugin-inappbrowser"
+    "cordova-plugin-inappbrowser",
+    "cordova-plugin-android-permissions",
+    "cordova.plugins.diagnostic"
   ],
   "cordovaPlatforms": [
     "ios",

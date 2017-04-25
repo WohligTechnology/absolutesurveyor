@@ -1,4 +1,4 @@
-// var adminurl = "http://192.168.0.130:80/api/"; //local
+// var adminurl = "http://192.168.43.147:80/api/"; //local
 
 // var adminurl = "http://104.198.28.29:80/api/"; //server
 var adminurl = "http://absolutesurveyors.com/api/"; //server
