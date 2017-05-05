@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.wohlig.absolute" version="1" 
-      android-versionCode="1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.wohlig.absolute" version="1.0" 
+      android-versionCode="23000" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>ABM Field</name>
     <description>Absolute Surveyors</description>
     <author email="info@wohlig.com" href="http://wohlig.com/">Wohlig Technology</author>
