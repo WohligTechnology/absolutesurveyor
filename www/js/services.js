@@ -9,9 +9,9 @@ var imgpath = imgurl + "readFile?file=";
 // var uploadurl = imgurl;
 
 angular.module('starter.services', [])
-.factory('MyServices', function ($http) {
-  return {
-    Login: function (email,callback) {
+  .factory('MyServices', function ($http) {
+    return {
+      Login: function (email, callback) {
         $http({
           url: adminurl + 'Employee/getLoginSurveyor',
           method: 'POST',
@@ -19,11 +19,11 @@ angular.module('starter.services', [])
           data: email
         }).success(callback);
       },
-    Task: function (id,callback) {
-      console.log(id);
-      var data ={
-        id : id
-      };
+      Task: function (id, callback) {
+        console.log(id);
+        var data = {
+          id: id
+        };
         $http({
           url: adminurl + 'Assignment/tasklist',
           method: 'POST',
@@ -32,7 +32,7 @@ angular.module('starter.services', [])
         }).success(callback);
       },
 
-    Decline: function (data,callback) {
+      Decline: function (data, callback) {
 
         $http({
           url: adminurl + 'Assignment/decline',
@@ -41,7 +41,7 @@ angular.module('starter.services', [])
           data: data
         }).success(callback);
       },
-    mobileSubmit: function (data,callback) {
+      mobileSubmit: function (data, callback) {
 
         $http({
           url: adminurl + 'Assignment/mobileSubmit',
@@ -52,4 +52,4 @@ angular.module('starter.services', [])
       }
 
     }
-});
+  });
