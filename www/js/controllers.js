@@ -687,13 +687,13 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
       console.log(arrayName);
 
       var cameraOptions = {
-        quality: 90,
+        quality: 60,
         destinationType: Camera.DestinationType.DATA_URL,
         sourceType: Camera.PictureSourceType.CAMERA,
         allowEdit: false,
         encodingType: 0,
-        targetWidth: 3000,
-        targetHeight: 2000,
+        targetWidth: 4096,
+        targetHeight: 4096,
         popoverOptions: CameraPopoverOptions,
         saveToPhotoAlbum: true,
         correctOrientation: true
@@ -764,9 +764,9 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
       // Image picker will load images according to these settings
       var options = {
         maximumImagesCount: 20, // Max number of selected images
-        width: 3000,
-        height: 2000,
-        quality: 90 // Higher is better
+        width: 4096,
+        height: 4096,
+        quality: 60 // Higher is better
       };
 
       cordova.plugins.diagnostic.isCameraAuthorized({
