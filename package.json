@@ -35,7 +35,8 @@
     "cordova-plugin-network-information",
     "cordova-plugin-inappbrowser",
     "cordova-plugin-android-permissions",
-    "cordova.plugins.diagnostic"
+    "cordova.plugins.diagnostic",
+    "onesignal-cordova-plugin"
   ],
   "cordovaPlatforms": [
     "ios",

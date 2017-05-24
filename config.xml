@@ -76,4 +76,5 @@
     </platform>
     <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
     <plugin name="cordova-plugin-exif" spec="https://github.com/domax/cordova-exif.git" />
+    <plugin name="onesignal-cordova-plugin" spec="~2.1.1" />
 </widget>

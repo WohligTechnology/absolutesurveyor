@@ -1,7 +1,7 @@
-// var adminurl = "http://192.168.43.147:80/api/"; //local
+var adminurl = "http://192.168.43.147:80/api/"; //local
 
 // var adminurl = "http://104.198.28.29:80/api/"; //server
-var adminurl = "http://absolutesurveyors.com/api/"; //server
+// var adminurl = "http://absolutesurveyors.com/api/"; //server
 
 // var imgpath = adminurl + "uploadfile/getupload?file=";
 var imgurl = adminurl + "upload/";
@@ -32,6 +32,20 @@ angular.module('starter.services', [])
         }).success(callback);
       },
 
+      //To get History 
+      History: function (id, callback) {
+        console.log(id);
+        var data = {
+          id: id
+        };
+        $http({
+          url: adminurl + 'Assignment/tasklistCompleted',
+          method: 'POST',
+          withCredentials: true,
+          data: data
+        }).success(callback);
+      },
+
       Decline: function (data, callback) {
 
         $http({
@@ -51,5 +65,17 @@ angular.module('starter.services', [])
         }).success(callback);
       }
 
+    }
+  })
+
+  //This service is to set flag to identify History and Task page
+  .service('MyFlagValue', function () {
+    var flag;
+    this.setFlag = function (value) {
+      flag = value;
+    };
+
+    this.getFlag = function () {
+      return flag;
     }
   });

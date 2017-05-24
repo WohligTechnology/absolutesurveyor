@@ -1,0 +1,108 @@
+<ion-view view-title="History">
+  <ion-nav-bar class="bar-positive">
+
+    <ion-nav-buttons side="left">
+      <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+      </button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+      <button class="button button-icon button-clear search-btn ion-loop padings" ng-click="doRefresh();">
+      </button>
+
+
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content>
+    <ion-refresher on-refresh="doRefresh()">
+
+    </ion-refresher>
+    <p class="text-center notask" ng-if="notask">There is no history for you</p>
+
+    <ion-list class="tasks" show-delete="false" can-swipe="true">
+      <div class="" ng-repeat="monthlyGroup in monthWiseGroup" ng-init="parentIndex = $index">
+        <div class="item item-divider">
+          {{monthlyGroup.month}}
+        </div>
+        <div class="mutiple-task" ng-repeat="item in monthlyGroup.items">
+          <ion-item class="item-calendar" ng-if="!item.status">
+            <div class="item-content" ui-sref="app.photos-documents({assignId:item._id,surveyId:item.survey._id})">
+              <div class="calendar">
+                <div class="month">{{item.surveyDate| date:'MMM'}}</div>
+                <div class="date">{{item.surveyDate| date:'dd'}}</div>
+              </div>
+              <div class="mr-no dis-in">{{item.name}}</div>
+            </div>
+
+            <ion-option-button class="button decline" ng-click="showPopup(item.survey._id,item._id)">Decline</ion-option-button>
+            <!-- <ion-option-button class="button decline" ng-click="declinetask(item.survey._id,item._id)">Decline</ion-option-button> -->
+            <div class="">
+              <a class="button button-icon icon ion-ios-information info" ng-click="information($index,parentIndex);"></a>
+            </div>
+
+          </ion-item>
+          <ion-item class="item-calendar disabled-color" ng-if="item.status">
+            <div class="" ng-click="showAlert('Task has been done. waiting for internet...');">
+              <div class="calendar">
+                <div class="month">{{item.surveyDate| date:'MMM'}}</div>
+                <div class="date">{{item.surveyDate| date:'dd'}}</div>
+              </div>
+              <div class="mr-no dis-in">{{item.name}}</div>
+              <i class="ion ion-ios-cloud-upload-outline cloud"></i>
+            </div>
+
+            <ion-option-button class="button decline" ng-click="showPopup(item.survey._id,item._id)">Decline</ion-option-button>
+            <!-- <ion-option-button class="button decline" ng-click="declinetask(item.survey._id,item._id)">Decline</ion-option-button> -->
+            <div class="">
+              <a class="button button-icon icon ion-ios-information info" ng-click="information($index,parentIndex);"></a>
+            </div>
+
+          </ion-item>
+        </div>
+      </div>
+    </ion-list>
+    <!-- <ion-list  class="tasks" show-delete="false" can-swipe="true">
+      <div class="item item-divider">
+        September, 2016
+      </div>
+      <div class="mutiple-task">
+      <ion-item class="item-calendar" ui-sref="app.photos-documents">
+        <div class="calendar">
+          <div class="month">Sept</div>
+          <div class="date">7</div>
+        </div>
+        <div class="mr-no">IN09-1205-1809-2387</div>
+        <ion-option-button class="button">Decline</ion-option-button>
+      </ion-item>
+      <a class="button button-icon icon ion-ios-information info" ng-click="information();"></a>
+      </div>
+     <div class="mutiple-task">
+      <ion-item class="item-calendar" ui-sref="app.photos-documents">
+        <div class="calendar">
+          <div class="month">Sept</div>
+          <div class="date">7</div>
+        </div>
+        <div class="mr-no">IN09-1205-1809-2387</div>
+        <ion-option-button class="button">Decline</ion-option-button>
+      </ion-item>
+      <a class="button button-icon icon ion-ios-information info" ng-click="information();"></a>
+      </div>
+    </ion-list> -->
+    <!-- <ion-list class="tasks" show-delete="false" can-swipe="true">
+      <div class="item item-divider">
+        October, 2016
+      </div>
+          <div class="mutiple-task">
+      <ion-item class="item-calendar" ui-sref="app.photos-documents">
+        <div class="calendar">
+          <div class="month">Sept</div>
+          <div class="date">7</div>
+        </div>
+        <div class="mr-no">IN09-1205-1809-2387</div>
+        <ion-option-button class="button">Decline</ion-option-button>
+      </ion-item>
+      <a class="button button-icon icon ion-ios-information info" ng-click="information();"></a>
+      </div>
+    </ion-list> -->
+
+  </ion-content>
+</ion-view>
