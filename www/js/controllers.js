@@ -782,7 +782,6 @@ cordova.plugins.diagnostic.isCameraAuthorized({
               console.error(error);
             }
           });
-          
         }else{
           console.log("jdkjdlfjskdfjklasdjfkl");
           $cordovaImagePicker.getPictures(options).then(function(results) {
