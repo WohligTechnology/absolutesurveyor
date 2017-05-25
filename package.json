@@ -3,6 +3,7 @@
   "version": "1.1.1",
   "description": "Absolute Surveyors",
   "dependencies": {
+    "exif-js": "^2.2.1",
     "gulp": "^3.5.6",
     "gulp-concat": "^2.2.0",
     "gulp-minify-css": "^0.3.0",
@@ -34,7 +35,8 @@
     "cordova-plugin-network-information",
     "cordova-plugin-inappbrowser",
     "cordova-plugin-android-permissions",
-    "cordova.plugins.diagnostic"
+    "cordova.plugins.diagnostic",
+    "onesignal-cordova-plugin"
   ],
   "cordovaPlatforms": [
     "ios",

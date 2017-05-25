@@ -1,58 +1,43 @@
 <div class="mutiple-task">
-      <div class="ion-close close" ng-click="closePopup();"></div>
+  <div class="ion-close close" ng-click="closePopup();"></div>
   <div class="relate wid">
-      <ion-list  class="tasks" show-delete="false" can-swipe="true">
-         <div class="mutiple-task">
-      <ion-item>
-        <div class="">
-          <h2 class="text-center more">More info</h2>
-          <div class="task-name" ng-if="insideData.name">
-            <p >Task Name : <span>{{insideData.name}}</span></p>
-          </div>
-          <div class="task-name" ng-if="insideData.address">
-            <p >Address : <span>{{insideData.address}}</span></p>
-          </div>
-          <div class="task-name" ng-if="insideData.city ">
-            <p>City : <span >{{insideData.city}}</span></p>
-          </div>
-          <div class="task-name" ng-if=" insideData.district ">
-            <p>District : <span>{{insideData.district}}</span></p>
-          </div>
-            <div class="task-name" ng-if=" insideData.state ">
-            <p >State : <span >{{insideData.state}}</span></p>
-          </div>
-          <div class="task-name" ng-if=" insideData.country ">
-            <p >Country : <span >{{insideData.country}}</span></p>
-          </div>
-          <div class="task-name" ng-if=" insideData.zone ">
-            <p >Zone : <span >{{insideData.zone}}</span></p>
-          </div>
-          <div class="task-name" ng-if="insideData.pincode">
-            <p>Pincode : <span>{{insideData.pincode}}</span></p>
+    <ion-list class="tasks" show-delete="false" can-swipe="true">
+      <div class="mutiple-task">
+        <ion-item>
+          <div class="">
+            <h2 class="text-center more">More info</h2>
+            <div class="task-name" ng-if="insideData.name">
+              <p>MR # <span>{{insideData.name}}</span></p>
+            </div>
+            <div class="task-name" ng-if="insideData.address">
+              <p>Address : <span>{{insideData.address}}</span><span ng-if="insideData.city">, {{insideData.city}}</span>
+                <span ng-if="insideData.district">, {{insideData.district}}</span><span ng-if="insideData.state">, {{insideData.state}}</span>
+                <span ng-if="insideData.country">, {{insideData.country}}</span><span ng-if="insideData.pincode"> - {{insideData.pincode}}</span>
+            </div>
           </div>
           <div class="task-name" ng-if="insideData.siteEmail">
-            <p >Site Email : <span>{{insideData.siteEmail}}</span></p>
+            <p>Site Email : <span>{{insideData.siteEmail}}</span></p>
           </div>
           <div class="task-name" ng-if="insideData.siteMobile">
-            <p >Site Mobile : <span>{{insideData.siteMobile}}</span></p>
+            <p>Site Mobile : <span>{{insideData.siteMobile}}</span></p>
           </div>
           <div class="task-name" ng-if="insideData.siteNumber">
-            <p >Site Person : <span>{{insideData.siteNumber}}</span></p>
+            <p>Site Person : <span>{{insideData.siteNumber}}</span></p>
           </div>
-           <div class="task-name" ng-if="insideData.surveyDate">
-            <p >Survey Date : <span>{{insideData.surveyDate| date:'dd MMM yyyy'}}</span> </p>
+          <div class="task-name" ng-if="insideData.surveyDate">
+            <p>Survey Date : <span>{{insideData.surveyDate| date:'dd MMM yyyy'}}</span> </p>
           </div>
 
-        </div>
+      </div>
 
-        <!-- <div class="more-info">
+      <!-- <div class="more-info">
             <p>Information:</p>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo dolorem unde voluptas, qui, repellendus, corporis nam officia modi dolore suscipit quidem perspiciatis quaerat corrupti maxime illum earum officiis provident. Optio.</p>
             </div> -->
       </ion-item>
       <!--<a class="button button-icon icon ion-ios-information info" ng-click="information();"></a>-->
-      </div>
-    </ion-list>
-
   </div>
+  </ion-list>
+
+</div>
 </div>
