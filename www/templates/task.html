@@ -16,7 +16,7 @@
     <ion-refresher on-refresh="doRefresh()">
 
     </ion-refresher>
-    <p class="text-center notask" ng-if="notask">There is no task for you</p>
+    <p class="text-center notask" ng-if="notask && task.length ==0 ">There is no task for you</p>
 
     <ion-list class="tasks" show-delete="false" can-swipe="true">
       <div class="" ng-repeat="monthlyGroup in monthWiseGroup" ng-init="parentIndex = $index">
@@ -60,6 +60,7 @@
         </div>
       </div>
     </ion-list>
+    <ion-infinite-scroll ng-if="more.Data" on-infinite="loadMore();" distance="5%"></ion-infinite-scroll>
     <!-- <ion-list  class="tasks" show-delete="false" can-swipe="true">
       <div class="item item-divider">
         September, 2016

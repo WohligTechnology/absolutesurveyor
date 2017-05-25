@@ -1,6 +1,7 @@
-var adminurl = "http://192.168.43.147:80/api/"; //local
+// var adminurl = "http://192.168.43.147:80/api/"; //local
 
-// var adminurl = "http://104.198.28.29:80/api/"; //server
+// var adminurl = "http://104.198.28.29:80/api/"; //server 
+var adminurl = "http://35.185.181.141:80/api/"; //Test server
 // var adminurl = "http://absolutesurveyors.com/api/"; //server
 
 // var imgpath = adminurl + "uploadfile/getupload?file=";
@@ -19,11 +20,11 @@ angular.module('starter.services', [])
           data: email
         }).success(callback);
       },
-      Task: function (id, callback) {
-        console.log(id);
-        var data = {
-          id: id
-        };
+      Task: function (data, callback) {
+        // console.log(id);
+        // var data = {
+        //   id: id
+        // };
         $http({
           url: adminurl + 'Assignment/tasklist',
           method: 'POST',
@@ -33,11 +34,11 @@ angular.module('starter.services', [])
       },
 
       //To get History 
-      History: function (id, callback) {
-        console.log(id);
-        var data = {
-          id: id
-        };
+      History: function (data, callback) {
+        // console.log(id);
+        // var data = {
+        //   id: id
+        // };
         $http({
           url: adminurl + 'Assignment/tasklistCompleted',
           method: 'POST',
