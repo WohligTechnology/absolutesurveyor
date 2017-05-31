@@ -65,7 +65,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
           $scope.hideLoading();
           $rootScope.taskpending = [];
           $.jStorage.set('profile', data.data);
-          $state.go('app.history');
+          $state.go('app.task');
         } else {
           $scope.hideLoading();
           $scope.showAlert();
@@ -331,7 +331,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
               $.jStorage.set('task', $scope.task);
               // $scope.more.Data = true;
               $.jStorage.set('taskpending', []);
-              $scope.page++;
+              // $scope.page++;
               $ionicLoading.hide();
               $scope.$broadcast('scroll.infiniteScrollComplete');
               $scope.offtask();
@@ -339,6 +339,8 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
               $scope.more.Data = false;
               $ionicLoading.hide();
             }
+
+
           } else {
             // $scope.showAlert();
             $ionicLoading.hide();
@@ -401,11 +403,13 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
                     _.forEach(data.data, function (value) {
                       $scope.task.push(value);
                     });
+
                     // $scope.task = $.jStorage.get('task');
                     $.jStorage.set('task', $scope.task);
                     // $scope.more.Data = true;
                     $.jStorage.set('taskpending', []);
-                    $scope.page++;
+                    $rootScope.taskpending = [];
+                    // $scope.page++;
                     $scope.offtask();
                     $scope.$broadcast('scroll.infiniteScrollComplete');
                     $ionicLoading.hide();
@@ -413,6 +417,8 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
                     $scope.more.Data = false;
                     $ionicLoading.hide();
                   }
+
+
                   // console.log(data);
                   // $.jStorage.set('task', data.data);
                   // $scope.task = $.jStorage.get('task');
@@ -435,6 +441,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
       // }
     };
     $scope.loadMore = function () {
+      $scope.page++;
       $scope.taskfun();
     };
     $scope.offtask = function () {
@@ -1521,7 +1528,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
               // $scope.task = $.jStorage.get('task');
               $.jStorage.set('historyTask', $scope.task);
               $.jStorage.set('historyTaskPending', []);
-              $scope.page++;
+              // $scope.page++;
               $scope.$broadcast('scroll.infiniteScrollComplete');
               $scope.offtask();
               $ionicLoading.hide();
@@ -1584,7 +1591,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
                 id: $scope.id,
                 page: $scope.page
               }, function (data) {
-                $scope.task = [];
+                // $scope.task = [];
                 console.log($scope.id);
                 $scope.notask = false;
                 console.log(data.data.length);
@@ -1605,7 +1612,8 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
                     $.jStorage.set('historyTask', $scope.task);
                     // $scope.more.Data = true;
                     $.jStorage.set('historyTaskPending', []);
-                    $scope.page++;
+                    $rootScope.historyTaskPending = [];
+                    // $scope.page++;
                     $scope.offtask();
                     $scope.$broadcast('scroll.infiniteScrollComplete');
                     $ionicLoading.hide();
@@ -1636,6 +1644,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
       // }
     };
     $scope.loadMore = function () {
+      $scope.page++;
       $scope.taskfun();
     };
     $scope.offtask = function () {
