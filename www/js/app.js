@@ -44,6 +44,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
       }
 
+      document.addEventListener('deviceready', function () {
+        // bgService.init()
+         //For background mode
+        cordova.plugins.backgroundMode.setDefaults({
+          title: "ABSOLUTE",
+          text: "Background mode activated",
+          icon: 'icon.png', // this will look for icon.png in platforms/android/res/drawable|mipmap
+          color: "22439b", // hex format like 'F14F4D'
+          resume: true,
+          hidden: false,
+          bigText: false
+        })
+        cordova.plugins.backgroundMode.enable();
+      }, false);
+
     });
   })
 

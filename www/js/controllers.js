@@ -104,13 +104,19 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
     };
   })
 
-  .controller('TaskCtrl', function ($scope, $ionicPopup, $state, $rootScope, $ionicLoading, $cordovaFileTransfer, $cordovaNetwork, MyServices, $timeout, $ionicLoading, MyFlagValue) {
+  .controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $state, $rootScope, $ionicLoading, $cordovaFileTransfer, $cordovaNetwork, MyServices, $timeout, MyFlagValue) {
     $scope.profile = {};
     $scope.profile = $.jStorage.get('profile');
     $scope.page = 1;
     $scope.more = {
       Data: true
     };
+
+    // var i = 0;
+    //  $interval(function() {
+    //        console.log("hi",i++);
+           
+    //       }, 5000);
 
     //To set flag for task tab
     MyFlagValue.setFlag("task");
@@ -378,13 +384,13 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
               $scope.profile = $.jStorage.get('profile');
               $scope.id = null;
               $scope.id = $scope.profile._id;
-              $ionicLoading.show({
-                template: '<img src="img/loading.gif" height="50" width="50">',
-                animation: 'fade-in',
-                showBackdrop: true,
-                maxWidth: 500,
-                showDelay: 100
-              });
+              // $ionicLoading.show({
+              //   template: '<img src="img/loading.gif" height="50" width="50">',
+              //   animation: 'fade-in',
+              //   showBackdrop: true,
+              //   maxWidth: 500,
+              //   showDelay: 100
+              // });
               MyServices.Task({
                 id: $scope.id,
                 page: $scope.page
@@ -1258,7 +1264,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
 
 
   //To show all history of user
-  .controller('HistoryCtrl', function ($scope, $ionicPopup, $state, $ionicLoading, $rootScope, $cordovaFileTransfer, $cordovaNetwork, MyServices, $timeout, $ionicLoading, MyFlagValue) {
+  .controller('HistoryCtrl', function ($scope, $ionicPopup, $state, $rootScope, $cordovaFileTransfer, $cordovaNetwork, MyServices, $timeout, $ionicLoading, MyFlagValue) {
     $scope.profile = {};
     $scope.page = 1;
     $scope.more = {
