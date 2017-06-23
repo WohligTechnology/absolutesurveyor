@@ -131,14 +131,15 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
       Data: true
     };
 
-         $rootScope.$on('proximityCatched', function () {
-       
+    $rootScope.$on('proximityCatched', function () {   
         $state.reload();
-     
-      });
-      $scope.$on('$ionicView.enter', function(e) {
+    });
+    $scope.$on('$ionicView.enter', function(e) {
         $ionicNavBarDelegate.showBar(true);
-      });
+    });
+    // $rootScope.$on('toTask', function () {   
+    //     $state.reload();
+    // });
 
 
 
@@ -221,9 +222,9 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
 
     function uploadData(value, i, callback) {
       $scope.document = value;
-      console.log($scope.document.status);
-      if (!value.status) {
-        $rootScope.taskpending[i].status = true;
+      console.log($scope.document.taskPendingStatus);
+      if (!value.taskPendingStatus) {
+        $rootScope.taskpending[i].taskPendingStatus = true;
         console.log(value);
         console.log($scope.document);
         $scope.photos = _.cloneDeep($scope.document.photos);
@@ -481,16 +482,29 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
 
         console.log("i am in the offline man");
         if (_.isArray($rootScope.taskpending) && _.isArray($scope.task)) {
-          var i = 0;
+         
+        _.each($scope.task, function (v) {
+
+                        var val2 = v._id;
+                        v.taskPendingStatus = false
           _.each($rootScope.taskpending, function (values) {
             var val1 = values.assignId.toString();
-            var val2 = $scope.task[i]._id;
+  
+
+                        console.log("taskpending .................",values,val1,val2);
+
             if (val1 == val2) {
-              $scope.task[i].status = true;
-            } else {
-              $scope.task[i].status = false;
-            }
-            i++;
+                    v.taskPendingStatus = true;
+                          console.log("taskpending ................. true",v);
+
+            } 
+            // else {
+            //   $scope.task[i].taskPendingStatus = false;
+            //               console.log("taskpending ................. false",$scope.task[i].taskPendingStatus);
+
+            // }
+                      })
+
           });
         }
         $.jStorage.set('task', $scope.task);
@@ -1237,8 +1251,10 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
     $scope.msgsubmit = function () {
       $scope.surveyClose();
       if ($scope.flag == "task") {
+        // $rootScope.$broadcast('toTask', null)
         $state.go('app.task');
       } else if ($scope.flag == "history") {
+        // $rootScope.$broadcast('toHistory', null)
         $state.go('app.history');
       }
 
@@ -1293,6 +1309,9 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
     // $rootScope.refresh = true;
     //To set flag for history tab
     MyFlagValue.setFlag("history");
+    // $rootScope.$on('toHistory', function () {   
+    //     $state.reload();
+    // });
 
     $scope.profile = $.jStorage.get('profile');
     if ($scope.profile) {
@@ -1416,9 +1435,9 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
 
     function uploadData(value, i, callback) {
       $scope.document = value;
-      console.log($scope.document.status);
-      if (!value.status) {
-        $rootScope.historyTaskPending[i].status = true;
+      console.log($scope.document.historyTaskPendingStatus);
+      if (!value.historyTaskPendingStatus) {
+        $rootScope.historyTaskPending[i].historyTaskPendingStatus = true;
         console.log(value);
         console.log($scope.document);
         $scope.photos = _.cloneDeep($scope.document.photos);
@@ -1686,16 +1705,39 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
         console.log("i am in the offline man");
         if (_.isArray($rootScope.historyTaskPending) && _.isArray($scope.task)) {
           var i = 0;
+          _.each($scope.task, function (v) {
+
+                        var val2 = v._id;
+                        v.historyTaskPendingStatus = false
           _.each($rootScope.historyTaskPending, function (values) {
             var val1 = values.assignId.toString();
-            var val2 = $scope.task[i]._id;
+  
+
+                        console.log("taskpending .................",values,val1,val2);
+
             if (val1 == val2) {
-              $scope.task[i].status = true;
-            } else {
-              $scope.task[i].status = false;
-            }
-            i++;
+                    v.historyTaskPendingStatus = true;
+                          console.log("taskpending ................. true",v);
+
+            } 
+            // else {
+            //   $scope.task[i].taskPendingStatus = false;
+            //               console.log("taskpending ................. false",$scope.task[i].taskPendingStatus);
+
+            // }
+                      })
+
           });
+          // _.each($rootScope.historyTaskPending, function (values) {
+          //   var val1 = values.assignId.toString();
+          //   var val2 = $scope.task[i]._id;
+          //   if (val1 == val2) {
+          //     $scope.task[i].historyTaskPendingStatus = true;
+          //   } else {
+          //     $scope.task[i].historyTaskPendingStatus = false;
+          //   }
+          //   i++;
+          // });
         }
         $.jStorage.set('historyTask', $scope.task);
 

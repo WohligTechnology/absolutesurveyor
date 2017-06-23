@@ -19,12 +19,12 @@
     <p class="text-center notask" ng-if="notask && task.length ==0 ">There is no history for you</p>
 
     <ion-list class="tasks" show-delete="false" can-swipe="true">
-      <div class="" ng-repeat="monthlyGroup in monthWiseGroup track by $index" ng-init="parentIndex = $index">
+      <div class="" ng-repeat="monthlyGroup in monthWiseGroup track by $index" ng-init="parentIndex = $index"  ng-if="task.length!=0 || historyTaskPending.length!=0">
         <div class="item item-divider" ng-if="notask && task.length !=0 ">
           {{monthlyGroup.month}}
         </div>
         <div class="mutiple-task" ng-repeat="item in monthlyGroup.items track by $index">
-          <ion-item class="item-calendar" ng-if="!item.status">
+          <ion-item class="item-calendar" ng-if="!item.historyTaskPendingStatus">
             <div class="item-content" ui-sref="app.photos-documents({assignId:item._id,surveyId:item.survey._id})">
               <div class="calendar">
                 <div class="month">{{item.surveyDate| date:'MMM'}}</div>
@@ -40,8 +40,8 @@
             </div>
 
           </ion-item>
-          <!--<ion-item class="item-calendar disabled-color" ng-if="item.status">-->
-          <ion-item class="item-calendar disabled-color" ng-if="historyTaskPending.length>0">
+          <ion-item class="item-calendar disabled-color" ng-if="item.historyTaskPendingStatus && historyTaskPending.length>0">
+          <!--<ion-item class="item-calendar disabled-color" ng-if="historyTaskPending.length>0">-->
             <div class="" ng-click="showAlert('Task has been done. waiting for internet...');">
               <div class="calendar">
                 <div class="month">{{item.surveyDate| date:'MMM'}}</div>
