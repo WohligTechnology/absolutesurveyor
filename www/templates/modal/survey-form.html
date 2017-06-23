@@ -8,8 +8,9 @@
 
   <label class="item item-input ">
          <span class="input-label ">Date of Survey</span>
-         <!--<input ng-model="newUser.surveyDate" type="date" name="surveyDate">-->
-         <input type="date" id="exampleInput" name="surveyDate" ng-model="newUser.surveyDate"/>
+         <!--<input ng-model="newUser.surveyDate" type="date" name="surveyDate">
+         <span id="myDate" ng-click="state = false" ng-if="state == true">{{maxDate}}</span>-->
+         <input for="myDate" type="date" name="surveyDate" ng-model="newUser.surveyDate" max="{{maxDate}}"/>
        </label>
   <!-- <label class="item item-input ">
          <span class="input-label ">Start time</span>
@@ -44,7 +45,7 @@
   <button class="button button-full button-positive" type="Submit" ng-disabled="user.$invalid && msgSub">Submit</button>
 </form>
 <div class="msg" ng-if="msg">
-  <p class="text-center notask">Please wait for upload confirmation from server</p>
+  <p class="text-center notask">Uploading in background</p>
   <button class="button button-full button-positive" ng-click="msgsubmit()">ok</button>
 </div>
 <!-- </ion-content> -->

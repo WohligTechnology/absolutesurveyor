@@ -1,16 +1,33 @@
 angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
 
-  .controller('AppCtrl', function ($scope, $rootScope, $ionicModal, $state, $timeout) {
+  .controller('AppCtrl', function ($scope, $rootScope, MyServices,$ionicModal, $state, $timeout,$ionicHistory) {
     $scope.profile = $.jStorage.get('profile');
     // $rootScope.document = [];
     $scope.getprofile = function () {
       $scope.profile = $.jStorage.get('profile');
     };
+
+    //to refresh page
+    $scope.doRefresh = function(){
+      $state.reload();
+    }
+
+
     // $state.go($state.current, {}, { reload: true });
     $scope.logout = function () {
-      $.jStorage.set('profile', null);
-      $.jStorage.deleteKey('profile');
-      $.jStorage.flush();
+      var logoutData = {};
+      logoutData.empId =  $scope.profile._id;
+      logoutData.deviceId = $rootScope.deviceId;
+      MyServices.mobileLogout(logoutData,function(data){
+        if(data.value){
+           $.jStorage.set('profile', null);
+           $.jStorage.deleteKey('profile');
+           $.jStorage.flush();
+           $state.go('login');
+        }
+      })
+
+     
 
       if ($.jStorage.get('profile') === null) {
         $state.go('login');
@@ -80,6 +97,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
         if (window.plugins.OneSignal) {
           window.plugins.OneSignal.getIds(function (ids) {
             loginData.deviceId = ids.userId;
+            $rootScope.deviceId = ids.userId;
             if (loginData.deviceId) {
               $scope.callAPI(loginData);
             } else {
@@ -104,19 +122,25 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
     };
   })
 
-  .controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $state, $rootScope, $ionicLoading, $cordovaFileTransfer, $cordovaNetwork, MyServices, $timeout, MyFlagValue) {
+  .controller('TaskCtrl', function ($scope, $ionicPopup, $interval,$ionicNavBarDelegate, $state, $ionicHistory, $rootScope, $ionicLoading, $cordovaFileTransfer, $cordovaNetwork, MyServices, $timeout, MyFlagValue) {
     $scope.profile = {};
     $scope.profile = $.jStorage.get('profile');
     $scope.page = 1;
+    // $rootScope.refresh = true;
     $scope.more = {
       Data: true
     };
 
-    // var i = 0;
-    //  $interval(function() {
-    //        console.log("hi",i++);
-           
-    //       }, 5000);
+         $rootScope.$on('proximityCatched', function () {
+       
+        $state.reload();
+     
+      });
+      $scope.$on('$ionicView.enter', function(e) {
+        $ionicNavBarDelegate.showBar(true);
+      });
+
+
 
     //To set flag for task tab
     MyFlagValue.setFlag("task");
@@ -169,7 +193,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             });
           }, function (err, data) {
             $rootScope.shouldUpload = true;
-            callback(null, data);
+            // callback(null, data);
             $.jStorage.set('taskpending', []);
             $scope.profile = {};
             $scope.id = {};
@@ -674,7 +698,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
 
   })
 
-  .controller('PhotosDocumentsCtrl', function ($scope, $cordovaCamera, $ionicLoading, $cordovaNetwork, $ionicModal, $ionicActionSheet, $cordovaFileTransfer, $state, $stateParams, $ionicPopup, $rootScope, MyServices, $cordovaImagePicker, MyFlagValue) {
+  .controller('PhotosDocumentsCtrl', function ($scope,$filter,$ionicNavBarDelegate, $cordovaCamera, $ionicLoading, $cordovaNetwork, $ionicModal, $ionicActionSheet, $cordovaFileTransfer, $state, $stateParams, $ionicPopup, $rootScope, MyServices, $cordovaImagePicker, MyFlagValue) {
     //initialize all objects start-----------------------------------------------
     $scope.photos = [];
     $scope.doc = [];
@@ -685,6 +709,8 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
     $scope.document = {};
     $scope.surveyform = {};
     $scope.profile = $.jStorage.get('profile');
+    // $rootScope.refresh = false;
+    
     // console.log($scope.profile);
     // console.log($scope.profile._id);
     $scope.document.empId = $scope.profile._id;
@@ -692,6 +718,20 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
     $scope.document.surveyId = $stateParams.surveyId;
     $scope.newUser = {};
     $scope.newUser.surveyDate = new Date();
+    //$scope.maxDate = new Date();
+    var dateObj = new Date();
+    var month = dateObj.getUTCMonth() + 1; //months from 1-12
+    if(month<10){
+      month = '0'+month;
+    }
+    var day = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+    $scope.maxDate = year + "-" + month + "-" + day;
+    console.log("$scope.newUser.surveyDatee",$scope.newUser.surveyDate);
+
+    $scope.$on('$ionicView.enter', function(e) {
+      $ionicNavBarDelegate.showBar(true);
+    });
 
     //To get flag value
     $scope.flag = MyFlagValue.getFlag();
@@ -699,107 +739,84 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
 
     //picture upload action sheet popup--------------------------------------------
     $scope.showActionsheet = function (arrayName) {
-      console.log(arrayName);
-      $ionicActionSheet.show({
-        //  titleText: 'choose option',
-        buttons: [{
-          text: '<i class="icon ion-ios-camera-outline"></i> Choose from gallery'
-        }, {
-          text: '<i class="icon ion-images"></i> Take from camera'
-        }, ],
-        //  destructiveText: 'Delete',
-        cancelText: 'Cancel',
-        cancel: function () {
-          console.log('CANCELLED');
-        },
-        buttonClicked: function (index) {
-          console.log('BUTTON CLICKED', index);
-          if (index === 0) {
-            $scope.getImageSaveContact(arrayName);
-          } else {
-            $scope.openCamera(arrayName);
-          }
-          return true;
-        },
-        destructiveButtonClicked: function () {
-          console.log('DESTRUCT');
-          return true;
-        }
-      });
-    };
-
-    //picture upload action sheet popup--------------------------------------------
-    $scope.showActionsheet = function (arrayName) {
-      console.log(arrayName);
-      $ionicActionSheet.show({
-        //  titleText: 'choose option',
-        buttons: [{
-          text: '<i class="icon ion-ios-camera-outline"></i> Choose from gallery'
-        }, {
-          text: '<i class="icon ion-images"></i> Take from camera'
-        }, ],
-        //  destructiveText: 'Delete',
-        cancelText: 'Cancel',
-        cancel: function () {
-          console.log('CANCELLED');
-        },
-        buttonClicked: function (index) {
-          console.log('BUTTON CLICKED', index);
-          if (index === 0) {
-            $scope.getImageSaveContact(arrayName);
-          } else {
-            $scope.openCamera(arrayName);
-          }
-          return true;
-        },
-        destructiveButtonClicked: function () {
-          console.log('DESTRUCT');
-          return true;
-        }
-      });
+      // console.log(arrayName);
+      // $ionicActionSheet.show({
+      //   //  titleText: 'choose option',
+      //   buttons: [{
+      //     text: '<i class="icon ion-ios-camera-outline"></i> Choose from gallery'
+      //   }
+      //   // , {
+      //   //   text: '<i class="icon ion-images"></i> Take from camera'
+      //   // }, 
+      //   ],
+      //   //  destructiveText: 'Delete',
+      //   cancelText: 'Cancel',
+      //   cancel: function () {
+      //     console.log('CANCELLED');
+      //   },
+      //   buttonClicked: function (index) {
+      //     console.log('BUTTON CLICKED', index);
+      //     if (index === 0) {
+      //       $scope.getImageSaveContact(arrayName);
+      //     } else {
+      //       $scope.openCamera(arrayName);
+      //     }
+      //     return true;
+      //   },
+      //   destructiveButtonClicked: function () {
+      //     console.log('DESTRUCT');
+      //     return true;
+      //   }
+      // });
+      $scope.getImageSaveContact(arrayName);
     };
 
     //take image from camera --------------------------------------------------------
-    $scope.openCamera = function (arrayName) {
-      console.log(arrayName);
+    // $scope.openCamera = function (arrayName) {
+    //   console.log(arrayName);
 
-      var cameraOptions = {
-        quality: 60,
-        destinationType: Camera.DestinationType.DATA_URL,
-        sourceType: Camera.PictureSourceType.CAMERA,
-        allowEdit: false,
-        encodingType: 0,
-        targetWidth: 4096,
-        targetHeight: 4096,
-        popoverOptions: CameraPopoverOptions,
-        saveToPhotoAlbum: true,
-        correctOrientation: true
-      };
-      $cordovaCamera.getPicture(cameraOptions).then(function (imageData) {
-        $scope.imageSrc = "data:image/jpeg;base64," + imageData;
-        console.log(arrayName);
+    //   var cameraOptions = {
+    //     quality: 60,
+    //     destinationType: Camera.DestinationType.DATA_URL,
+    //     sourceType: Camera.PictureSourceType.CAMERA,
+    //     allowEdit: false,
+    //     encodingType: 0,
+    //     targetWidth: 4096,
+    //     targetHeight: 4096,
+    //     popoverOptions: CameraPopoverOptions,
+    //     saveToPhotoAlbum: true,
+    //     correctOrientation: true
+    //   };
+    //   $cordovaCamera.getPicture(cameraOptions).th        $http({
+    //       url: adminurl + 'Assignment/mobileSubmit',
+    //       method: 'POST',
+    //       withCredentials: true,
+    //       data: data
+    //     }).successen(function (imageData) {
+    //     $scope.imageSrc = "data:image/jpeg;base64," + imageData;
+    //     console.log(arrayName);
 
-        if (arrayName === 'photos') {
-          $scope.photos = _.flatten($scope.photos);
-          // $scope.uploadImage($scope.imageSrc, arrayName);
-          $scope.photos.push($scope.imageSrc);
-          $scope.photos = _.chunk($scope.photos, 3);
-        } else if (arrayName === 'Document') {
-          $scope.doc = _.flatten($scope.doc);
-          $scope.doc.push($scope.imageSrc);
-          // $scope.uploadImage($scope.imageSrc, arrayName);
-          $scope.doc = _.chunk($scope.doc, 3);
-        } else {
-          $scope.jir = _.flatten($scope.jir);
-          $scope.jir.push($scope.imageSrc);
-          // $scope.uploadImage($scope.imageSrc, arrayName);
-          $scope.jir = _.chunk($scope.jir, 3);
-        }
-      }, function (err) {
+    //     if (arrayName === 'photos') {
+    //       $scope.photos = _.flatten($scope.photos);
+    //       // $scope.uploadImage($scope.imageSrc, arrayName);
+    //       $scope.photos.push($scope.imageSrc);
+    //       $scope.photos = _.chunk($scope.photos, 3);
+    //     } else if (arrayName === 'Document') {
+    //       $scope.doc = _.flatten($scope.doc);
+    //       $scope.doc.push($scope.imageSrc);
+    //       // $scope.uploadImage($scope.imageSrc, arrayName);
+    //       $scope.doc = _.chunk($scope.doc, 3);
+    //     } else {
+    //       $scope.jir = _.flatten($scope.jir);
+    //       $scope.jir.push($scope.imageSrc);
+    //       // $scope.uploadImage($scope.imageSrc, arrayName);
+    //       $scope.jir = _.chunk($scope.jir, 3);
+    //     }
+    //   }, function (err) {
 
-        console.log(err);
-      });
-    };
+    //     console.log(err);
+    //   });
+    // };
 
 
     // var options = {
@@ -841,8 +858,8 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
       // Image picker will load images according to these settings
       var options = {
         maximumImagesCount: 20, // Max number of selected images
-        width: 4096,
-        height: 4096,
+        width: 3096,
+        height: 3096,
         quality: 60 // Higher is better
       };
 
@@ -1069,8 +1086,11 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
     //task submit api ------------------------------------------------------------------------
     $scope.mobileSubmit = function (newuser) {
       // $scope.surveyform = newuser;
+      console.log("newuser1",newuser);
       newuser.surveyTime = new Date();
-      $scope.document = newuser;
+      console.log("newuser2",newuser);
+      $scope.document = _.cloneDeep(newuser);
+      console.log("$scope.document",$scope.document);
       $scope.msgSub = true;
 
       // $scope.document.surveyDate = $scope.surveyform.surveyDate;
@@ -1264,12 +1284,13 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
 
 
   //To show all history of user
-  .controller('HistoryCtrl', function ($scope, $ionicPopup, $state, $rootScope, $cordovaFileTransfer, $cordovaNetwork, MyServices, $timeout, $ionicLoading, MyFlagValue) {
+  .controller('HistoryCtrl', function ($scope, $ionicPopup,$ionicNavBarDelegate, $state, $rootScope, $cordovaFileTransfer, $cordovaNetwork, MyServices, $timeout, $ionicLoading, MyFlagValue) {
     $scope.profile = {};
     $scope.page = 1;
     $scope.more = {
       Data: true
     };
+    // $rootScope.refresh = true;
     //To set flag for history tab
     MyFlagValue.setFlag("history");
 
@@ -1289,6 +1310,10 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
     $scope.jir1 = [];
     $rootScope.isOnline = false;
     $rootScope.shouldUpload = true;
+
+    $scope.$on('$ionicView.enter', function(e) {
+      $ionicNavBarDelegate.showBar(true);
+    });
 
     // console.log($rootScope.document);
     // $scope.taskpending = $.jStorage.get('taskpending');
@@ -1323,7 +1348,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             });
           }, function (err, data) {
             $rootScope.shouldUpload = true;
-            callback(null, data);
+            // callback(null, data);
             $.jStorage.set('historyTaskPending', []);
             $scope.profile = {};
             $scope.id = {};

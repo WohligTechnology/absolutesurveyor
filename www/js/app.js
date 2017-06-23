@@ -1,6 +1,6 @@
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'ngCordovaOauth'])
 
-  .run(function ($ionicPlatform, $ionicPopup) {
+  .run(function ($ionicPlatform, $ionicPopup,$rootScope,$ionicHistory) {
     $ionicPlatform.ready(function () {
       if (window.cordova && window.cordova.plugins.Keyboard) {
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -27,11 +27,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         if (window.plugins.OneSignal) {
           var notificationOpenedCallback = function (result) {
             console.log(result);
+            $rootScope.$broadcast('proximityCatched', null);
             var data = result.notification.payload.additionalData;
             console.log(data);
             if (data && data.targetUrl) {
               var state = $injector.get($state);
-              state.go(data.targetUrl);
+              $ionicHistory.clearCache().then(function(){ state.go(data.targetUrl)})
+              // state.go(data.targetUrl);
             }
           };
           window.plugins.OneSignal
@@ -40,6 +42,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             .endInit();
           window.plugins.OneSignal.getIds(function (ids) {
             console.log('getIds: ' + JSON.stringify(ids));
+            // $rootScope.$broadcast('proximityCatched', null);
+            $rootScope.deviceId = ids.userId;
           });
         }
       }
@@ -48,14 +52,23 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         // bgService.init()
          //For background mode
         cordova.plugins.backgroundMode.setDefaults({
-          title: "ABSOLUTE",
-          text: "Background mode activated",
+          title: "ABM Field",
+          text: "Background process is running",
           icon: 'icon.png', // this will look for icon.png in platforms/android/res/drawable|mipmap
           color: "22439b", // hex format like 'F14F4D'
           resume: true,
           hidden: false,
           bigText: false
         })
+        // cordova.plugins.backgroundMode.configure({ 
+        //    title: "ABM Field",
+        //   text: "Background process is running",
+        //   icon: '../img/icon.png', // this will look for icon.png in platforms/android/res/drawable|mipmap
+        //   color: "22439b", // hex format like 'F14F4D'
+        //   resume: true,
+        //   hidden: false,
+        //   bigText: false
+        //  });
         cordova.plugins.backgroundMode.enable();
       }, false);
 

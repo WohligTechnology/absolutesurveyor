@@ -1,7 +1,7 @@
 // var adminurl = "http://192.168.43.147:80/api/"; //local
 
-var adminurl = "http://104.198.28.29:80/api/"; //server 
-// var adminurl = "http://35.185.181.141:80/api/"; //Test server
+// var adminurl = "http://104.198.28.29:80/api/"; //server 
+var adminurl = "http://35.185.181.141:80/api/"; //Test server
 // var adminurl = "http://absolutesurveyors.com/api/"; //server
 
 // var imgpath = adminurl + "uploadfile/getupload?file=";
@@ -64,7 +64,17 @@ angular.module('starter.services', [])
           withCredentials: true,
           data: data
         }).success(callback);
-      }
+      },
+
+      mobileLogout: function (data, callback) {
+
+        $http({
+          url: adminurl + 'Employee/mobileLogout',
+          method: 'POST',
+          withCredentials: true,
+          data: data
+        }).success(callback);
+      },
 
     }
   })
