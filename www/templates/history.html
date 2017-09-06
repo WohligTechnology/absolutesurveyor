@@ -19,13 +19,13 @@
     <p class="text-center notask" ng-if="notask && task.length ==0 ">There is no history for you</p>
 
     <ion-list class="tasks" show-delete="false" can-swipe="true">
-      <div class="" ng-repeat="monthlyGroup in monthWiseGroup track by $index" ng-init="parentIndex = $index"  ng-if="task.length!=0 || historyTaskPending.length!=0">
+      <div class="" ng-repeat="monthlyGroup in monthWiseGroup track by $index" ng-init="parentIndex = $index" ng-if="task.length!=0 || historyTaskPending.length!=0">
         <div class="item item-divider" ng-if="notask && task.length !=0 ">
           {{monthlyGroup.month}}
         </div>
         <div class="mutiple-task" ng-repeat="item in monthlyGroup.items track by $index">
           <ion-item class="item-calendar" ng-if="!item.historyTaskPendingStatus">
-            <div class="item-content" ui-sref="app.photos-documents({assignId:item._id,surveyId:item.survey._id})">
+            <div class="item-content" ui-sref="app.photos-documents({assignId:item._id,surveyId:item.survey._id,department:item.department})">
               <div class="calendar">
                 <div class="month">{{item.surveyDate| date:'MMM'}}</div>
                 <div class="date">{{item.surveyDate| date:'dd'}}</div>
@@ -41,7 +41,7 @@
 
           </ion-item>
           <ion-item class="item-calendar disabled-color" ng-if="item.historyTaskPendingStatus && historyTaskPending.length>0">
-          <!--<ion-item class="item-calendar disabled-color" ng-if="historyTaskPending.length>0">-->
+            <!--<ion-item class="item-calendar disabled-color" ng-if="historyTaskPending.length>0">-->
             <div class="" ng-click="showAlert('Task has been done. waiting for internet...');">
               <div class="calendar">
                 <div class="month">{{item.surveyDate| date:'MMM'}}</div>
@@ -62,49 +62,6 @@
       </div>
     </ion-list>
     <ion-infinite-scroll ng-if="more.Data" on-infinite="loadMore();" distance="5%"></ion-infinite-scroll>
-    <!-- <ion-list  class="tasks" show-delete="false" can-swipe="true">
-      <div class="item item-divider">
-        September, 2016
-      </div>
-      <div class="mutiple-task">
-      <ion-item class="item-calendar" ui-sref="app.photos-documents">
-        <div class="calendar">
-          <div class="month">Sept</div>
-          <div class="date">7</div>
-        </div>
-        <div class="mr-no">IN09-1205-1809-2387</div>
-        <ion-option-button class="button">Decline</ion-option-button>
-      </ion-item>
-      <a class="button button-icon icon ion-ios-information info" ng-click="information();"></a>
-      </div>
-     <div class="mutiple-task">
-      <ion-item class="item-calendar" ui-sref="app.photos-documents">
-        <div class="calendar">
-          <div class="month">Sept</div>
-          <div class="date">7</div>
-        </div>
-        <div class="mr-no">IN09-1205-1809-2387</div>
-        <ion-option-button class="button">Decline</ion-option-button>
-      </ion-item>
-      <a class="button button-icon icon ion-ios-information info" ng-click="information();"></a>
-      </div>
-    </ion-list> -->
-    <!-- <ion-list class="tasks" show-delete="false" can-swipe="true">
-      <div class="item item-divider">
-        October, 2016
-      </div>
-          <div class="mutiple-task">
-      <ion-item class="item-calendar" ui-sref="app.photos-documents">
-        <div class="calendar">
-          <div class="month">Sept</div>
-          <div class="date">7</div>
-        </div>
-        <div class="mr-no">IN09-1205-1809-2387</div>
-        <ion-option-button class="button">Decline</ion-option-button>
-      </ion-item>
-      <a class="button button-icon icon ion-ios-information info" ng-click="information();"></a>
-      </div>
-    </ion-list> -->
 
   </ion-content>
 </ion-view>

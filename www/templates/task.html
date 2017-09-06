@@ -25,7 +25,7 @@
         </div>
         <div class="mutiple-task" ng-repeat="item in monthlyGroup.items">
           <ion-item class="item-calendar" ng-if="!item.taskPendingStatus">
-            <div class="item-content" ui-sref="app.photos-documents({assignId:item._id,surveyId:item.survey._id})">
+            <div class="item-content" ui-sref="app.photos-documents({assignId:item._id,surveyId:item.survey._id,department:item.department})">
               <div class="calendar">
                 <div class="month">{{item.surveyDate| date:'MMM'}}</div>
                 <div class="date">{{item.surveyDate| date:'dd'}}</div>
@@ -41,7 +41,7 @@
 
           </ion-item>
           <ion-item class="item-calendar disabled-color" ng-if="item.taskPendingStatus && taskpending.length>0">
-          <!--<ion-item class="item-calendar disabled-color" ng-if="taskpending.length>0">-->
+            <!--<ion-item class="item-calendar disabled-color" ng-if="taskpending.length>0">-->
             <div class="" ng-click="showAlert('Task has been done. waiting for internet...');">
               <div class="calendar">
                 <div class="month">{{item.surveyDate| date:'MMM'}}</div>

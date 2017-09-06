@@ -17,29 +17,29 @@
       <div class="add-button">
         <button class="button icon ion-plus-round" ng-click="showActionsheet('photos')"></button>
 
-    </div>
+      </div>
 
       <div class=" photos list card">
-    <div class="item card-upload ">
-      <h3>Photos</h3>
+        <div class="item card-upload ">
+          <h3>Photos</h3>
 
-    </div>
-    <div class="item item-image">
-      <div class="row" ng-repeat="pic in photos">
-        <div class=" col-33" ng-click="showConfirm(data,'photos')" ng-repeat="data in pic">
-          <!-- <div class="img-upload" ng-if="data" ng-style="{'background-image':'url({{data|uploadpath:100:100:'cover'}})'}"> -->
-          <div class="img-upload" >
-            <img ng-src="{{data}}" ng-if="data">
-          </div>
         </div>
-      </div>
-      <!-- <div class="row" ng-repeat="pic in photos">
+        <div class="item item-image">
+          <div class="row" ng-repeat="pic in photos">
+            <div class=" col-33" ng-click="showConfirm(data,'photos')" ng-repeat="data in pic">
+              <!-- <div class="img-upload" ng-if="data" ng-style="{'background-image':'url({{data|uploadpath:100:100:'cover'}})'}"> -->
+              <div class="img-upload">
+                <img ng-src="{{data}}" ng-if="data">
+              </div>
+            </div>
+          </div>
+          <!-- <div class="row" ng-repeat="pic in photos">
         <div class="img-upload col-33" ng-click="showConfirm(data,'photos')" ng-repeat="data in pic">
           <img ng-src="{{data|uploadpath:100:100:'cover'}}" ng-if="data">
         </div>
 
       </div> -->
-      <!-- <div class="row">
+          <!-- <div class="row">
         <div class="col-33" ng-click="showConfirm(data,'photos')">
           <div class="img-upload">
             <img src="img/fundpic.jpg" alt="">
@@ -59,55 +59,58 @@
       </div> -->
 
         </div>
-  </div>
-  <div class="add-button">
-    <button class="button icon ion-plus-round" ng-click="showActionsheet('Document')"></button>
-
-</div>
-  <div class="list card photos">
-  <div class="item  card-upload">
-    <h3>Document</h3>
-  </div>
-  <div class="item item-image">
-      <div class="row" ng-repeat="pic in doc">
-        <div class="img-upload col-33" ng-click="showConfirm(data,'Document')" ng-repeat="data in pic">
-          <!-- <div class="img-upload" ng-if="data" ng-style="{'background-image':'url({{data|uploadpath:100:100:'cover'}})'}"> -->
-          <div class="img-upload" >
-            <img ng-src="{{data}}" ng-if="data">
-            <!-- <img ng-src="{{data|uploadpath:100:100:'cover'}}" ng-if="data"> -->
-          </div>
-                </div>
+      </div>
+      <div class="add-button">
+        <button class="button icon ion-plus-round" ng-click="showActionsheet('Document')"></button>
 
       </div>
-      </div>
-</div>
-<div class="add-button">
-  <button class="button icon ion-plus-round" ng-click="showActionsheet('JIR')"></button>
-
-</div>
-<div class=" list card photos">
-<div class="item card-upload ">
-  <h3>JIR</h3>
-</div>
-<div class="item item-image">
-  <p ng-if="!photos">no documents</p>
-  <div class="row" ng-repeat="pic in jir">
-    <div class="img-upload col-33" ng-click="showConfirm(data,'JIR')" ng-repeat="data in pic">
-      <!-- <div class="img-upload" ng-if="data" ng-style="{'background-image':'url({{data|uploadpath:100:100:'cover'}})'}"> -->
-      <div class="img-upload" >
-        <img ng-src="{{data}}" ng-if="data">
-        <!-- <img ng-src="{{data|uploadpath:100:100:'cover'}}" ng-if="data"> -->
-      </div>
+      <div class="list card photos">
+        <div class="item  card-upload">
+          <h3>Document</h3>
         </div>
+        <div class="item item-image">
+          <div class="row" ng-repeat="pic in doc">
+            <div class="img-upload col-33" ng-click="showConfirm(data,'Document')" ng-repeat="data in pic">
+              <!-- <div class="img-upload" ng-if="data" ng-style="{'background-image':'url({{data|uploadpath:100:100:'cover'}})'}"> -->
+              <div class="img-upload">
+                <img ng-src="{{data}}" ng-if="data">
+                <!-- <img ng-src="{{data|uploadpath:100:100:'cover'}}" ng-if="data"> -->
+              </div>
+            </div>
 
-  </div>
+          </div>
+        </div>
+      </div>
+      <div class="add-button">
+        <button class="button icon ion-plus-round" ng-click="showActionsheet('JIR')"></button>
 
-    </div>
-</div>
+        <!--################## uncomment this line-->
+        <!--<button class="button icon ion-plus-round" ng-click="getMarineLogic()"></button>-->
 
-<div class="list list-inset submit">
-  <button class="button button-block button-positive "  ng-click="surveyOpen()">Submit</button>
-</div>
+      </div>
+      <div class=" list card photos">
+        <div class="item card-upload ">
+          <h3>JIR</h3>
+        </div>
+        <div class="item item-image">
+          <p ng-if="!photos">no documents</p>
+          <div class="row" ng-repeat="pic in jir">
+            <div class="img-upload col-33" ng-click="showConfirm(data,'JIR')" ng-repeat="data in pic">
+              <!-- <div class="img-upload" ng-if="data" ng-style="{'background-image':'url({{data|uploadpath:100:100:'cover'}})'}"> -->
+              <div class="img-upload">
+                <img ng-src="{{data}}" ng-if="data">
+                <!-- <img ng-src="{{data|uploadpath:100:100:'cover'}}" ng-if="data"> -->
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <div class="list list-inset submit">
+        <button class="button button-block button-positive " ng-click="surveyOpen()">Submit</button>
+      </div>
     </form>
   </ion-content>
 </ion-view>

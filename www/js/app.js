@@ -1,6 +1,6 @@
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'ngCordovaOauth'])
 
-  .run(function ($ionicPlatform, $ionicPopup,$rootScope,$ionicHistory) {
+  .run(function ($ionicPlatform, $ionicPopup, $rootScope, $ionicHistory) {
     $ionicPlatform.ready(function () {
       if (window.cordova && window.cordova.plugins.Keyboard) {
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -12,9 +12,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       if (window.Connection) {
         if (navigator.connection.type == Connection.NONE) {
           $ionicPopup.confirm({
-              title: "Internet Disconnected",
-              content: "The internet is disconnected on your device."
-            })
+            title: "Internet Disconnected",
+            content: "The internet is disconnected on your device."
+          })
             .then(function (result) {
               if (!result) {
                 ionic.Platform.exitApp();
@@ -32,7 +32,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             console.log(data);
             if (data && data.targetUrl) {
               var state = $injector.get($state);
-              $ionicHistory.clearCache().then(function(){ state.go(data.targetUrl)})
+              $ionicHistory.clearCache().then(function () { state.go(data.targetUrl) })
               // state.go(data.targetUrl);
             }
           };
@@ -50,7 +50,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       document.addEventListener('deviceready', function () {
         // bgService.init()
-         //For background mode
+        //For background mode
         cordova.plugins.backgroundMode.setDefaults({
           title: "ABM Field",
           text: "Background process is running",
@@ -119,7 +119,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       .state('app.photos-documents', {
         cache: false,
-        url: '/photos-documents/:assignId/:surveyId',
+        url: '/photos-documents/:assignId/:surveyId/:department',
         views: {
           'menuContent': {
             templateUrl: 'templates/photos-documents.html',
@@ -144,6 +144,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           'menuContent': {
             templateUrl: 'templates/survey.html',
             controller: 'SurveyCtrl'
+          }
+        }
+      })
+
+      .state('app.marineSurvey', {
+        url: '/marineSurvey',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/marineSurvey.html',
+            controller: 'MarineSurveyCtrl'
           }
         }
       });
