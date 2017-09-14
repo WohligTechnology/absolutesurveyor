@@ -16,7 +16,7 @@
                         <p>Anwser:</p>
                     </div>
                 </div>
-                <div class="row" ng-if="isText == false && multiOpntion == false && isNumeric == false">
+                <div class="row" ng-if="isText == false && multiOption == false && isNumeric == false && questionObj.questionNumber != 29">
                     <div class="col">
                         <div class="radio">
                             <ion-radio ng-model="questionObj.answer" ng-checked="answer1" ng-click="saveAnswer(questionObj.question,'Yes')" ng-value="'Yes'">Yes</ion-radio>
@@ -26,14 +26,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" ng-if="isText == false && multiOpntion == true">
+                <div class="row" ng-if="isText == false && multiOption == true">
                     <div class="col">
                         <div class="radio" ng-repeat="item in multiArray">
                             <ion-radio ng-model="questionObj.answer" ng-checked="answer1" ng-click="saveAnswer(questionObj.question,item)" ng-value="item">{{item}}</ion-radio>
                         </div>
                     </div>
                 </div>
-                <div class="row" ng-if="isText == false && multiOpntion == false && isNumeric == true">
+                <div class="row" ng-if="isText == false && multiOption == false && isNumeric == true">
                     <div class="col" ng-if="questionObj.questionNumber != 32 && questionObj.questionNumber != 41">
                         <div ng-repeat="item in numericInputArray track by $index">
                             <div class="list list-inset numerical-input-div">
@@ -46,7 +46,7 @@
                             <!--<ion-radio ng-model="questionObj.answer" ng-checked="answer1" ng-click="saveAnswer(questionObj.question,item)" ng-value="item">{{item}}</ion-radio>-->
                         </div>
                     </div>
-                    <div class="col" ng-if="questionObj.questionNumber == 32 && questionObj.questionNumber == 41">
+                    <div class="col" ng-if="questionObj.questionNumber == 32 || questionObj.questionNumber == 41">
                         <div class="list list-inset numerical-input-div">
                             <label class="item item-input">
                                 <span class="input-label numeric-label">Numbers Only</span>
@@ -65,7 +65,7 @@
         </div>
         <div class="row">
             <div class="col text-center">
-                <button class="button button-positive marine-btn-width" ng-click="saveAnswer(questionObj.question,questionObj.answer)" ng-if="(isText== true || isNumeric == true) && isSubmit == false">Next</button><br>
+                <button class="button button-positive marine-btn-width" ng-click="saveAnswer(questionObj.question,questionObj.answer)" ng-if="(isText== true || isNumeric == true || questionObj.questionNumber == 29) && isSubmit == false">Next</button><br>
                 <button class="button button-positive marine-btn-width " ng-click="back()">Back</button><br>
                 <button class="button button-positive marine-btn-width " ng-if="isSubmit == true" ng-click="submit()">Submit</button>
             </div>

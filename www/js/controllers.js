@@ -712,7 +712,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
 
   })
 
-  .controller('PhotosDocumentsCtrl', function ($scope, $filter, $ionicNavBarDelegate, $cordovaCamera, $ionicLoading, $cordovaNetwork, $ionicModal, $ionicActionSheet, $cordovaFileTransfer, $state, $stateParams, $ionicPopup, $rootScope, MyServices, $cordovaImagePicker, MyFlagValue) {
+  .controller('PhotosDocumentsCtrl', function ($scope, $filter, $ionicNavBarDelegate, $cordovaCamera, $ionicLoading, $cordovaNetwork, $ionicModal, $ionicActionSheet, $cordovaFileTransfer, $state, $stateParams, $ionicPopup, $rootScope, MyServices, $cordovaImagePicker, MyFlagValue, backgroundLocationTracking) {
     //initialize all objects start-----------------------------------------------
     $scope.photos = [];
     $scope.doc = [];
@@ -723,6 +723,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
     $scope.document = {};
     $scope.surveyform = {};
     $scope.profile = $.jStorage.get('profile');
+    $scope.isDisable = true;
     // $rootScope.refresh = false;
 
     // console.log($scope.profile);
@@ -789,11 +790,15 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
       //     return true;
       //   }
       // });
-      if ($scope.document.department == "Marine Cargo") {
-        $state.go('app.marineSurvey');
-      } else {
-        $scope.getImageSaveContact(arrayName);
-      }
+
+      /*********************** Please uncomment following code for marine logic *****************************************************/
+      // if ($scope.document.department == "Marine Cargo") {
+      //   $state.go('app.marineSurvey');
+      // } else {
+      //   $scope.getImageSaveContact(arrayName);
+      // }
+
+      $scope.getImageSaveContact(arrayName);
     };
 
     //take image from camera --------------------------------------------------------
@@ -1149,6 +1154,9 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
       $scope.document.assignId = $stateParams.assignId;
       $scope.document.surveyId = $stateParams.surveyId;
       $scope.document.status = false;
+      $scope.document.latitude = $rootScope.latitude;
+      $scope.document.longitude = $rootScope.longitude;
+      $scope.document.isMobile = true;
       console.log($scope.document);
       $scope.showLoading('Please wait...', 15000);
       //
@@ -1236,8 +1244,9 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             "file": value
           });
         });
-        MyServices.mobileSubmit($scope.document, function (data) {
 
+
+        MyServices.mobileSubmit($scope.document, function (data) {
           if (data.value) {
             $scope.hideLoading();
             console.log(data);
@@ -1251,11 +1260,24 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             $scope.hideLoading();
           }
         });
+
       });
 
-
-
     }
+
+    //To disable submit button
+    setInterval(function () {
+      if (($rootScope.latitude != undefined && $rootScope.latitude != "") && ($rootScope.longitude != undefined && $rootScope.longitude != "")) {
+        // alert("$rootScope.latitude " + $rootScope.latitude + " $rootScope.longitude " + $rootScope.longitude);
+        if ($scope.isDisable == true) {
+          $scope.isDisable = false;
+          $scope.$apply();
+        }
+      } else {
+        $scope.isDisable = true;
+      }
+    }, 1000);
+
 
     //msg----------------------------------------------------------------------00
 
@@ -1973,7 +1995,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
   })
 
 
-  .controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue, $state) {
+  .controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue, $ionicPlatform, $state) {
 
     $scope.questionObj = {
       question: "Where are you? At destination?",
@@ -1983,11 +2005,12 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
     }
     $scope.finalArray = [];
     $scope.isText = false;
-    $scope.multiOpntion = false;
+    $scope.multiOption = false;
     $scope.isSubmit = false;
     $scope.isNumeric = false;
     $scope.lr, $scope.delievered, $scope.wet, $scope.damaged = null;
     $scope.short = null;
+
     //Function to save answer
     $scope.saveAnswer = function (value1, value2) {
       var obj = {};
@@ -2033,7 +2056,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 2
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
@@ -2043,7 +2066,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 3
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
@@ -2053,7 +2076,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 4
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
@@ -2063,7 +2086,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 5
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
@@ -2074,7 +2097,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 59
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = true;
           $scope.getNumericOption($scope.questionObj.questionNumber);
@@ -2094,7 +2117,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 6
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isNumeric = true;
           $scope.isSubmit = false;
           $scope.getNumericOption($scope.questionObj.questionNumber);
@@ -2106,7 +2129,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 7
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
@@ -2117,7 +2140,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 8
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
@@ -2129,7 +2152,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
           }
           $scope.isText = false;
           $scope.isNumeric = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           break;
 
@@ -2140,7 +2163,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
           }
           $scope.isText = true;
           $scope.isNumeric = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           break;
 
@@ -2161,7 +2184,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 12
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
@@ -2194,7 +2217,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 15
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isNumeric = false;
           $scope.isSubmit = false;
           break;
@@ -2216,7 +2239,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 17
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isNumeric = false;
           $scope.isSubmit = false;
           break;
@@ -2227,7 +2250,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 17
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           break;
 
@@ -2237,7 +2260,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 17
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
@@ -2248,42 +2271,43 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 17
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
 
         case "17-Yes":
           $scope.questionObj = {
-            question: "Test Reports, if any",
+            question: "Are there any test reports available?",
             questionNumber: 18
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
 
         case "18-Yes":
           $scope.questionObj = {
-            question: "Repair",
+            question: "Can it be repaired?",
             questionNumber: 19
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
 
         case "19-Yes":
           $scope.questionObj = {
-            question: "Estimated Costing",
+            question: "How much is the estimated cost?",
             questionNumber: 20
           }
-          $scope.isText = true;
-          $scope.multiOpntion = false;
-          $scope.isNumeric = false;
+          $scope.isText = false;
+          $scope.multiOption = false;
+          $scope.isNumeric = true;
           $scope.isSubmit = true;
+          $scope.getNumericOption($scope.questionObj.questionNumber);
           break;
 
         // case "20-text":
@@ -2292,7 +2316,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
         //     questionNumber: 20
         //   }
         //   $scope.isText = true;
-        //   $scope.multiOpntion = false;
+        //   $scope.multiOption = false;
         //   $scope.isSubmit = true;
         //   break;
 
@@ -2302,7 +2326,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 21
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isNumeric = false;
           $scope.isSubmit = false;
           break;
@@ -2317,7 +2341,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 22
           }
           $scope.isText = true;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
@@ -2340,7 +2364,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 24
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isNumeric = false;
           $scope.isSubmit = false;
           break;
@@ -2355,7 +2379,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 25
           }
           $scope.isText = true;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isNumeric = false;
           $scope.isSubmit = false;
           break;
@@ -2371,7 +2395,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
           }
           $scope.isText = true;
           $scope.isNumeric = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           break;
 
@@ -2389,7 +2413,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 27
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
@@ -2400,7 +2424,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 28
           }
           $scope.isText = true;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
@@ -2451,8 +2475,8 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             question: "Ask for Photos,if any?",
             questionNumber: 29
           }
-          $scope.isText = true;
-          $scope.multiOpntion = false;
+          $scope.isText = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
@@ -2467,7 +2491,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 18
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
 
@@ -2483,7 +2507,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 30
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
@@ -2504,9 +2528,9 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             question: "How many Tarpaulin were there?",
             questionNumber: 32
           }
-          $scope.isText = true;
-          $scope.isNumeric = false;
-          $scope.multiOpntion = false;
+          $scope.isText = false;
+          $scope.isNumeric = true;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           break;
 
@@ -2516,7 +2540,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
         //     questionNumber: 32
         //   }
         //   $scope.isText = true;
-        //   $scope.multiOpntion = false;
+        //   $scope.multiOption = false;
         //   $scope.isSubmit = false;
         //   break;
 
@@ -2526,7 +2550,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 33
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isNumeric = false;
           $scope.isSubmit = false;
           break;
@@ -2537,7 +2561,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 34
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isNumeric = false;
           $scope.isSubmit = false;
           break;
@@ -2556,7 +2580,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 35
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isNumeric = false;
           $scope.isSubmit = false;
           break;
@@ -2567,7 +2591,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 36
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isNumeric = false;
           $scope.isSubmit = false;
           break;
@@ -2590,7 +2614,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
           //   questionNumber: 37
           // }
           // $scope.isText = true;
-          // $scope.multiOpntion = false;
+          // $scope.multiOption = false;
           // $scope.isSubmit = false;
           $scope.getQuestion(60, "text");
           break;
@@ -2613,7 +2637,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 38
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isNumeric = false;
           $scope.isSubmit = false;
           break;
@@ -2624,7 +2648,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 39
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
@@ -2639,7 +2663,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 40
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
@@ -2653,10 +2677,10 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             question: "How many units are missing?",
             questionNumber: 41
           }
-          $scope.isText = true;
-          $scope.multiOpntion = false;
+          $scope.isText = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
-          $scope.isNumeric = false;
+          $scope.isNumeric = true;
           break;
 
         case "40-No":
@@ -2669,7 +2693,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 42
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
@@ -2680,7 +2704,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 43
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isNumeric = false;
           $scope.isSubmit = false;
           break;
@@ -2695,7 +2719,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 44
           }
           $scope.isText = true;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
@@ -2710,7 +2734,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 45
           }
           $scope.isText = true;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isNumeric = false;
           $scope.isSubmit = false;
 
@@ -2722,7 +2746,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
           //   questionNumber: 46
           // }
           // $scope.isText = true;
-          // $scope.multiOpntion = false;
+          // $scope.multiOption = false;
           // $scope.isSubmit = true;
           // $scope.isNumeric = false;
 
@@ -2740,7 +2764,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 47
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
@@ -2751,7 +2775,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 48
           }
           $scope.isText = true;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
@@ -2766,7 +2790,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 49
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isNumeric = false;
           $scope.isSubmit = false;
           break;
@@ -2777,7 +2801,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 50
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isNumeric = false;
           $scope.isSubmit = false;
           break;
@@ -2796,44 +2820,44 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
 
         case "19-No":
           $scope.questionObj = {
-            question: "Reprocure",
+            question: "Can it be reprocessed?",
             questionNumber: 51
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
 
         case "51-No":
           $scope.questionObj = {
-            question: "Recondition",
+            question: "Can it be reconditioned?",
             questionNumber: 52
           }
           $scope.isText = false;
           $scope.isNumeric = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           break;
 
         case "52-No":
           $scope.questionObj = {
-            question: "Canbalisation",
+            question: "Can it be cannibalised?",
             questionNumber: 53
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isNumeric = false;
           $scope.isSubmit = false;
           break;
 
         case "53-No":
           $scope.questionObj = {
-            question: "Destroy",
+            question: "Is it to be destroy?",
             questionNumber: 54
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
@@ -2844,20 +2868,21 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 55
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
 
         case "54-No":
           $scope.questionObj = {
-            question: "Salvage value",
+            question: "Input salvage value",
             questionNumber: 56
           }
-          $scope.isText = true;
-          $scope.multiOpntion = false;
+          $scope.isText = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
-          $scope.isNumeric = false;
+          $scope.isNumeric = true;
+          $scope.getNumericOption($scope.questionObj.questionNumber);
           break;
 
         case "55-No":
@@ -2882,11 +2907,11 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
 
         case "56-text":
           $scope.questionObj = {
-            question: "Retain",
+            question: "Can it be retained?",
             questionNumber: 57
           }
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
@@ -2897,11 +2922,11 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
 
         case "57-No":
           $scope.questionObj = {
-            question: "Dispose",
+            question: "Dispose salvage",
             questionNumber: 58
           }
           $scope.isText = true;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
           break;
@@ -2916,7 +2941,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             questionNumber: 61
           }
           $scope.isText = true;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isSubmit = false;
           $scope.isNumeric = false;
 
@@ -2949,18 +2974,22 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
         if ($scope.finalArray[$scope.finalArray.length - 1].type == "radio") {
           $scope.isText = false;
         } else if ($scope.finalArray[$scope.finalArray.length - 1].type == "text") {
-          $scope.isText = true;
+          if ($scope.questionObj.questionNumber == 29) {
+            $scope.isText = false;
+          } else {
+            $scope.isText = true;
+          }
         };
 
         if ($scope.questionObj.questionNumber == 16 || $scope.questionObj.questionNumber == 14 || $scope.questionObj.questionNumber == 13 || $scope.questionObj.questionNumber == 11 || $scope.questionObj.questionNumber == 31) {
           $scope.getMultipleOption($scope.questionObj.questionNumber);
         } else {
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
         }
 
-        if ($scope.questionObj.questionNumber == 59 || $scope.questionObj.questionNumber == 6) {
+        if ($scope.questionObj.questionNumber == 59 || $scope.questionObj.questionNumber == 6 || $scope.questionObj.questionNumber == 41 || $scope.questionObj.questionNumber == 32) {
           $scope.isText = false;
-          $scope.multiOpntion = false;
+          $scope.multiOption = false;
           $scope.isNumeric = true;
           $scope.getNumericOption($scope.questionObj.questionNumber);
         } else {
@@ -2999,27 +3028,27 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
             $scope.surveyDamaged = true;
             $scope.getQuestion(11, "Damage");
           }
-          // $scope.multiOpntion = true;
+          // $scope.multiOption = true;
           break;
 
         case 13:
           $scope.multiArray = ["Unloaded", "Partially Unloaded", "Not Unloaded"];
-          $scope.multiOpntion = true;
+          $scope.multiOption = true;
           break;
 
         case 14:
           $scope.multiArray = ["Containerised", "Open Vehicle"];
-          $scope.multiOpntion = true;
+          $scope.multiOption = true;
           break;
 
         case 16:
           $scope.multiArray = ["Holes", "Welding", "Door Caps", "Others"];
-          $scope.multiOpntion = true;
+          $scope.multiOption = true;
           break;
 
         case 31:
           $scope.multiArray = ["Good", "Average", "Bad"];
-          $scope.multiOpntion = true;
+          $scope.multiOption = true;
           break;
 
         default: console.log("Invalid choice");
@@ -3074,6 +3103,16 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
           $scope.numericValue[3] = $scope.wet;
           $scope.numericValue[4] = $scope.damaged;
           break;
+
+        case 20:
+          $scope.numericInputArray = ["Amt. in inr", "In %"];
+          $scope.numericValue[0] = $scope.amt;
+          $scope.numericValue[1] = $scope.percentage;
+
+        case 56:
+          $scope.numericInputArray = ["Amt. in inr", "In %"];
+          $scope.numericValue[0] = $scope.amt;
+          $scope.numericValue[1] = $scope.percentage;
 
         default: console.log("Invalid choice");
       }

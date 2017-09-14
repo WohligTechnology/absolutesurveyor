@@ -1,6 +1,6 @@
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'ngCordovaOauth'])
 
-  .run(function ($ionicPlatform, $ionicPopup, $rootScope, $ionicHistory) {
+  .run(function ($ionicPlatform, $ionicPopup, $rootScope, $ionicHistory, backgroundLocationTracking) {
     $ionicPlatform.ready(function () {
       if (window.cordova && window.cordova.plugins.Keyboard) {
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -22,6 +22,31 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             });
         }
       }
+
+
+      // For location tracking
+      function startBackgroundService() {
+        if (window.cordova) {
+          cordova.plugins.diagnostic.isLocationEnabled(function (enabled) {
+            console.log("enabled", enabled);
+            // alert("Location is " + (enabled ? "enabled" : "disabled"));
+            if (enabled == true) {
+              backgroundLocationTracking.startTracking();
+            } else {
+              alert("Please enable location service");
+              cordova.plugins.diagnostic.switchToLocationSettings();
+            }
+          }, function (error) {
+            // alert("The following error occurred: " + error);
+            alert("Unable to start Location service");
+          });
+        } else {
+          // alert("window.cordova");
+        }
+      };
+      startBackgroundService();
+
+
 
       if (window.plugins) {
         if (window.plugins.OneSignal) {
@@ -46,6 +71,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             $rootScope.deviceId = ids.userId;
           });
         }
+      };
+
+      document.addEventListener("resume", onResume, false);
+
+      function onResume() {
+        if (($rootScope.latitude == undefined && $rootScope.latitude == "") && ($rootScope.longitude == undefined && $rootScope.longitude == "")) {
+          startBackgroundService();
+        }
+        // Handle the resume event
       }
 
       document.addEventListener('deviceready', function () {

@@ -42,7 +42,19 @@
          <span class="input-label ">Address</span>
          <textarea placeholder="Address" ng-model="newUser.address" name="address" class="" required></textarea>
        </label>
-  <button class="button button-full button-positive" type="Submit" ng-disabled="user.$invalid && msgSub">Submit</button>
+
+  <label class="item item-input ">
+        <span class="input-label ">Latitude</span>
+          <input class="numeric-input readOnly-input" ng-readonly="true" ng-model="latitude" type="text">
+      </label>
+
+  <label class="item item-input ">
+        <span class="input-label ">Longitude</span>
+          <input class="numeric-input readOnly-input" ng-readonly="true" ng-model="longitude" type="text">
+      </label>
+
+  <button class="button button-full button-positive" type="Submit" ng-disabled="isDisable">Submit</button>
+  <p class="text-center font-color" ng-if="isDisable == true">Waiting for location coordinates</p>
 </form>
 <div class="msg" ng-if="msg">
   <p class="text-center notask">Uploading in background</p>
