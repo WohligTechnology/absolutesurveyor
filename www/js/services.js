@@ -1,6 +1,6 @@
 // var adminurl = "http://wohlig.io/api/"; //local
 
-// var adminurl = "http://104.198.28.29:80/api/"; //server 
+// var adminurl = "http://103.216.164.191:80/api/"; //server 
 // var adminurl = "http://absolute.wohlig.co.in/api/"; //Test server
 var adminurl = "http://absolutesurveyors.com/api/"; //server
 
