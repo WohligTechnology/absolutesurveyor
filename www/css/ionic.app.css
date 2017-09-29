@@ -10047,3 +10047,23 @@ body {
 
 .font-color {
   color: #ef473a; }
+
+.sub-width {
+  width: 100%; }
+
+.btn-assign {
+  margin-top: 7px;
+  background-color: #263b97;
+  color: white;
+  height: 30px;
+  width: 100%;
+  border: 1px solid #263b97;
+  border-radius: 2px; }
+
+.no-data {
+  text-align: center;
+  margin-top: 50%;
+  font-size: 20px; }
+
+.hide-refresh {
+  display: none !important; }

@@ -190,6 +190,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             controller: 'MarineSurveyCtrl'
           }
         }
+      })
+
+      .state('app.selectSurveyor', {
+        url: '/selectSurveyor',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/selectSurveyor.html',
+            controller: 'SelectSurveyorCtrl'
+          }
+        }
       });
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/app/task');
@@ -217,4 +227,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
       }
     };
+  })
+
+  .directive('focusMe', function ($timeout) {
+    return {
+      link: function (scope, element, attrs) {
+        $timeout(function () {
+          element[0].focus();
+        }, 150);
+      }
+    };
   });
+

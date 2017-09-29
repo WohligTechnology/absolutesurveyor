@@ -1,8 +1,8 @@
 // var adminurl = "http://wohlig.io/api/"; //local
 
 // var adminurl = "http://103.216.164.191:80/api/"; //server 
-// var adminurl = "http://absolute.wohlig.co.in/api/"; //Test server
-var adminurl = "http://absolutesurveyors.com/api/"; //server
+var adminurl = "http://absolute.wohlig.co.in/api/"; //Test server
+// var adminurl = "http://absolutesurveyors.com/api/"; //server
 
 // var imgpath = adminurl + "uploadfile/getupload?file=";
 var imgurl = adminurl + "upload/";
@@ -48,7 +48,7 @@ angular.module('starter.services', [])
       },
 
       Decline: function (data, callback) {
-
+        // console.log("data", data);
         $http({
           url: adminurl + 'Assignment/decline',
           method: 'POST',
@@ -76,6 +76,26 @@ angular.module('starter.services', [])
         }).success(callback);
       },
 
+      getNearestOffice: function (data, callback) {
+
+        $http({
+          url: adminurl + 'Office/getNearestOffice',
+          method: 'POST',
+          withCredentials: true,
+          data: data
+        }).success(callback);
+      },
+
+      //Assign surveyor 
+      AppointSurveyorFromApp: function (data, callback) {
+
+        $http({
+          url: adminurl + 'Assignment/AppointSurveyorFromApp',
+          method: 'POST',
+          withCredentials: true,
+          data: data
+        }).success(callback);
+      },
     }
   })
 

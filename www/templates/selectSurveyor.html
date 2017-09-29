@@ -1,0 +1,42 @@
+<ion-view view-title="Select Surveyor">
+
+    <div class="bar bar-subheader remove-padding button-border">
+        <div class="item-input-inset sub-width">
+
+            <label class="item-input-wrapper search-input-resize" focus-me>
+            <i class="icon ion-ios7-search placeholder-icon"></i>
+            <input type="search" ng-model="searchObj.keyword" placeholder="Search" ng-change="getSurveyours();">
+        </label>
+            <!--<button class="button button-clear" ng-click="clearfilter(searchField);"> 
+            Clear
+        </button>-->
+        </div>
+    </div>
+    <!--<ion-content class="has-header">-->
+    <ion-content class="list has-header">
+        <div>
+            <div class="row">
+                <div class="col">
+                    Search result:
+                </div>
+            </div>
+
+            <div class="item item-divider" style="padding: 0" ng-if="searchResultArray.length > 0">
+                <div class="row row-bottom-border" ng-repeat="searchResult in searchResultArray track by $index" ng-click="selectItem(searchResult,searchField);">
+                    <div class="col col-75" style="padding: 16px;">
+                        <h2>{{searchResult.name}}</h2>
+                    </div>
+                    <div class="col col-25" style="text-align: center">
+                        <button class="btn-assign" ng-click="assignSurveyor(searchResult)">Assign</button>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="searchResultArray.length == 0">
+                <div class="no-data">
+                    <p>NO DATA FOUND</p>
+                </div>
+            </div>
+
+        </div>
+    </ion-content>
+</ion-view>
