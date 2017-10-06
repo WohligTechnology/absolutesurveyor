@@ -3163,7 +3163,7 @@ angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
   })
 
 
-  .controller('SelectSurveyorCtrl', function ($scope, $rootScope, MyServices, $ionicPopup, MyFlagValue) {
+  .controller('SelectSurveyorCtrl', function ($scope, $rootScope, MyServices, $ionicPopup, MyFlagValue, $state) {
 
     $scope.searchObj = {};
     $scope.searchObj.keyword = null;

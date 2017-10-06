@@ -10067,3 +10067,6 @@ body {
 
 .hide-refresh {
   display: none !important; }
+
+.decline-bg-color {
+  background-color: #dc292c; }
