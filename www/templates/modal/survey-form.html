@@ -10,7 +10,7 @@
          <span class="input-label ">Date of Survey</span>
          <!--<input ng-model="newUser.surveyDate" type="date" name="surveyDate">
          <span id="myDate" ng-click="state = false" ng-if="state == true">{{maxDate}}</span>-->
-         <input for="myDate" type="date" name="surveyDate" ng-model="newUser.surveyDate" max="{{maxDate}}"/>
+         <input for="myDate" type="date" class="input-space" name="surveyDate" ng-model="newUser.surveyDate" max="{{maxDate}}" required/>
        </label>
   <!-- <label class="item item-input ">
          <span class="input-label ">Start time</span>
@@ -26,13 +26,13 @@
 </label> -->
   <label class="item item-input ">
         <span class="input-label ">Start time</span>
-        <input type="time" name="timeInput2" ng-model="newUser.startTime"   name="startTime" min="00:00:00" max="23:59:59" step="1" required />
+        <input type="time" name="timeInput2" class="input-space" ng-model="newUser.startTime"   name="startTime" min="00:00:00" max="23:59:59" step="1" required />
 
       </label>
   <label class="item item-input ">
         <span class="input-label ">End time</span>
         <!-- {{newUser.startTime | date : "HH:mm:ss"}} -->
-         <input type="time" name="timeInput3" ng-model="newUser.endTime" name="endTime" min="{{newUser.startTime | date:'HH:mm:ss'}}" max="23:59:59" step="1" required />
+         <input type="time" name="timeInput3" class="input-space" ng-model="newUser.endTime" name="endTime" min="{{newUser.startTime | date:'HH:mm:ss'}}" max="23:59:59" step="1" required />
         <!-- {{myForm.timeInput3.$valid}} -->
       </label>
   <!-- <p ng-if="!myForm.timeInput3.$valid">Please enter corrrect time</p> -->
@@ -40,10 +40,10 @@
   </label>
   <label class="item item-input ">
          <span class="input-label ">Address</span>
-         <textarea placeholder="Address" ng-model="newUser.address" name="address" class="" required></textarea>
+         <textarea placeholder="Address" class="input-space" ng-model="newUser.address" name="address" required></textarea>
        </label>
 
-  <label class="item item-input ">
+  <!--<label class="item item-input ">
         <span class="input-label ">Latitude</span>
           <input class="numeric-input readOnly-input" ng-readonly="true" ng-model="latitude" type="text">
       </label>
@@ -51,10 +51,11 @@
   <label class="item item-input ">
         <span class="input-label ">Longitude</span>
           <input class="numeric-input readOnly-input" ng-readonly="true" ng-model="longitude" type="text">
-      </label>
+      </label>-->
 
-  <button class="button button-full button-positive" type="Submit" ng-disabled="isDisable">Submit</button>
-  <p class="text-center font-color" ng-if="isDisable == true">Waiting for location coordinates</p>
+  <button class="button button-full button-positive" ng-disabled="user.$invalid" type="Submit">Submit</button>
+  <!--<button class="button button-full button-positive" type="Submit">Submit</button>-->
+  <!--<p class="text-center font-color" ng-if="isDisable == true">Waiting for location coordinates</p>-->
 </form>
 <div class="msg" ng-if="msg">
   <p class="text-center notask">Uploading in background</p>

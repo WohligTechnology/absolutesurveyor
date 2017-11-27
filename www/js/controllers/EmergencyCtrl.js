@@ -1,0 +1,1 @@
+connector.controller('EmergencyCtrl', function ($scope) { })

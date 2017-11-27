@@ -44,7 +44,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           // alert("window.cordova");
         }
       };
-      startBackgroundService();
+      // startBackgroundService();
 
 
 
@@ -77,7 +77,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       function onResume() {
         if (($rootScope.latitude == undefined && $rootScope.latitude == "") && ($rootScope.longitude == undefined && $rootScope.longitude == "")) {
-          startBackgroundService();
+          // startBackgroundService();
         }
         // Handle the resume event
       }

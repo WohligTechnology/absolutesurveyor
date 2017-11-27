@@ -10070,3 +10070,6 @@ body {
 
 .decline-bg-color {
   background-color: #dc292c; }
+
+.input-space {
+  padding-left: 14px !important; }
