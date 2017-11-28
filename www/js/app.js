@@ -23,10 +23,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             });
         }
       }
-      LocalStorageService.uploadingCompleted();
-      LocalStorageService.uploadFiles(function (err, data) {
-        console.log(err, data);
-      });
+
 
       // // For location tracking
       // function startBackgroundService() {
