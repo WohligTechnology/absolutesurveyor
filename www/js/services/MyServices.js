@@ -84,5 +84,6 @@ service.factory('MyServices', function ($http) {
         data: data
       }).success(callback);
     },
-  });
+  }
+});
 
