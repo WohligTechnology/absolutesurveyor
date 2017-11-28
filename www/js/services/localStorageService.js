@@ -90,9 +90,13 @@ service.service('LocalStorageService', function (MyServices, $cordovaFileTransfe
           var assignment = _.first(localStorage);
           MyServices.mobileSubmit(assignment, function (data) {
             console.log("final data#####################", data);
+            var localStorage = LocalStorageMain.getLocalValues();
+            localStorage = _.drop(localStorage);
+            LocalStorageMain.saveStorage(localStorage);
+            callback(null, data);
           })
-          callback();
-        }
+
+        },
       }, function (err, data) {
         if (err) {
           callback(err);
