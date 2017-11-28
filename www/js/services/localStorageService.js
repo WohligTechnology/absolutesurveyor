@@ -12,15 +12,15 @@ service.service('LocalStorageService', function ($ionicPlatform, MyServices, $co
   //     jir: [assignmentFileObject],
   //     document: [assignmentFileObject]
   // };
+
+  var LocalStorageMain = this;
+
   $ionicPlatform.ready(function () {
     LocalStorageService.uploadingCompleted();
     LocalStorageService.uploadFiles(function (err, data) {
       console.log(err, data);
     });
   });
-
-
-  var LocalStorageMain = this;
 
   //Function to Add document to local storage
   this.addToLocalStorage = function (assignment) {
