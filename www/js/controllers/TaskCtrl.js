@@ -1,4 +1,4 @@
-connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ionicNavBarDelegate, $state, $ionicHistory, $rootScope, $ionicLoading, $cordovaFileTransfer, $cordovaNetwork, MyServices, $timeout, MyFlagValue) {
+connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ionicNavBarDelegate, $state, $ionicHistory, $rootScope, $ionicLoading, $cordovaFileTransfer, $cordovaNetwork, MyServices, $timeout, MyFlagValue, LocalStorageService) {
 
     // Pagination Start
     //  Get Task
@@ -19,6 +19,10 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
     $scope.more = {
         Data: true
     };
+
+    LocalStorageService.uploadFiles(function (err, data) {
+        console.log("####### err, data ######", err, data)
+    });
 
     //To display refresh button
     angular.element(document.getElementsByClassName("right-btn")).css('display', 'block');
@@ -50,7 +54,7 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
     //To set flag for task tab
     MyFlagValue.setFlag("task");
     if ($scope.profile) {
-        console.log($scope.profile);
+        // console.log($scope.profile);
     } else {
         $state.go('login');
     }
@@ -79,7 +83,7 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
         // listen for Online event
         $rootScope.$on('$cordovaNetwork:online', function (event, networkState) {
             $rootScope.taskpending = $.jStorage.get('taskpending');
-            console.log($rootScope.taskpending);
+            // console.log($rootScope.taskpending);
             var onlineState = networkState;
             if ($rootScope.shouldUpload) {
                 $rootScope.shouldUpload = false;
@@ -110,10 +114,10 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
         $rootScope.$on('$cordovaNetwork:offline', function (event, networkState) {
             $rootScope.taskpending = [];
             $rootScope.taskpending = $.jStorage.get('taskpending');
-            console.log($rootScope.taskpending);
+            // console.log($rootScope.taskpending);
 
             var offlineState = networkState;
-            console.log(offlineState);
+            // console.log(offlineState);
             $scope.doRefresh();
         });
 
@@ -121,21 +125,21 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
 
     function uploadData(value, i, callback) {
         $scope.document = value;
-        console.log($scope.document.taskPendingStatus);
+        // console.log($scope.document.taskPendingStatus);
         if (!value.taskPendingStatus) {
             $rootScope.taskpending[i].taskPendingStatus = true;
-            console.log(value);
-            console.log($scope.document);
+            // console.log(value);
+            // console.log($scope.document);
             $scope.photos = _.cloneDeep($scope.document.photos);
             $scope.doc = _.cloneDeep($scope.document.doc);
             $scope.jir = _.cloneDeep($scope.document.jir);
-            console.log($scope.photos);
-            console.log($scope.doc);
-            console.log($scope.jir);
+            // console.log($scope.photos);
+            // console.log($scope.doc);
+            // console.log($scope.jir);
             async.parallel({
                 photos: function (callback) {
                     async.each(_.flatten($scope.photos), function (value, callback) {
-                        console.log(value);
+                        // console.log(value);
                         uploadImage(value, 'photos', callback);
 
                     }, function (err, data) {
@@ -144,7 +148,7 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
                 },
                 document: function (callback) {
                     async.each(_.flatten($scope.doc), function (value, callback) {
-                        console.log(value);
+                        // console.log(value);
                         uploadImage(value, 'Document', callback);
 
                     }, function (err, data) {
@@ -153,7 +157,7 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
                 },
                 jir: function (callback) {
                     async.each(_.flatten($scope.jir), function (value, callback) {
-                        console.log(value);
+                        // console.log(value);
                         uploadImage(value, 'JIR', callback);
 
                     }, function (err, data) {
@@ -165,7 +169,7 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
                 $scope.document.doc = [];
                 $scope.document.jir = [];
                 $scope.document.photos.length = 0;
-                console.log("done");
+                // console.log("done");
                 // $scope.photos1 = _.flatten($scope.photos);
                 _.forEach($scope.photos1, function (value) {
                     $scope.document.photos.push({
@@ -188,10 +192,10 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
                         "file": value
                     });
                 });
-                console.log("hry", $scope.document);
+                // console.log("hry", $scope.document);
                 MyServices.mobileSubmit($scope.document, function (data) {
                     if (data.value) {
-                        console.log(data);
+                        // console.log(data);
                         $scope.taskcomplete.push($scope.document);
                         $scope.photos = [];
                         $scope.doc = [];
@@ -201,7 +205,7 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
                         $scope.jir1 = [];
                         callback(null, $scope.taskcomplete);
                     } else {
-                        console.log(data.value);
+                        // console.log(data.value);
                         callback(null, data);
                     }
                 });
@@ -211,13 +215,13 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
     }
 
     $scope.taskfun = function () {
-        console.log("online status", $rootScope.isOnline);
-        console.log($rootScope.taskpending);
+        // console.log("online status", $rootScope.isOnline);
+        // console.log($rootScope.taskpending);
 
         // var onlineState = networkState;
         if (_.isEmpty($rootScope.taskpending)) {
 
-            console.log("empty", $rootScope.taskpending);
+            // console.log("empty", $rootScope.taskpending);
             // $scope.doRefresh();
             $scope.profile = {};
             $scope.id = {};
@@ -235,18 +239,18 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
                 id: $scope.id,
                 page: $scope.page
             }, function (data) {
-                console.log($scope.id);
+                // console.log($scope.id);
                 $scope.notask = false;
-                console.log(data.data.length);
+                // console.log(data.data.length);
                 if (data.data.length === 0) {
                     $ionicLoading.hide();
                     $scope.notask = true;
                     $scope.more.Data = false;
-                    console.log(data);
+                    // console.log(data);
                 }
                 if (data.value) {
                     if (data.data.length > 0) {
-                        console.log(data);
+                        // console.log(data);
                         _.forEach(data.data, function (value) {
                             $scope.task.push(value);
                         });
@@ -287,7 +291,7 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
                                 callback(err);
                             } else {
                                 $rootScope.taskpending.shift();
-                                console.log("$rootScope.taskpending", $rootScope.taskpending);
+                                // console.log("$rootScope.taskpending", $rootScope.taskpending);
                                 callback(null, data);
                             }
                         });
@@ -305,14 +309,14 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
                             id: $scope.id,
                             page: $scope.page
                         }, function (data) {
-                            console.log($scope.id);
+                            // console.log($scope.id);
                             $scope.notask = false;
-                            console.log(data.data.length);
+                            // console.log(data.data.length);
                             if (data.data.length === 0) {
                                 $ionicLoading.hide();
                                 $scope.notask = true;
                                 $scope.more.Data = false;
-                                console.log(data);
+                                // console.log(data);
                             }
                             if (data.value) {
                                 if (data.data.length > 0) {
@@ -359,7 +363,7 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
         if ($scope.task) {
             $rootScope.taskpending = $.jStorage.get('taskpending');
 
-            console.log("i am in the offline man");
+            // console.log("i am in the offline man");
             if (_.isArray($rootScope.taskpending) && _.isArray($scope.task)) {
 
                 _.each($scope.task, function (v) {
@@ -370,11 +374,11 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
                         var val1 = values.assignId.toString();
 
 
-                        console.log("taskpending .................", values, val1, val2);
+                        // console.log("taskpending .................", values, val1, val2);
 
                         if (val1 == val2) {
                             v.taskPendingStatus = true;
-                            console.log("taskpending ................. true", v);
+                            // console.log("taskpending ................. true", v);
 
                         }
                     })
@@ -390,7 +394,7 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
                     "Oct", "Nov", "Dec"
                 ];
             var items = $scope.task;
-            console.log(items);
+            // console.log(items);
             var itemsGroupedByMonth = function (items) {
                 var
                     groups = [
@@ -412,7 +416,7 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
                 for (var i = 0; i < items.length; i++) {
                     groups[new Date(items[i].surveyDate).getMonth()].push(items[i]);
                 }
-                console.log(groups);
+                // console.log(groups);
                 for (var i = 0; i < groups.length; i++) {
                     if (groups[i].length) {
                         itemGroupedByMonths.push({
@@ -426,7 +430,7 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
             };
 
             $scope.monthWiseGroup = itemsGroupedByMonth(items);
-            console.log($scope.monthWiseGroup);
+            // console.log($scope.monthWiseGroup);
         }
     };
     $scope.offtask();
@@ -434,7 +438,7 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
     $scope.taskfun();
     $scope.doRefresh = function () {
 
-        console.log('Refreshing!');
+        // console.log('Refreshing!');
         $timeout(function () {
             //simulate async response
             if ($cordovaNetwork.isOnline()) {
@@ -451,12 +455,12 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
             template: 'Loading...',
             duration: 3000
         }).then(function () {
-            console.log("The loading indicator is now displayed");
+            // console.log("The loading indicator is now displayed");
         });
     };
     $scope.hide = function () {
         $ionicLoading.hide().then(function () {
-            console.log("The loading indicator is now hidden");
+            // console.log("The loading indicator is now hidden");
         });
     };
     $scope.decline = {};
@@ -466,12 +470,12 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
         $scope.decline.assignId = assignId;
         $scope.decline.empId = $scope.id;
         $scope.decline.message = message;
-        console.log($scope.decline);
+        // console.log($scope.decline);
         //  $scope.decline.empMail =$scope.profile.mai;
         MyServices.Decline($scope.decline, function (data) {
             if (data.value) {
                 $scope.hide();
-                console.log(data);
+                // console.log(data);
                 $scope.doRefresh();
             }
         });
@@ -480,48 +484,48 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
     //upload image----------------------------------------------------------------
     // $scope.uploadImage = function (imageURI, arrayName, callback) {
     function uploadImage(imageURI, arrayName, callback) {
-        console.log('imageURI', imageURI);
+        // console.log('imageURI', imageURI);
         // $scope.showLoading('Uploading Image...', 10000);
         $cordovaFileTransfer.upload(adminurl + 'upload', imageURI)
             .then(function (result) {
                 // Success!
                 // $scope.hideLoading();
                 result.response = JSON.parse(result.response);
-                console.log(result.response.data[0]);
+                // console.log(result.response.data[0]);
 
                 if (arrayName === 'photos') {
                     // $scope.photos = _.flatten($scope.photos);
                     $scope.photos1.push(result.response.data[0]);
-                    console.log($scope.photos1);
+                    // console.log($scope.photos1);
                     // $scope.photos = _.chunk($scope.photos, 3);
                 } else if (arrayName === 'Document') {
                     // $scope.doc = _.flatten($scope.doc);
                     $scope.doc1.push(result.response.data[0]);
-                    console.log($scope.doc1);
+                    // console.log($scope.doc1);
                     // $scope.doc = _.chunk($scope.doc, 3);
                 } else {
                     // $scope.jir = _.flatten($scope.jir);
                     $scope.jir1.push(result.response.data[0]);
-                    console.log($scope.jir1);
+                    // console.log($scope.jir1);
                     // $scope.jir = _.chunk($scope.jir, 3);
                 }
                 callback(null, result);
             }, function (err) {
-                console.log(err);
+                // console.log(err);
                 // Error
             }, function (progress) {
-                // console.log(err);
+                // // console.log(err);
                 // constant progress updates
             });
     };
 
     $scope.information = function (index, parent) {
 
-        console.log($scope.monthWiseGroup[parent].items[index], 'inside match');
+        // console.log($scope.monthWiseGroup[parent].items[index], 'inside match');
         $scope.insideData = $scope.monthWiseGroup[parent].items[index];
-        console.log(index, 'index');
+        // console.log(index, 'index');
         $scope.insideData.surveyDate = new Date($scope.monthWiseGroup[parent].items[index].surveyDate);
-        console.log($scope.insideData.surveyDate);
+        // console.log($scope.insideData.surveyDate);
         $scope.infos = $ionicPopup.show({
             templateUrl: 'templates/modal/info.html',
             scope: $scope,
@@ -560,7 +564,7 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
         });
 
         myPopup.then(function (res) {
-            console.log('Tapped!', res);
+            // console.log('Tapped!', res);
         });
     };
 

@@ -89,7 +89,7 @@ service.factory('MyServices', function ($http) {
         uploadDocument: function (data, callback) {
 
             $http({
-                url: adminurl + 'Upload/index?file=/home/wohlig/Documents/htdocs/absolutesurveyor/www/img/cover.jpg',
+                url: adminurl + 'Upload/readFile?file=/home/wohlig/Documents/htdocs/absolutesurveyor/www/img/cover.jpg',
                 method: 'POST',
                 withCredentials: true,
                 data: data
