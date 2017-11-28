@@ -1,6 +1,6 @@
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'ngCordovaOauth'])
 
-  .run(function ($ionicPlatform, $ionicPopup, $rootScope, $ionicHistory, backgroundLocationTracking) {
+  .run(function ($ionicPlatform, $ionicPopup, $rootScope, $ionicHistory, backgroundLocationTracking, LocalStorageService) {
     $ionicPlatform.ready(function () {
       if (window.cordova && window.cordova.plugins.Keyboard) {
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -23,6 +23,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
       }
 
+      LocalStorageService.uploadFiles(function (err, data) {
+        console.log(err, data);
+      });
 
       // For location tracking
       function startBackgroundService() {

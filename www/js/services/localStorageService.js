@@ -1,4 +1,4 @@
-service.service('LocalStorageService', function (MyServices) {
+service.service('LocalStorageService', function (MyServices, $cordovaFileTransfer) {
 
   // Local Storage Single Assignment fileObject
   // var assignmentFileObject = {
@@ -44,14 +44,15 @@ service.service('LocalStorageService', function (MyServices) {
     var localStorage = this.getLocalValues();
     var assignment = _.first(localStorage);
     if (assignment) {
-      var unUploadedImages = _.filter(assignment.images, function (n) {
-        return !n.serverValue;
+      var unUploadedImages = _.filter(assignment.photos, function (n) {
+        return !n.file;
       });
       var unUploadedJir = _.filter(assignment.jir, function (n) {
-        return !n.serverValue;
+        return !n.file;
       });
-      var unUploadedDocument = _.filter(assignment.document, function (n) {
-        return !n.serverValue;
+      console.log(assignment.jir);
+      var unUploadedDocument = _.filter(assignment.doc, function (n) {
+        return !n.file;
       });
       async.series({
         unUploadedImages: function (callback) {
@@ -59,7 +60,7 @@ service.service('LocalStorageService', function (MyServices) {
             callback();
           } else {
             async.concatLimit(unUploadedImages, 1, function (data, callback) {
-              LocalStorageMain.uploadDocument(data, "images", callback);
+              LocalStorageMain.uploadDocument(data, "photos", callback);
             }, callback);
           }
         },
@@ -67,6 +68,7 @@ service.service('LocalStorageService', function (MyServices) {
           if (unUploadedJir.length === 0) {
             callback();
           } else {
+            console.log(unUploadedJir);
             async.eachSeries(unUploadedJir, function (data, callback) {
               LocalStorageMain.uploadDocument(data, "jir", callback);
               // callback();
@@ -78,14 +80,17 @@ service.service('LocalStorageService', function (MyServices) {
             callback();
           } else {
             async.concatLimit(unUploadedDocument, 1, function (data, callback) {
-              LocalStorageMain.uploadDocument(data, "document", callback);
+              LocalStorageMain.uploadDocument(data, "doc", callback);
             }, callback);
           }
         },
         uploadToAssignment: function (callback) {
           // Upload to uploadToAssignment maping and all
           var localStorage = LocalStorageMain.getLocalValues();
-
+          var assignment = _.first(localStorage);
+          MyServices.mobileSubmit(assignment, function (data) {
+            console.log("final data#####################", data);
+          })
           callback();
         }
       }, function (err, data) {
@@ -96,32 +101,33 @@ service.service('LocalStorageService', function (MyServices) {
         }
       });
     } else {
-      LocalStorageMain.uploadDocument({}, "jir", callback);
       console.log("No more assignment documents to upload");
     }
   };
 
   this.uploadDocument = function (fileObject, objectKey, callback) {
-    // fileObject.name ==> Upload
-    // fileObject.serverValue = values came from upload
 
-    // MyServices.uploadDocument({
-    //   file: "/home/wohlig/Documents/htdocs/absolutesurveyor/www/img/cover.jpg"
-    // }, function (data) {
+    console.log(fileObject);
 
-    //   callback(null, fileObject);
-    // })
-    var localStorage = this.getLocalValues();
-    var indexVal = _.findIndex(localStorage[0][objectKey], function (n) {
-      return fileObject.name == n.name;
-    });
-    localStorage[0][objectKey][indexVal].serverValue = "Chintan Shah";
-    this.saveStorage(localStorage);
-    callback();
+    $cordovaFileTransfer.upload(adminurl + 'upload', fileObject.name).then(function (result) {
+      result.response = JSON.parse(result.response);
+      var localStorage = LocalStorageMain.getLocalValues();
+      var indexVal = _.findIndex(localStorage[0][objectKey], function (n) {
+        return fileObject.name == n.name;
+      });
+      localStorage[0][objectKey][indexVal].file = result.response.data[0];
+      LocalStorageMain.saveStorage(localStorage);
+      callback();
+    }, function (err) {
+      console.log(err);
+      callback();
+    }
+    );
+
   };
 
   this.isItLocalStorageData = function (assignmentList) {
-    var localStorage = this.getLocalValues();
+    var localStorage = LocalStorageMain.getLocalValues();
     _.each(assignmentList, function (assignment) {
       var isThereInLocal = _.find(localStorage, function (n) {
         return assignment._id == n._id;

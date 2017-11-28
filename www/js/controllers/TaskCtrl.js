@@ -7,9 +7,7 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ioni
 
   // UI alerts if already in localStorage
 
-  LocalStorageService.uploadFiles(function (err, data) {
-    console.log(err, data);
-  });
+
 
   $scope.profile = {};
   $scope.profile = $.jStorage.get('profile');

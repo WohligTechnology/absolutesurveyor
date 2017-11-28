@@ -25,7 +25,7 @@
 
         </div>
         <div class="item item-image">
-          <div class="row" ng-repeat="pic in photos">
+          <div class="row" ng-repeat="pic in photosChunk">
             <div class=" col-33" ng-click="showConfirm(data,'photos')" ng-repeat="data in pic">
               <!-- <div class="img-upload" ng-if="data" ng-style="{'background-image':'url({{data|uploadpath:100:100:'cover'}})'}"> -->
               <div class="img-upload">
@@ -69,7 +69,7 @@
           <h3>Document</h3>
         </div>
         <div class="item item-image">
-          <div class="row" ng-repeat="pic in doc">
+          <div class="row" ng-repeat="pic in docChunk">
             <div class="img-upload col-33" ng-click="showConfirm(data,'Document')" ng-repeat="data in pic">
               <!-- <div class="img-upload" ng-if="data" ng-style="{'background-image':'url({{data|uploadpath:100:100:'cover'}})'}"> -->
               <div class="img-upload">
@@ -94,7 +94,7 @@
         </div>
         <div class="item item-image">
           <p ng-if="!photos">no documents</p>
-          <div class="row" ng-repeat="pic in jir">
+          <div class="row" ng-repeat="pic in jirChunk">
             <div class="img-upload col-33" ng-click="showConfirm(data,'JIR')" ng-repeat="data in pic">
               <!-- <div class="img-upload" ng-if="data" ng-style="{'background-image':'url({{data|uploadpath:100:100:'cover'}})'}"> -->
               <div class="img-upload">

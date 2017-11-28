@@ -34,9 +34,9 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
 
     MyFlagValue.setFlag("history");
 
-    LocalStorageService.uploadFiles(function (err, data) {
-        console.log("####### err, data ######", err, data)
-    });
+    // LocalStorageService.uploadFiles(function (err, data) {
+    //     console.log("####### err, data ######", err, data)
+    // });
 
     //To display refresh button
     angular.element(document.getElementsByClassName("right-btn")).css('display', 'block');

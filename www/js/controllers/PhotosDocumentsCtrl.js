@@ -21,6 +21,9 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $filter, $ionicNav
     $scope.newUser = {};
     $scope.newUser.surveyDate = new Date();
 
+
+
+
     //To hide refresh button
     angular.element(document.getElementsByClassName("right-btn")).css('display', 'none');
 
@@ -85,7 +88,7 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $filter, $ionicNav
                                             retry: 0
                                         });
                                     });
-                                    $scope.photos = _.chunk($scope.photos, 3);
+                                    $scope.photosChunk = _.chunk($scope.photos, 3);
                                 } else if (arrayName === 'Document') {
                                     $scope.doc = _.flatten($scope.doc);
                                     _.forEach(results, function (value) {
@@ -94,7 +97,7 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $filter, $ionicNav
                                             retry: 0
                                         });
                                     });
-                                    $scope.doc = _.chunk($scope.doc, 3);
+                                    $scope.docChunk = _.chunk($scope.doc, 3);
                                 } else {
                                     $scope.jir = _.flatten($scope.jir);
                                     _.forEach(results, function (value) {
@@ -103,7 +106,7 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $filter, $ionicNav
                                             retry: 0
                                         });
                                     });
-                                    $scope.jir = _.chunk($scope.jir, 3);
+                                    $scope.jirChunk = _.chunk($scope.jir, 3);
                                 }
                             }, function (error) {
                                 console.log('Error: ' + JSON.stringify(error));
@@ -127,7 +130,7 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $filter, $ionicNav
                                     retry: 0
                                 });
                             });
-                            $scope.photos = _.chunk($scope.photos, 3);
+                            $scope.photosChunk = _.chunk($scope.photos, 3);
                         } else if (arrayName === 'Document') {
                             $scope.doc = _.flatten($scope.doc);
                             _.forEach(results, function (value) {
@@ -136,7 +139,7 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $filter, $ionicNav
                                     retry: 0
                                 });
                             });
-                            $scope.doc = _.chunk($scope.doc, 3);
+                            $scope.docChunk = _.chunk($scope.doc, 3);
                         } else {
                             $scope.jir = _.flatten($scope.jir);
                             _.forEach(results, function (value) {
@@ -145,7 +148,7 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $filter, $ionicNav
                                     retry: 0
                                 });
                             });
-                            $scope.jir = _.chunk($scope.jir, 3);
+                            $scope.jirChunk = _.chunk($scope.jir, 3);
                         }
                     }, function (error) {
                         console.log('Error: ' + JSON.stringify(error));
@@ -295,9 +298,6 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $filter, $ionicNav
         $scope.document = _.cloneDeep(newuser);
         console.log("$scope.document", $scope.document);
         $scope.msgSub = true;
-        $scope.document.photos = {};
-        $scope.document.doc = {};
-        $scope.document.jir = {};
         $scope.document.photos = _.clone($scope.photos);
         $scope.document.doc = _.clone($scope.doc);
         $scope.document.jir = _.clone($scope.jir);
@@ -417,20 +417,6 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $filter, $ionicNav
         });
 
     }
-
-    //To disable submit button
-    // setInterval(function () {
-    //   if (($rootScope.latitude != undefined && $rootScope.latitude != "") && ($rootScope.longitude != undefined && $rootScope.longitude != "")) {
-    //     // alert("$rootScope.latitude " + $rootScope.latitude + " $rootScope.longitude " + $rootScope.longitude);
-    //     if ($scope.isDisable == true) {
-    //       $scope.isDisable = false;
-    //       $scope.$apply();
-    //     }
-    //   } else {
-    //     $scope.isDisable = true;
-    //   }
-    // }, 1000);
-
 
     //msg----------------------------------------------------------------------00
 
