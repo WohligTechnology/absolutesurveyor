@@ -1,5 +1,31 @@
 //To show all history of user
 connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarDelegate, $state, $rootScope, $cordovaFileTransfer, $cordovaNetwork, MyServices, $timeout, $ionicLoading, MyFlagValue) {
+
+
+
+
+    // Pagination Start
+    //  Get Task
+    //  Send to for isItLocalStorageData
+    // Pagination End
+
+    // UI alerts if already in localStorage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     $scope.profile = {};
     $scope.page = 1;
     $scope.more = {

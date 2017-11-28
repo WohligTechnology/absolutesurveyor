@@ -1,4 +1,7 @@
 connector.controller('PhotosDocumentsCtrl', function ($scope, $filter, $ionicNavBarDelegate, $cordovaCamera, $ionicLoading, $cordovaNetwork, $ionicModal, $ionicActionSheet, $cordovaFileTransfer, $state, $stateParams, $ionicPopup, $rootScope, MyServices, $cordovaImagePicker, MyFlagValue, backgroundLocationTracking, LocalStorageService) {
+
+
+    // As images are uploaded the files should be mapped in to the object and on save should push on LocalStorageService
     //initialize all objects start-----------------------------------------------
     $scope.photos = [];
     $scope.doc = [];
@@ -77,19 +80,28 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $filter, $ionicNav
                                 if (arrayName === 'photos') {
                                     $scope.photos = _.flatten($scope.photos);
                                     _.forEach(results, function (value) {
-                                        $scope.photos.push(value);
+                                        $scope.photos.push({
+                                            name: value,
+                                            retry: 0
+                                        });
                                     });
                                     $scope.photos = _.chunk($scope.photos, 3);
                                 } else if (arrayName === 'Document') {
                                     $scope.doc = _.flatten($scope.doc);
                                     _.forEach(results, function (value) {
-                                        $scope.doc.push(value);
+                                        $scope.doc.push({
+                                            name: value,
+                                            retry: 0
+                                        });
                                     });
                                     $scope.doc = _.chunk($scope.doc, 3);
                                 } else {
                                     $scope.jir = _.flatten($scope.jir);
                                     _.forEach(results, function (value) {
-                                        $scope.jir.push(value);
+                                        $scope.jir.push({
+                                            name: value,
+                                            retry: 0
+                                        });
                                     });
                                     $scope.jir = _.chunk($scope.jir, 3);
                                 }
@@ -105,24 +117,33 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $filter, $ionicNav
                 } else {
                     console.log("jdkjdlfjskdfjklasdjfkl");
                     $cordovaImagePicker.getPictures(options).then(function (results) {
-                        console.log(results);
+                        console.log("###################results#######################", results);
                         console.log(arrayName);
                         if (arrayName === 'photos') {
                             $scope.photos = _.flatten($scope.photos);
                             _.forEach(results, function (value) {
-                                $scope.photos.push(value);
+                                $scope.photos.push({
+                                    name: value,
+                                    retry: 0
+                                });
                             });
                             $scope.photos = _.chunk($scope.photos, 3);
                         } else if (arrayName === 'Document') {
                             $scope.doc = _.flatten($scope.doc);
                             _.forEach(results, function (value) {
-                                $scope.doc.push(value);
+                                $scope.doc.push({
+                                    name: value,
+                                    retry: 0
+                                });
                             });
                             $scope.doc = _.chunk($scope.doc, 3);
                         } else {
                             $scope.jir = _.flatten($scope.jir);
                             _.forEach(results, function (value) {
-                                $scope.jir.push(value);
+                                $scope.jir.push({
+                                    name: value,
+                                    retry: 0
+                                });
                             });
                             $scope.jir = _.chunk($scope.jir, 3);
                         }
@@ -203,53 +224,56 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $filter, $ionicNav
     $scope.surveyOpen = function () {
         $scope.msg = false;
         $scope.msgSub = false;
+        LocalStorageService.uploadFiles(function (err, data) {
+            console.log("####### err, data ######", err, data)
+        });
         //If from task tab
-        if ($scope.flag == "task") {
-            if (!(_.isEmpty($scope.photos) && _.isEmpty($scope.doc) && _.isEmpty($scope.jir))) {
-                if (!(_.isEmpty($scope.jir))) {
-                    // //photos
-                    //   $scope.document.photos = [];
-                    //   $scope.photos1 = _.flatten($scope.photos);
-                    //   _.forEach($scope.photos1, function(value) {
-                    //     $scope.document.photos.push({
-                    //       "file": value
-                    //     });
-                    //   });
-                    //   //doc
-                    //   $scope.document.doc = [];
-                    //   $scope.doc1 = _.flatten($scope.doc);
-                    //   _.forEach($scope.doc1, function(value) {
-                    //     $scope.document.doc.push({
-                    //       "file": value
-                    //     });
-                    //   });
-                    //   //jir
-                    //   $scope.document.jir = [];
-                    //   $scope.jir1 = _.flatten($scope.jir);
-                    //
-                    //   _.forEach($scope.jir1, function(value) {
-                    //     $scope.document.jir.push({
-                    //       "file": value
-                    //     });
-                    //   });
-                    $scope.survey = $ionicPopup.show({
-                        templateUrl: 'templates/modal/survey-form.html',
-                        scope: $scope,
-                    });
+        // if ($scope.flag == "task") {
+        //     if (!(_.isEmpty($scope.photos) && _.isEmpty($scope.doc) && _.isEmpty($scope.jir))) {
+        //         if (!(_.isEmpty($scope.jir))) {
+        //             // //photos
+        //             //   $scope.document.photos = [];
+        //             //   $scope.photos1 = _.flatten($scope.photos);
+        //             //   _.forEach($scope.photos1, function(value) {
+        //             //     $scope.document.photos.push({
+        //             //       "file": value
+        //             //     });
+        //             //   });
+        //             //   //doc
+        //             //   $scope.document.doc = [];
+        //             //   $scope.doc1 = _.flatten($scope.doc);
+        //             //   _.forEach($scope.doc1, function(value) {
+        //             //     $scope.document.doc.push({
+        //             //       "file": value
+        //             //     });
+        //             //   });
+        //             //   //jir
+        //             //   $scope.document.jir = [];
+        //             //   $scope.jir1 = _.flatten($scope.jir);
+        //             //
+        //             //   _.forEach($scope.jir1, function(value) {
+        //             //     $scope.document.jir.push({
+        //             //       "file": value
+        //             //     });
+        //             //   });
+        //             $scope.survey = $ionicPopup.show({
+        //                 templateUrl: 'templates/modal/survey-form.html',
+        //                 scope: $scope,
+        //             });
 
-                } else {
-                    $scope.showAlert('Please add JIR ');
-                }
+        //         } else {
+        //             $scope.showAlert('Please add JIR ');
+        //         }
 
-            } else {
-                $scope.showAlert('Please add attachments ');
-            }
-        } else if ($scope.flag == "history") { //If from history tab
-            $scope.survey = $ionicPopup.show({
-                templateUrl: 'templates/modal/survey-form.html',
-                scope: $scope,
-            });
-        }
+        //     } else {
+        //         $scope.showAlert('Please add attachments ');
+        //     }
+        // } else if ($scope.flag == "history") { //If from history tab
+        //     $scope.survey = $ionicPopup.show({
+        //         templateUrl: 'templates/modal/survey-form.html',
+        //         scope: $scope,
+        //     });
+        // }
 
     };
 
@@ -303,6 +327,7 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $filter, $ionicNav
         // }
 
         LocalStorageService.addToLocalStorage($scope.document);
+
         $scope.msg = true;
         $scope.hideLoading();
         $scope.msgSub = true;
@@ -415,6 +440,9 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $filter, $ionicNav
 
     $scope.msgsubmit = function () {
         $scope.surveyClose();
+        LocalStorageService.uploadFiles(function (err, data) {
+            console.log("####### err, data ######", err, data)
+        });
         if ($scope.flag == "task") {
             // $rootScope.$broadcast('toTask', null)
             $state.go('app.task');

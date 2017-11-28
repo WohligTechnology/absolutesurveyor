@@ -3,6 +3,7 @@
     "version": "1.1.1",
     "description": "Absolute Surveyors",
     "dependencies": {
+        "async": "^2.6.0",
         "cordova-android": "^6.2.3",
         "cordova-ios": "^4.4.0",
         "cordova-plugin-android-permissions": "^1.0.0",

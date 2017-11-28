@@ -1,4 +1,17 @@
 connector.controller('TaskCtrl', function ($scope, $ionicPopup, $interval, $ionicNavBarDelegate, $state, $ionicHistory, $rootScope, $ionicLoading, $cordovaFileTransfer, $cordovaNetwork, MyServices, $timeout, MyFlagValue) {
+
+    // Pagination Start
+    //  Get Task
+    //  Send to for isItLocalStorageData
+    // Pagination End
+
+    // UI alerts if already in localStorage
+
+
+
+
+
+
     $scope.profile = {};
     $scope.profile = $.jStorage.get('profile');
     $scope.page = 1;
