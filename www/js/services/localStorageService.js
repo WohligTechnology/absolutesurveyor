@@ -16,8 +16,8 @@ service.service('LocalStorageService', function ($ionicPlatform, MyServices, $co
   var LocalStorageMain = this;
 
   $ionicPlatform.ready(function () {
-    LocalStorageService.uploadingCompleted();
-    LocalStorageService.uploadFiles(function (err, data) {
+    LocalStorageMain.uploadingCompleted();
+    LocalStorageMain.uploadFiles(function (err, data) {
       console.log(err, data);
     });
   });
@@ -48,7 +48,7 @@ service.service('LocalStorageService', function ($ionicPlatform, MyServices, $co
 
   // Upload Files
   this.uploadFiles = function (callback) {
-    if (!this.isUploadingRunning) {
+    if (!this.isUploadingRunning()) {
 
       var localStorage = this.getLocalValues();
       var assignment = _.first(localStorage);
@@ -112,7 +112,7 @@ service.service('LocalStorageService', function ($ionicPlatform, MyServices, $co
           if (err) {
             callback(err);
           } else {
-            this.uploadFiles(callback);
+            LocalStorageMain.uploadFiles(callback);
           }
         });
       } else {
