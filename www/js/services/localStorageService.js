@@ -19,14 +19,13 @@ service.service('LocalStorageService', function (MyServices) {
   this.addToLocalStorage = function (assignment) {
     var localStorage = this.getLocalValues();
     localStorage.push(assignment);
-    console.log("######### localStorage ############", localStorage);
     this.saveStorage(localStorage);
   };
 
   this.saveStorage = function (localStorages) {
-    console.log("######### localStorage3 ############", localStorages);
+    localStorages = JSON.stringify(localStorages);
+    console.log(localStorages);
     $.jStorage.set('localStorage', localStorages);
-    console.log("######### localStorage2 ############", $.jStorage.get('localStorage'));
   };
 
   // Get Values for all Documents
@@ -34,13 +33,17 @@ service.service('LocalStorageService', function (MyServices) {
     var localStorage = $.jStorage.get('localStorage');
     if (_.isEmpty(localStorage)) {
       localStorage = [];
+    } else {
+      localStorage = JSON.parse(localStorage);
     }
     return localStorage;
   };
 
+
   // Upload Files
   this.uploadFiles = function (callback) {
     var localStorage = this.getLocalValues();
+    console.log(localStorage);
     var assignment = _.first(localStorage);
     if (assignment) {
       var unUploadedImages = _.filter(assignment.images, function (n) {
@@ -54,44 +57,37 @@ service.service('LocalStorageService', function (MyServices) {
       });
       async.series({
         unUploadedImages: function (callback) {
-          if (unUploadedImages.length == 0) {
+          if (unUploadedImages.length === 0) {
             callback();
           } else {
             async.concatLimit(unUploadedImages, 1, function (data, callback) {
-              LocalStorageMain.uploadDocument(data, "images", callback)
+              LocalStorageMain.uploadDocument(data, "images", callback);
             }, callback);
           }
         },
         unUploadedJir: function (callback) {
-          if (unUploadedJir.length == 0) {
-            callback()
+          if (unUploadedJir.length === 0) {
+            callback();
           } else {
             async.eachSeries(unUploadedJir, function (data, callback) {
-              LocalStorageMain.uploadDocument(data, "jir", callback)
-              // console.log("data0",data);
+              LocalStorageMain.uploadDocument(data, "jir", callback);
               // callback();
             }, callback);
           }
         },
         unUploadedDocument: function (callback) {
-          if (unUploadedDocument.length == 0) {
-            callback()
+          if (unUploadedDocument.length === 0) {
+            callback();
           } else {
             async.concatLimit(unUploadedDocument, 1, function (data, callback) {
-              LocalStorageMain.uploadDocument(data, "document", callback)
+              LocalStorageMain.uploadDocument(data, "document", callback);
             }, callback);
           }
         },
         uploadToAssignment: function (callback) {
           // Upload to uploadToAssignment maping and all
           var localStorage = LocalStorageMain.getLocalValues();
-          var assignment = _.first(localStorage);
-          assignment.images = _.map(assignment.images, "serverValue");
-          assignment.jir = _.map(assignment.jir, "serverValue");
-          assignment.document = _.map(assignment.document, "serverValue");
-          // uploadAssignment now
-          // on Success first Element from jStorage
-          // Delete from JStorage
+          console.log(localStorage);
           callback();
         }
       }, function (err, data) {
@@ -102,29 +98,32 @@ service.service('LocalStorageService', function (MyServices) {
         }
       });
     } else {
-      LocalStorageMain.uploadDocument({}, "jir", callback)
+      LocalStorageMain.uploadDocument({}, "jir", callback);
       console.log("No more assignment documents to upload");
     }
   };
 
   this.uploadDocument = function (fileObject, objectKey, callback) {
+    console.log("In upload Document");
     // fileObject.name ==> Upload
     // fileObject.serverValue = values came from upload
-    console.log("############## fileObject #############");
-    MyServices.uploadDocument({
-      file: "/home/wohlig/Documents/htdocs/absolutesurveyor/www/img/cover.jpg"
-    }, function (data) {
 
-      console.log("########### data ##############", data);
-      callback(null, fileObject);
-    })
+    // MyServices.uploadDocument({
+    //   file: "/home/wohlig/Documents/htdocs/absolutesurveyor/www/img/cover.jpg"
+    // }, function (data) {
 
-    // var indexVal = _.findIndex(assignment[objectKey], function (n) {
-    //     return fileObject.name == n.name;
-    // });
-    // localStorage[0][objectKey][indexVal].serverValue = fileObject.serverValue;
-    // this.saveStorage(localStorage);
-
+    //   callback(null, fileObject);
+    // })
+    var localStorage = this.getLocalValues();
+    var indexVal = _.findIndex(localStorage[0][objectKey], function (n) {
+      return fileObject.name == n.name;
+    });
+    console.log(indexVal);
+    console.log(localStorage[0][objectKey][indexVal]);
+    localStorage[0][objectKey][indexVal].serverValue = "Chintan Shah";
+    console.log(localStorage[0][objectKey][indexVal]);
+    this.saveStorage(localStorage);
+    callback();
   };
 
   this.isItLocalStorageData = function (assignmentList) {
@@ -138,6 +137,4 @@ service.service('LocalStorageService', function (MyServices) {
       }
     });
   };
-
-
 });
