@@ -24,7 +24,6 @@ service.service('LocalStorageService', function (MyServices) {
 
   this.saveStorage = function (localStorages) {
     localStorages = JSON.stringify(localStorages);
-    console.log(localStorages);
     $.jStorage.set('localStorage', localStorages);
   };
 
@@ -43,7 +42,6 @@ service.service('LocalStorageService', function (MyServices) {
   // Upload Files
   this.uploadFiles = function (callback) {
     var localStorage = this.getLocalValues();
-    console.log(localStorage);
     var assignment = _.first(localStorage);
     if (assignment) {
       var unUploadedImages = _.filter(assignment.images, function (n) {
@@ -87,7 +85,7 @@ service.service('LocalStorageService', function (MyServices) {
         uploadToAssignment: function (callback) {
           // Upload to uploadToAssignment maping and all
           var localStorage = LocalStorageMain.getLocalValues();
-          console.log(localStorage);
+
           callback();
         }
       }, function (err, data) {
@@ -104,7 +102,6 @@ service.service('LocalStorageService', function (MyServices) {
   };
 
   this.uploadDocument = function (fileObject, objectKey, callback) {
-    console.log("In upload Document");
     // fileObject.name ==> Upload
     // fileObject.serverValue = values came from upload
 
@@ -118,10 +115,7 @@ service.service('LocalStorageService', function (MyServices) {
     var indexVal = _.findIndex(localStorage[0][objectKey], function (n) {
       return fileObject.name == n.name;
     });
-    console.log(indexVal);
-    console.log(localStorage[0][objectKey][indexVal]);
     localStorage[0][objectKey][indexVal].serverValue = "Chintan Shah";
-    console.log(localStorage[0][objectKey][indexVal]);
     this.saveStorage(localStorage);
     callback();
   };
