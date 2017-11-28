@@ -84,16 +84,5 @@ service.factory('MyServices', function ($http) {
         data: data
       }).success(callback);
     },
+  });
 
-    //to upload single document
-    uploadDocument: function (data, callback) {
-
-      $http({
-        url: adminurl + 'Upload/index?file=/home/wohlig/Documents/htdocs/absolutesurveyor/www/img/cover.jpg',
-        method: 'POST',
-        withCredentials: true,
-        data: data
-      }).success(callback);
-    },
-  };
-});

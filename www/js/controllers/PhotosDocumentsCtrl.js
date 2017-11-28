@@ -224,56 +224,53 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $filter, $ionicNav
     $scope.surveyOpen = function () {
         $scope.msg = false;
         $scope.msgSub = false;
-        LocalStorageService.uploadFiles(function (err, data) {
-            console.log("####### err, data ######", err, data)
-        });
         //If from task tab
-        // if ($scope.flag == "task") {
-        //     if (!(_.isEmpty($scope.photos) && _.isEmpty($scope.doc) && _.isEmpty($scope.jir))) {
-        //         if (!(_.isEmpty($scope.jir))) {
-        //             // //photos
-        //             //   $scope.document.photos = [];
-        //             //   $scope.photos1 = _.flatten($scope.photos);
-        //             //   _.forEach($scope.photos1, function(value) {
-        //             //     $scope.document.photos.push({
-        //             //       "file": value
-        //             //     });
-        //             //   });
-        //             //   //doc
-        //             //   $scope.document.doc = [];
-        //             //   $scope.doc1 = _.flatten($scope.doc);
-        //             //   _.forEach($scope.doc1, function(value) {
-        //             //     $scope.document.doc.push({
-        //             //       "file": value
-        //             //     });
-        //             //   });
-        //             //   //jir
-        //             //   $scope.document.jir = [];
-        //             //   $scope.jir1 = _.flatten($scope.jir);
-        //             //
-        //             //   _.forEach($scope.jir1, function(value) {
-        //             //     $scope.document.jir.push({
-        //             //       "file": value
-        //             //     });
-        //             //   });
-        //             $scope.survey = $ionicPopup.show({
-        //                 templateUrl: 'templates/modal/survey-form.html',
-        //                 scope: $scope,
-        //             });
+        if ($scope.flag == "task") {
+            if (!(_.isEmpty($scope.photos) && _.isEmpty($scope.doc) && _.isEmpty($scope.jir))) {
+                if (!(_.isEmpty($scope.jir))) {
+                    // //photos
+                    //   $scope.document.photos = [];
+                    //   $scope.photos1 = _.flatten($scope.photos);
+                    //   _.forEach($scope.photos1, function(value) {
+                    //     $scope.document.photos.push({
+                    //       "file": value
+                    //     });
+                    //   });
+                    //   //doc
+                    //   $scope.document.doc = [];
+                    //   $scope.doc1 = _.flatten($scope.doc);
+                    //   _.forEach($scope.doc1, function(value) {
+                    //     $scope.document.doc.push({
+                    //       "file": value
+                    //     });
+                    //   });
+                    //   //jir
+                    //   $scope.document.jir = [];
+                    //   $scope.jir1 = _.flatten($scope.jir);
+                    //
+                    //   _.forEach($scope.jir1, function(value) {
+                    //     $scope.document.jir.push({
+                    //       "file": value
+                    //     });
+                    //   });
+                    $scope.survey = $ionicPopup.show({
+                        templateUrl: 'templates/modal/survey-form.html',
+                        scope: $scope,
+                    });
 
-        //         } else {
-        //             $scope.showAlert('Please add JIR ');
-        //         }
+                } else {
+                    $scope.showAlert('Please add JIR ');
+                }
 
-        //     } else {
-        //         $scope.showAlert('Please add attachments ');
-        //     }
-        // } else if ($scope.flag == "history") { //If from history tab
-        //     $scope.survey = $ionicPopup.show({
-        //         templateUrl: 'templates/modal/survey-form.html',
-        //         scope: $scope,
-        //     });
-        // }
+            } else {
+                $scope.showAlert('Please add attachments ');
+            }
+        } else if ($scope.flag == "history") { //If from history tab
+            $scope.survey = $ionicPopup.show({
+                templateUrl: 'templates/modal/survey-form.html',
+                scope: $scope,
+            });
+        }
 
     };
 
@@ -327,7 +324,6 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $filter, $ionicNav
         // }
 
         LocalStorageService.addToLocalStorage($scope.document);
-
         $scope.msg = true;
         $scope.hideLoading();
         $scope.msgSub = true;
@@ -440,9 +436,9 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $filter, $ionicNav
 
     $scope.msgsubmit = function () {
         $scope.surveyClose();
-        LocalStorageService.uploadFiles(function (err, data) {
-            console.log("####### err, data ######", err, data)
-        });
+        // LocalStorageService.uploadFiles(function (err, data) {
+        //     console.log("####### err, data ######", err, data)
+        // });
         if ($scope.flag == "task") {
             // $rootScope.$broadcast('toTask', null)
             $state.go('app.task');

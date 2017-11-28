@@ -1,5 +1,5 @@
 //To show all history of user
-connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarDelegate, $state, $rootScope, $cordovaFileTransfer, $cordovaNetwork, MyServices, $timeout, $ionicLoading, MyFlagValue) {
+connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarDelegate, $state, $rootScope, $cordovaFileTransfer, $cordovaNetwork, MyServices, $timeout, $ionicLoading, MyFlagValue, LocalStorageService) {
 
 
 
@@ -34,6 +34,10 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
 
     MyFlagValue.setFlag("history");
 
+    LocalStorageService.uploadFiles(function (err, data) {
+        console.log("####### err, data ######", err, data)
+    });
+
     //To display refresh button
     angular.element(document.getElementsByClassName("right-btn")).css('display', 'block');
 
@@ -53,7 +57,7 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
 
     $scope.profile = $.jStorage.get('profile');
     if ($scope.profile) {
-        console.log($scope.profile);
+        // console.log($scope.profile);
     } else {
         $state.go('login');
     }
@@ -72,7 +76,7 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
         $ionicNavBarDelegate.showBar(true);
     });
 
-    // console.log($scope.taskpending);
+    // // console.log($scope.taskpending);
     document.addEventListener("deviceready", function () {
 
         var type = $cordovaNetwork.getNetwork();
@@ -88,7 +92,7 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
         $rootScope.$on('$cordovaNetwork:online', function (event, networkState) {
             alert("internet is working")
             $rootScope.historyTaskPending = $.jStorage.get('historyTaskPending');
-            console.log($rootScope.historyTaskPending);
+            // console.log($rootScope.historyTaskPending);
             var onlineState = networkState;
             if ($rootScope.shouldUpload) {
                 $rootScope.shouldUpload = false;
@@ -120,10 +124,10 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
             alert("internet is not working")
             $rootScope.historyTaskPending = [];
             $rootScope.historyTaskPending = $.jStorage.get('historyTaskPending');
-            console.log($rootScope.historyTaskPending);
+            // console.log($rootScope.historyTaskPending);
 
             var offlineState = networkState;
-            console.log(offlineState);
+            // console.log(offlineState);
             $scope.doRefresh();
         });
 
@@ -131,21 +135,21 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
 
     function uploadData(value, i, callback) {
         $scope.document = value;
-        console.log($scope.document.historyTaskPendingStatus);
+        // console.log($scope.document.historyTaskPendingStatus);
         if (!value.historyTaskPendingStatus) {
             $rootScope.historyTaskPending[i].historyTaskPendingStatus = true;
-            console.log(value);
-            console.log($scope.document);
+            // console.log(value);
+            // console.log($scope.document);
             $scope.photos = _.cloneDeep($scope.document.photos);
             $scope.doc = _.cloneDeep($scope.document.doc);
             $scope.jir = _.cloneDeep($scope.document.jir);
-            console.log($scope.photos);
-            console.log($scope.doc);
-            console.log($scope.jir);
+            // console.log($scope.photos);
+            // console.log($scope.doc);
+            // console.log($scope.jir);
             async.parallel({
                 photos: function (callback) {
                     async.each(_.flatten($scope.photos), function (value, callback) {
-                        console.log(value);
+                        // console.log(value);
                         uploadImage(value, 'photos', callback);
 
                     }, function (err, data) {
@@ -154,7 +158,7 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
                 },
                 document: function (callback) {
                     async.each(_.flatten($scope.doc), function (value, callback) {
-                        console.log(value);
+                        // console.log(value);
                         uploadImage(value, 'Document', callback);
 
                     }, function (err, data) {
@@ -163,7 +167,7 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
                 },
                 jir: function (callback) {
                     async.each(_.flatten($scope.jir), function (value, callback) {
-                        console.log(value);
+                        // console.log(value);
                         uploadImage(value, 'JIR', callback);
 
                     }, function (err, data) {
@@ -175,7 +179,7 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
                 $scope.document.doc = [];
                 $scope.document.jir = [];
                 $scope.document.photos.length = 0;
-                console.log("done");
+                // console.log("done");
                 // $scope.photos1 = _.flatten($scope.photos);
                 _.forEach($scope.photos1, function (value) {
                     $scope.document.photos.push({
@@ -198,10 +202,10 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
                         "file": value
                     });
                 });
-                console.log("hry", $scope.document);
+                // console.log("hry", $scope.document);
                 MyServices.mobileSubmit($scope.document, function (data) {
                     if (data.value) {
-                        console.log(data);
+                        // console.log(data);
                         $scope.taskcomplete.push($scope.document);
                         $scope.photos = [];
                         $scope.doc = [];
@@ -211,7 +215,7 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
                         $scope.jir1 = [];
                         callback(null, $scope.taskcomplete);
                     } else {
-                        console.log(data.value);
+                        // console.log(data.value);
                         callback(null, data);
                     }
                 });
@@ -221,12 +225,12 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
     }
 
     $scope.taskfun = function () {
-        console.log($rootScope.historyTaskPending);
+        // console.log($rootScope.historyTaskPending);
 
         // var onlineState = networkState;
         if (_.isEmpty($rootScope.historyTaskPending)) {
 
-            console.log("empty", $rootScope.historyTaskPending);
+            // console.log("empty", $rootScope.historyTaskPending);
             // $scope.doRefresh();
             $scope.profile = {};
             $scope.id = {};
@@ -246,23 +250,23 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
                 page: $scope.page
             }, function (data) {
                 // $scope.task = [];
-                console.log($scope.id);
+                // console.log($scope.id);
                 $scope.notask = false;
-                console.log(data.data.length);
+                // console.log(data.data.length);
 
                 if (data.data.length === 0) {
                     $ionicLoading.hide();
                     $scope.notask = true;
                     $scope.more.Data = false;
-                    console.log(data);
+                    // console.log(data);
                 }
                 if (data.value) {
                     if (data.data.length > 0) {
-                        console.log(data, $scope.task);
+                        // console.log(data, $scope.task);
                         _.forEach(data.data, function (value) {
                             $scope.task.push(value);
                         });
-                        console.log("dash", $scope.task);
+                        // console.log("dash", $scope.task);
                         // $scope.task = $.jStorage.get('task');
                         $.jStorage.set('historyTask', $scope.task);
                         $.jStorage.set('historyTaskPending', []);
@@ -298,7 +302,7 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
                                 callback(err);
                             } else {
                                 $rootScope.historyTaskPending.shift();
-                                console.log("$rootScope.historyTaskPending", $rootScope.historyTaskPending);
+                                // console.log("$rootScope.historyTaskPending", $rootScope.historyTaskPending);
                                 callback(null, data);
                             }
                         });
@@ -325,22 +329,22 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
                             page: $scope.page
                         }, function (data) {
                             // $scope.task = [];
-                            console.log($scope.id);
+                            // console.log($scope.id);
                             $scope.notask = false;
-                            console.log(data.data.length);
+                            // console.log(data.data.length);
                             if (data.data.length === 0) {
                                 $ionicLoading.hide();
                                 $scope.notask = true;
                                 $scope.more.Data = false;
-                                console.log(data);
+                                // console.log(data);
                             }
                             if (data.value) {
                                 if (data.data.length > 0) {
-                                    console.log(data);
+                                    // console.log(data);
                                     _.forEach(data.data, function (value) {
                                         $scope.task.push(value);
                                     });
-                                    console.log("adsd", $scope.task);
+                                    // console.log("adsd", $scope.task);
                                     // $scope.task = $.jStorage.get('task');
                                     $.jStorage.set('historyTask', $scope.task);
                                     // $scope.more.Data = true;
@@ -380,7 +384,7 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
         if ($scope.task) {
             $rootScope.historyTaskPending = $.jStorage.get('historyTaskPending');
 
-            console.log("i am in the offline man");
+            // console.log("i am in the offline man");
             if (_.isArray($rootScope.historyTaskPending) && _.isArray($scope.task)) {
                 var i = 0;
                 _.each($scope.task, function (v) {
@@ -391,16 +395,16 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
                         var val1 = values.assignId.toString();
 
 
-                        console.log("taskpending .................", values, val1, val2);
+                        // console.log("taskpending .................", values, val1, val2);
 
                         if (val1 == val2) {
                             v.historyTaskPendingStatus = true;
-                            console.log("taskpending ................. true", v);
+                            // console.log("taskpending ................. true", v);
 
                         }
                         // else {
                         //   $scope.task[i].taskPendingStatus = false;
-                        //               console.log("taskpending ................. false",$scope.task[i].taskPendingStatus);
+                        //               // console.log("taskpending ................. false",$scope.task[i].taskPendingStatus);
 
                         // }
                     })
@@ -416,7 +420,7 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
                     "Oct", "Nov", "Dec"
                 ];
             var items = $scope.task;
-            console.log(items);
+            // console.log(items);
             var itemsGroupedByMonth = function (items) {
                 var
                     groups = [
@@ -438,7 +442,7 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
                 for (var i = 0; i < items.length; i++) {
                     groups[new Date(items[i].surveyDate).getMonth()].push(items[i]);
                 }
-                console.log(groups);
+                // console.log(groups);
                 for (var i = 0; i < groups.length; i++) {
                     if (groups[i].length) {
                         itemGroupedByMonths.push({
@@ -452,7 +456,7 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
             };
 
             $scope.monthWiseGroup = itemsGroupedByMonth(items);
-            console.log($scope.monthWiseGroup);
+            // console.log($scope.monthWiseGroup);
         }
     };
     $scope.offtask();
@@ -460,7 +464,7 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
     $scope.taskfun();
     $scope.doRefresh = function () {
 
-        console.log('Refreshing!');
+        // console.log('Refreshing!');
         $timeout(function () {
             //simulate async response
             if ($cordovaNetwork.isOnline()) {
@@ -477,12 +481,12 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
             template: 'Loading...',
             duration: 3000
         }).then(function () {
-            console.log("The loading indicator is now displayed");
+            // console.log("The loading indicator is now displayed");
         });
     };
     $scope.hide = function () {
         $ionicLoading.hide().then(function () {
-            console.log("The loading indicator is now hidden");
+            // console.log("The loading indicator is now hidden");
         });
     };
     $scope.decline = {};
@@ -492,12 +496,12 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
         $scope.decline.assignId = assignId;
         $scope.decline.empId = $scope.id;
         $scope.decline.message = message;
-        console.log($scope.decline);
+        // console.log($scope.decline);
         //  $scope.decline.empMail =$scope.profile.mai;
         MyServices.Decline($scope.decline, function (data) {
             if (data.value) {
                 $scope.hide();
-                console.log(data);
+                // console.log(data);
                 $scope.doRefresh();
             }
         });
@@ -505,45 +509,45 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
 
     //upload image----------------------------------------------------------------
     function uploadImage(imageURI, arrayName, callback) {
-        console.log('imageURI', imageURI);
+        // console.log('imageURI', imageURI);
         $cordovaFileTransfer.upload(adminurl + 'upload', imageURI)
             .then(function (result) {
                 result.response = JSON.parse(result.response);
-                console.log(result.response.data[0]);
+                // console.log(result.response.data[0]);
 
                 if (arrayName === 'photos') {
                     // $scope.photos = _.flatten($scope.photos);
                     $scope.photos1.push(result.response.data[0]);
-                    console.log($scope.photos1);
+                    // console.log($scope.photos1);
                     // $scope.photos = _.chunk($scope.photos, 3);
                 } else if (arrayName === 'Document') {
                     // $scope.doc = _.flatten($scope.doc);
                     $scope.doc1.push(result.response.data[0]);
-                    console.log($scope.doc1);
+                    // console.log($scope.doc1);
                     // $scope.doc = _.chunk($scope.doc, 3);
                 } else {
                     // $scope.jir = _.flatten($scope.jir);
                     $scope.jir1.push(result.response.data[0]);
-                    console.log($scope.jir1);
+                    // console.log($scope.jir1);
                     // $scope.jir = _.chunk($scope.jir, 3);
                 }
                 callback(null, result);
             }, function (err) {
-                console.log(err);
+                // console.log(err);
                 // Error
             }, function (progress) {
-                // console.log(err);
+                // // console.log(err);
                 // constant progress updates
             });
     };
 
     $scope.information = function (index, parent) {
 
-        console.log($scope.monthWiseGroup[parent].items[index], 'inside match');
+        // console.log($scope.monthWiseGroup[parent].items[index], 'inside match');
         $scope.insideData = $scope.monthWiseGroup[parent].items[index];
-        console.log(index, 'index');
+        // console.log(index, 'index');
         $scope.insideData.surveyDate = new Date($scope.monthWiseGroup[parent].items[index].surveyDate);
-        console.log($scope.insideData.surveyDate);
+        // console.log($scope.insideData.surveyDate);
         $scope.infos = $ionicPopup.show({
             templateUrl: 'templates/modal/info.html',
             scope: $scope,
@@ -582,7 +586,7 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
         });
 
         myPopup.then(function (res) {
-            console.log('Tapped!', res);
+            // console.log('Tapped!', res);
         });
     };
 
