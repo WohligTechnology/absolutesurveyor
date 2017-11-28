@@ -54,15 +54,15 @@ service.factory('MyServices', function ($http,$state) {
         data: data
       }).success(callback);
     },
-    // History: function (data, callback) {
-    //   data.id = getUserProfile()._id;
-    //   $http({
-    //     url: adminurl + 'Assignment/tasklistCompleted',
-    //     method: 'POST',
-    //     withCredentials: true,
-    //     data: data
-    //   }).success(callback);
-    // },
+    History: function (data, callback) {
+      data.id = getUserProfile()._id;
+      $http({
+        url: adminurl + 'Assignment/tasklistCompleted',
+        method: 'POST',
+        withCredentials: true,
+        data: data
+      }).success(callback);
+    },
 
 
     Decline: function (data, callback) {
