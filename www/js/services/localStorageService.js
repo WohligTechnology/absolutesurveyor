@@ -112,10 +112,7 @@ service.service('LocalStorageService', function (MyServices, $cordovaFileTransfe
 
     }
   });
-    } else {
-  LocalStorageMain.uploadDocument({}, "jir", callback)
-  console.log("No more assignment documents to upload");
-}
+  
   };
 
 this.uploadDocument = function (fileObject, objectKey, callback) {
