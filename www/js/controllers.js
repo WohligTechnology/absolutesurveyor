@@ -1,1 +1,1 @@
-var connector = angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth'])
+var connector = angular.module('starter.controllers', ['ngCordova', 'ngCordovaOauth']);
