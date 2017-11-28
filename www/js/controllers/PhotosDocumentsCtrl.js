@@ -432,7 +432,6 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $filter, $ionicNav
             // $rootScope.$broadcast('toHistory', null)
             $state.go('app.history');
         }
-
     };
     //upload image----------------------------------------------------------------
     $scope.uploadImage = function (imageURI, arrayName, callback) {

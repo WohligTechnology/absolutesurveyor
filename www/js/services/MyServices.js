@@ -1,4 +1,20 @@
-service.factory('MyServices', function ($http) {
+service.factory('MyServices', function ($http,$state) {
+
+  
+
+  function getUserProfile() {
+    var profile = $.jStorage.get('profile');
+     if(profile) {
+       return profile;
+     } else {
+       return {};
+     }
+  }
+
+  // if($state.current != "login" && !$.jStorage.get('profile')) {
+  //      $state.go("login");
+  // } 
+
   return {
     Login: function (email, callback) {
       $http({
@@ -6,13 +22,20 @@ service.factory('MyServices', function ($http) {
         method: 'POST',
         withCredentials: true,
         data: email
-      }).success(callback);
+      }).success(function(data) {
+            if (data.value) {
+                $.jStorage.set('profile', data.data);
+                callback(null,data);
+            } else {
+                callback("Incorrect Email");
+            }
+      });
     },
-    Task: function (data, callback) {
-      // console.log(id);
-      // var data = {
-      //   id: id
-      // };
+    getProfile: function() {
+      return getUserProfile();
+    },
+    getTask: function (data, callback) {
+      data._id = getUserProfile()._id;
       $http({
         url: adminurl + 'Assignment/tasklist',
         method: 'POST',
@@ -22,11 +45,8 @@ service.factory('MyServices', function ($http) {
     },
 
     //To get History 
-    History: function (data, callback) {
-      // console.log(id);
-      // var data = {
-      //   id: id
-      // };
+    getHistory: function (data, callback) {
+      data.id = getUserProfile()._id;
       $http({
         url: adminurl + 'Assignment/tasklistCompleted',
         method: 'POST',
@@ -34,6 +54,16 @@ service.factory('MyServices', function ($http) {
         data: data
       }).success(callback);
     },
+    // History: function (data, callback) {
+    //   data.id = getUserProfile()._id;
+    //   $http({
+    //     url: adminurl + 'Assignment/tasklistCompleted',
+    //     method: 'POST',
+    //     withCredentials: true,
+    //     data: data
+    //   }).success(callback);
+    // },
+
 
     Decline: function (data, callback) {
       // console.log("data", data);

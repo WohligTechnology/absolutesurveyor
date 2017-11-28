@@ -1,20 +1,4 @@
 connector.controller('LoginCtrl', function ($scope, $ionicPopup, $rootScope, $state, MyServices, $ionicLoading, $cordovaOauth) {
-    $scope.profile = {};
-    $scope.profile = $.jStorage.get('profile');
-    if ($scope.profile) {
-        $state.go('app.task');
-    }
-
-
-    // $scope.login = function() {
-    //   console.log("hi");
-    //     $cordovaOauth.google("AIzaSyDEckQh5-njghsAhWUs1gT6qjIfmuqlpOo", ["https://www.googleapis.com/auth/urlshortener", "https://www.googleapis.com/auth/userinfo.email"]).then(function(result) {
-    //         console.log(JSON.stringify(result));
-    //     }, function(error) {
-    //         console.log(error);
-    //     });
-    // }
-
     $scope.showAlert = function () {
         var alertPopup = $ionicPopup.alert({
             title: 'oops!',
@@ -34,15 +18,15 @@ connector.controller('LoginCtrl', function ($scope, $ionicPopup, $rootScope, $st
         $.jStorage.set('profile', null);
         $.jStorage.deleteKey('profile');
         $.jStorage.flush();
-        MyServices.Login(email, function (data) {
-            if (data.value) {
+        MyServices.Login(email, function (err,data) {
+            if (err) {
+                $scope.hideLoading();
+                $scope.showAlert();
+            } else {
                 $scope.hideLoading();
                 $rootScope.taskpending = [];
                 $.jStorage.set('profile', data.data);
                 $state.go('app.task');
-            } else {
-                $scope.hideLoading();
-                $scope.showAlert();
             }
         });
     };

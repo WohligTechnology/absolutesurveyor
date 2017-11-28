@@ -1,4 +1,4 @@
-service.service('LocalStorageService', function ($ionicPlatform, MyServices, $cordovaFileTransfer) {
+service.service('LocalStorageService', function ($rootScope, $ionicPlatform, MyServices, $cordovaFileTransfer, $cordovaNetwork) {
 
   // Local Storage Single Assignment fileObject
   // var assignmentFileObject = {
@@ -16,6 +16,13 @@ service.service('LocalStorageService', function ($ionicPlatform, MyServices, $co
   var LocalStorageMain = this;
 
   $ionicPlatform.ready(function () {
+    LocalStorageMain.uploadingCompleted();
+    LocalStorageMain.uploadFiles(function (err, data) {
+      console.log(err, data);
+    });
+  });
+
+  $rootScope.$on('$cordovaNetwork:online', function (event, networkState) {
     LocalStorageMain.uploadingCompleted();
     LocalStorageMain.uploadFiles(function (err, data) {
       console.log(err, data);
