@@ -20,10 +20,12 @@ service.service('LocalStorageService', function (MyServices, $cordovaFileTransfe
     var localStorage = this.getLocalValues();
     localStorage.push(assignment);
     this.saveStorage(localStorage);
+    this.uploadFiles(function(err,data) {
+      console.log(err,data);
+    });
   };
 
   this.saveStorage = function (localStorages) {
-    localStorages = JSON.stringify(localStorages);
     $.jStorage.set('localStorage', localStorages);
   };
 
@@ -32,8 +34,6 @@ service.service('LocalStorageService', function (MyServices, $cordovaFileTransfe
     var localStorage = $.jStorage.get('localStorage');
     if (_.isEmpty(localStorage)) {
       localStorage = [];
-    } else {
-      localStorage = JSON.parse(localStorage);
     }
     return localStorage;
   };
@@ -41,9 +41,12 @@ service.service('LocalStorageService', function (MyServices, $cordovaFileTransfe
 
   // Upload Files
   this.uploadFiles = function (callback) {
+    if(!this.isUploadingRunning) {
+  
     var localStorage = this.getLocalValues();
     var assignment = _.first(localStorage);
     if (assignment) {
+      LocalStorageMain.uploadingStarted();
       var unUploadedImages = _.filter(assignment.photos, function (n) {
         return !n.file;
       });
@@ -98,15 +101,20 @@ service.service('LocalStorageService', function (MyServices, $cordovaFileTransfe
 
         },
       }, function (err, data) {
+        LocalStorageMain.uploadingCompleted();
         if (err) {
           callback(err);
         } else {
-          // this.uploadFiles(callback);
+          this.uploadFiles(callback);
         }
       });
     } else {
       console.log("No more assignment documents to upload");
     }
+    } else {
+      callback("Already Running Uploading");
+    }
+    
   };
 
   this.uploadDocument = function (fileObject, objectKey, callback) {
@@ -141,4 +149,20 @@ service.service('LocalStorageService', function (MyServices, $cordovaFileTransfe
       }
     });
   };
+
+
+  this.isUploadingRunning = function() {
+    return $.jStorage.get("uploadingRunning");
+  }
+
+  this.uploadingCompleted = function() {
+    $.jStorage.set("uploadingRunning",false);
+  }
+
+  this.uploadingStarted = function() {
+    $.jStorage.set("uploadingRunning",true);
+  }
+
+
+
 });

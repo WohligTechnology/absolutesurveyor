@@ -2,6 +2,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
   .run(function ($ionicPlatform, $ionicPopup, $rootScope, $ionicHistory, backgroundLocationTracking, LocalStorageService) {
     $ionicPlatform.ready(function () {
+      console.log("App is ready Now");
       if (window.cordova && window.cordova.plugins.Keyboard) {
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
         cordova.plugins.Keyboard.disableScroll(true);
@@ -22,31 +23,31 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             });
         }
       }
-
+      LocalStorageService.uploadingCompleted();
       LocalStorageService.uploadFiles(function (err, data) {
         console.log(err, data);
       });
 
-      // For location tracking
-      function startBackgroundService() {
-        if (window.cordova) {
-          cordova.plugins.diagnostic.isLocationEnabled(function (enabled) {
-            console.log("enabled", enabled);
-            // alert("Location is " + (enabled ? "enabled" : "disabled"));
-            if (enabled == true) {
-              backgroundLocationTracking.startTracking();
-            } else {
-              alert("Please enable location service");
-              cordova.plugins.diagnostic.switchToLocationSettings();
-            }
-          }, function (error) {
-            // alert("The following error occurred: " + error);
-            alert("Unable to start Location service");
-          });
-        } else {
-          // alert("window.cordova");
-        }
-      };
+      // // For location tracking
+      // function startBackgroundService() {
+      //   if (window.cordova) {
+      //     cordova.plugins.diagnostic.isLocationEnabled(function (enabled) {
+      //       console.log("enabled", enabled);
+      //       // alert("Location is " + (enabled ? "enabled" : "disabled"));
+      //       if (enabled == true) {
+      //         backgroundLocationTracking.startTracking();
+      //       } else {
+      //         alert("Please enable location service");
+      //         cordova.plugins.diagnostic.switchToLocationSettings();
+      //       }
+      //     }, function (error) {
+      //       // alert("The following error occurred: " + error);
+      //       alert("Unable to start Location service");
+      //     });
+      //   } else {
+      //     // alert("window.cordova");
+      //   }
+      // };
       // startBackgroundService();
 
 
