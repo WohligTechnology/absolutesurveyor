@@ -1,4 +1,4 @@
-service.service('LocalStorageService', function ($ionicPlatform,MyServices, $cordovaFileTransfer) {
+service.service('LocalStorageService', function ($ionicPlatform, MyServices, $cordovaFileTransfer) {
 
   // Local Storage Single Assignment fileObject
   // var assignmentFileObject = {
@@ -12,12 +12,12 @@ service.service('LocalStorageService', function ($ionicPlatform,MyServices, $cor
   //     jir: [assignmentFileObject],
   //     document: [assignmentFileObject]
   // };
-$ionicPlatform.ready(function() {
-   LocalStorageService.uploadingCompleted();
-      LocalStorageService.uploadFiles(function (err, data) {
-        console.log(err, data);
-      });
-});
+  $ionicPlatform.ready(function () {
+    LocalStorageService.uploadingCompleted();
+    LocalStorageService.uploadFiles(function (err, data) {
+      console.log(err, data);
+    });
+  });
 
 
   var LocalStorageMain = this;
@@ -27,8 +27,8 @@ $ionicPlatform.ready(function() {
     var localStorage = this.getLocalValues();
     localStorage.push(assignment);
     this.saveStorage(localStorage);
-    this.uploadFiles(function(err,data) {
-      console.log(err,data);
+    this.uploadFiles(function (err, data) {
+      console.log(err, data);
     });
   };
 
@@ -48,80 +48,80 @@ $ionicPlatform.ready(function() {
 
   // Upload Files
   this.uploadFiles = function (callback) {
-    if(!this.isUploadingRunning) {
-  
-    var localStorage = this.getLocalValues();
-    var assignment = _.first(localStorage);
-    if (assignment) {
-      LocalStorageMain.uploadingStarted();
-      var unUploadedImages = _.filter(assignment.photos, function (n) {
-        return !n.file;
-      });
-      var unUploadedJir = _.filter(assignment.jir, function (n) {
-        return !n.file;
-      });
-      console.log(assignment.jir);
-      var unUploadedDocument = _.filter(assignment.doc, function (n) {
-        return !n.file;
-      });
-      async.series({
-        unUploadedImages: function (callback) {
-          if (unUploadedImages.length === 0) {
-            callback();
-          } else {
-            async.concatLimit(unUploadedImages, 1, function (data, callback) {
-              LocalStorageMain.uploadDocument(data, "photos", callback);
-            }, callback);
-          }
-        },
-        unUploadedJir: function (callback) {
-          if (unUploadedJir.length === 0) {
-            callback();
-          } else {
-            console.log(unUploadedJir);
-            async.eachSeries(unUploadedJir, function (data, callback) {
-              LocalStorageMain.uploadDocument(data, "jir", callback);
-              // callback();
-            }, callback);
-          }
-        },
-        unUploadedDocument: function (callback) {
-          if (unUploadedDocument.length === 0) {
-            callback();
-          } else {
-            async.concatLimit(unUploadedDocument, 1, function (data, callback) {
-              LocalStorageMain.uploadDocument(data, "doc", callback);
-            }, callback);
-          }
-        },
-        uploadToAssignment: function (callback) {
-          // Upload to uploadToAssignment maping and all
-          var localStorage = LocalStorageMain.getLocalValues();
-          var assignment = _.first(localStorage);
-          MyServices.mobileSubmit(assignment, function (data) {
-            console.log("final data#####################", data);
-            var localStorage = LocalStorageMain.getLocalValues();
-            localStorage = _.drop(localStorage);
-            LocalStorageMain.saveStorage(localStorage);
-            callback(null, data);
-          })
+    if (!this.isUploadingRunning) {
 
-        },
-      }, function (err, data) {
-        LocalStorageMain.uploadingCompleted();
-        if (err) {
-          callback(err);
-        } else {
-          this.uploadFiles(callback);
-        }
-      });
-    } else {
-      console.log("No more assignment documents to upload");
-    }
+      var localStorage = this.getLocalValues();
+      var assignment = _.first(localStorage);
+      if (assignment) {
+        LocalStorageMain.uploadingStarted();
+        var unUploadedImages = _.filter(assignment.photos, function (n) {
+          return !n.file;
+        });
+        var unUploadedJir = _.filter(assignment.jir, function (n) {
+          return !n.file;
+        });
+        console.log(assignment.jir);
+        var unUploadedDocument = _.filter(assignment.doc, function (n) {
+          return !n.file;
+        });
+        async.series({
+          unUploadedImages: function (callback) {
+            if (unUploadedImages.length === 0) {
+              callback();
+            } else {
+              async.concatLimit(unUploadedImages, 1, function (data, callback) {
+                LocalStorageMain.uploadDocument(data, "photos", callback);
+              }, callback);
+            }
+          },
+          unUploadedJir: function (callback) {
+            if (unUploadedJir.length === 0) {
+              callback();
+            } else {
+              console.log(unUploadedJir);
+              async.eachSeries(unUploadedJir, function (data, callback) {
+                LocalStorageMain.uploadDocument(data, "jir", callback);
+                // callback();
+              }, callback);
+            }
+          },
+          unUploadedDocument: function (callback) {
+            if (unUploadedDocument.length === 0) {
+              callback();
+            } else {
+              async.concatLimit(unUploadedDocument, 1, function (data, callback) {
+                LocalStorageMain.uploadDocument(data, "doc", callback);
+              }, callback);
+            }
+          },
+          uploadToAssignment: function (callback) {
+            // Upload to uploadToAssignment maping and all
+            var localStorage = LocalStorageMain.getLocalValues();
+            var assignment = _.first(localStorage);
+            MyServices.mobileSubmit(assignment, function (data) {
+              console.log("final data#####################", data);
+              var localStorage = LocalStorageMain.getLocalValues();
+              localStorage = _.drop(localStorage);
+              LocalStorageMain.saveStorage(localStorage);
+              callback(null, data);
+            })
+
+          },
+        }, function (err, data) {
+          LocalStorageMain.uploadingCompleted();
+          if (err) {
+            callback(err);
+          } else {
+            this.uploadFiles(callback);
+          }
+        });
+      } else {
+        console.log("No more assignment documents to upload");
+      }
     } else {
       callback("Already Running Uploading");
     }
-    
+
   };
 
   this.uploadDocument = function (fileObject, objectKey, callback) {
@@ -140,8 +140,7 @@ $ionicPlatform.ready(function() {
     }, function (err) {
       console.log(err);
       callback();
-    }
-    );
+    });
 
   };
 
@@ -158,16 +157,16 @@ $ionicPlatform.ready(function() {
   };
 
 
-  this.isUploadingRunning = function() {
+  this.isUploadingRunning = function () {
     return $.jStorage.get("uploadingRunning");
   }
 
-  this.uploadingCompleted = function() {
-    $.jStorage.set("uploadingRunning",false);
+  this.uploadingCompleted = function () {
+    $.jStorage.set("uploadingRunning", false);
   }
 
-  this.uploadingStarted = function() {
-    $.jStorage.set("uploadingRunning",true);
+  this.uploadingStarted = function () {
+    $.jStorage.set("uploadingRunning", true);
   }
 
 
