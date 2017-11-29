@@ -10073,3 +10073,9 @@ body {
 
 .input-space {
   padding-left: 14px !important; }
+
+.remove-padding {
+  padding: 0px !important; }
+
+.remove-padding .popup-head {
+  padding: 0px !important; }

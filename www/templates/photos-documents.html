@@ -96,10 +96,8 @@
           <p ng-if="!photos">no documents</p>
           <div class="row" ng-repeat="pic in jirChunk">
             <div class="img-upload col-33" ng-click="showConfirm(data,'JIR')" ng-repeat="data in pic">
-              <!-- <div class="img-upload" ng-if="data" ng-style="{'background-image':'url({{data|uploadpath:100:100:'cover'}})'}"> -->
               <div class="img-upload">
                 <img ng-src="{{data.name}}" ng-if="data">
-                <!-- <img ng-src="{{data|uploadpath:100:100:'cover'}}" ng-if="data"> -->
               </div>
             </div>
 
@@ -109,7 +107,7 @@
       </div>
 
       <div class="list list-inset submit">
-        <button class="button button-block button-positive " ng-click="surveyOpen()">Submit</button>
+        <button class="button button-block button-positive " ng-click="openSurveyForm()">Submit</button>
       </div>
     </form>
   </ion-content>

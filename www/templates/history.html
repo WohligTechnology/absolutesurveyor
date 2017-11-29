@@ -1,29 +1,17 @@
 <ion-view view-title="History">
-  <!--<ion-nav-bar class="bar-positive">
 
-    <ion-nav-buttons side="left">
-      <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
-      </button>
-    </ion-nav-buttons>
-    <ion-nav-buttons side="right">
-      <button class="button button-icon button-clear search-btn ion-loop padings" ng-click="doRefresh();">
-      </button>
-
-
-    </ion-nav-buttons>
-  </ion-nav-bar>-->
   <ion-content>
     <ion-refresher on-refresh="doRefresh()">
 
     </ion-refresher>
-    <p class="text-center notask" ng-if="notask && task.length ==0 ">There is no history for you</p>
-
+    <p class="text-center notask" ng-if="pagination.result.length == 0 && pagination.resultGroup">There is no task for you</p>
+    <p class="text-center notask" ng-if="!pagination.resultGroup">Loading Data</p>
     <ion-list class="tasks" show-delete="false" can-swipe="true">
-      <div class="" ng-repeat="monthlyGroup in monthWiseGroup track by $index" ng-init="parentIndex = $index" ng-if="task.length!=0 || historyTaskPending.length!=0">
-        <div class="item item-divider" ng-if="notask && task.length !=0 ">
-          {{monthlyGroup.month}}
+      <div class="" ng-repeat="(monthName,monthlyValues) in pagination.resultGroup">
+        <div class="item item-divider">
+          {{monthName}}
         </div>
-        <div class="mutiple-task" ng-repeat="item in monthlyGroup.items track by $index">
+        <div class="mutiple-task" ng-repeat="item in monthlyValues">
           <ion-item class="item-calendar" ng-if="!item.historyTaskPendingStatus">
             <div class="item-content" ui-sref="app.photos-documents({assignId:item._id,surveyId:item.survey._id,department:item.department})">
               <div class="calendar">
@@ -33,16 +21,14 @@
               <div class="mr-no dis-in">{{item.name}}</div>
             </div>
 
-            <ion-option-button class="button decline decline-bg-color" ng-click="showPopup(item.survey._id,item._id)">Decline</ion-option-button>
+            <ion-option-button class="button decline decline-bg-color" ng-click="declineTask(item.survey._id,item._id)">Decline</ion-option-button>
             <ion-option-button class="button decline" ng-click="getSurveyour(item)">Transfer Survey</ion-option-button>
-            <!-- <ion-option-button class="button decline" ng-click="declinetask(item.survey._id,item._id)">Decline</ion-option-button> -->
             <div class="">
-              <a class="button button-icon icon ion-ios-information info" ng-click="information($index,parentIndex);"></a>
+              <a class="button button-icon icon ion-ios-information info" ng-click="getInformation(item);"></a>
             </div>
 
           </ion-item>
           <ion-item class="item-calendar disabled-color" ng-if="item.historyTaskPendingStatus && historyTaskPending.length>0">
-            <!--<ion-item class="item-calendar disabled-color" ng-if="historyTaskPending.length>0">-->
             <div class="" ng-click="showAlert('Task has been done. waiting for internet...');">
               <div class="calendar">
                 <div class="month">{{item.surveyDate| date:'MMM'}}</div>
@@ -54,16 +40,14 @@
 
             <ion-option-button class="button decline decline-bg-color" ng-click="showPopup(item.survey._id,item._id)">Decline</ion-option-button>
             <ion-option-button class="button decline" ng-click="getSurveyour(item)">Transfer Survey</ion-option-button>
-            <!-- <ion-option-button class="button decline" ng-click="declinetask(item.survey._id,item._id)">Decline</ion-option-button> -->
             <div class="">
-              <a class="button button-icon icon ion-ios-information info" ng-click="information($index,parentIndex);"></a>
+              <a class="button button-icon icon ion-ios-information info" ng-click="information($index);"></a>
             </div>
 
           </ion-item>
         </div>
       </div>
     </ion-list>
-    <ion-infinite-scroll ng-if="more.Data" on-infinite="loadMore();" distance="5%"></ion-infinite-scroll>
-
+    <ion-infinite-scroll ng-if="pagination.shouldLoadMore" on-infinite="loadMore();" distance="5%"></ion-infinite-scroll>
   </ion-content>
 </ion-view>

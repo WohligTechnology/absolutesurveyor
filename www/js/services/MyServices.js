@@ -1,14 +1,14 @@
-service.factory('MyServices', function ($http,$state) {
+service.factory('MyServices', function ($http, $state) {
 
-  
+
 
   function getUserProfile() {
     var profile = $.jStorage.get('profile');
-     if(profile) {
-       return profile;
-     } else {
-       return {};
-     }
+    if (profile) {
+      return profile;
+    } else {
+      return {};
+    }
   }
 
   // if($state.current != "login" && !$.jStorage.get('profile')) {
@@ -22,20 +22,20 @@ service.factory('MyServices', function ($http,$state) {
         method: 'POST',
         withCredentials: true,
         data: email
-      }).success(function(data) {
-            if (data.value) {
-                $.jStorage.set('profile', data.data);
-                callback(null,data);
-            } else {
-                callback("Incorrect Email");
-            }
+      }).success(function (data) {
+        if (data.value) {
+          $.jStorage.set('profile', data.data);
+          callback(null, data);
+        } else {
+          callback("Incorrect Email");
+        }
       });
     },
-    getProfile: function() {
+    getProfile: function () {
       return getUserProfile();
     },
     getTask: function (data, callback) {
-      data._id = getUserProfile()._id;
+      data.id = getUserProfile()._id;
       $http({
         url: adminurl + 'Assignment/tasklist',
         method: 'POST',
@@ -54,19 +54,10 @@ service.factory('MyServices', function ($http,$state) {
         data: data
       }).success(callback);
     },
-    History: function (data, callback) {
-      data.id = getUserProfile()._id;
-      $http({
-        url: adminurl + 'Assignment/tasklistCompleted',
-        method: 'POST',
-        withCredentials: true,
-        data: data
-      }).success(callback);
-    },
-
 
     Decline: function (data, callback) {
       // console.log("data", data);
+      data.empId = getUserProfile()._id;
       $http({
         url: adminurl + 'Assignment/decline',
         method: 'POST',

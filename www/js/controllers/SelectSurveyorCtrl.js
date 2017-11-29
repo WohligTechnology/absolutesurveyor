@@ -1,21 +1,16 @@
-connector.controller('SelectSurveyorCtrl', function ($scope, $rootScope, MyServices, $ionicPopup, MyFlagValue, $state) {
+connector.controller('SelectSurveyorCtrl', function ($scope, MyServices, $ionicPopup, $state, $stateParams, $ionicHistory) {
 
     $scope.searchObj = {};
     $scope.searchObj.keyword = null;
-    $scope.searchObj.lat = $.jStorage.get('assignmentObj').lat;
-    $scope.searchObj.lng = $.jStorage.get('assignmentObj').lng;
-
-    //To hide refresh button
-    angular.element(document.getElementsByClassName("right-btn")).css('display', 'none');
+    $scope.searchObj.lat = parseFloat($stateParams.lat);
+    $scope.searchObj.lng = parseFloat($stateParams.lng);
 
 
     if ($scope.searchObj.keyword == null || $scope.searchObj.keyword == "") {
         $scope.searchObj.keyword = "";
     }
 
-    //To get flag to know previous state
-    $scope.flag = MyFlagValue.getFlag();
-
+    //To get surveyor
     $scope.getSurveyours = function () {
         MyServices.getNearestOffice($scope.searchObj, function (data) {
             if (data.value) {
@@ -29,7 +24,6 @@ connector.controller('SelectSurveyorCtrl', function ($scope, $rootScope, MyServi
 
     //Function to assign surveyor 
     $scope.assignSurveyor = function (value) {
-        console.log(value);
         $ionicPopup.show({
             title: 'Do you really want to assign task?',
             scope: $scope,
@@ -44,23 +38,17 @@ connector.controller('SelectSurveyorCtrl', function ($scope, $rootScope, MyServi
                 },
             ]
         }).then(function (res) {
-            console.log('Tapped!', res);
             if (res == true) {
                 var reqObj = {
-                    assignId: $.jStorage.get('assignmentObj').assignId,
-                    surveyId: $.jStorage.get('assignmentObj').surveyId,
-                    currentEmpId: $.jStorage.get('assignmentObj').currentEmpId,
+                    assignId: $stateParams.assignId,
+                    surveyId: $stateParams.surveyId,
+                    currentEmpId: $stateParams.currentEmpId,
                     empId: value._id
                 }
 
                 MyServices.AppointSurveyorFromApp(reqObj, function (data) {
-                    console.log("$scope.flag", $scope.flag);
                     if (data.value) {
-                        if ($scope.flag == "task") {
-                            $state.go('app.task');
-                        } else if ($scope.flag == "history") {
-                            $state.go('app.history');
-                        }
+                        $state.go($ionicHistory.backView().stateName);
                     } else {
 
                     }

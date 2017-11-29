@@ -1,4 +1,4 @@
-<ion-view cache-view="false" view-title="Task">
+<ion-view view-title="Task">
 
   <ion-content>
     <ion-refresher on-refresh="doRefresh()">
@@ -21,10 +21,10 @@
               <div class="mr-no dis-in">{{item.name}}</div>
             </div>
 
-            <ion-option-button class="button decline decline-bg-color" ng-click="showPopup(item.survey._id,item._id)">Decline</ion-option-button>
+            <ion-option-button class="button decline decline-bg-color" ng-click="declineTask(item.survey._id,item._id)">Decline</ion-option-button>
             <ion-option-button class="button decline" ng-click="getSurveyour(item)">Transfer Survey</ion-option-button>
             <div class="">
-              <a class="button button-icon icon ion-ios-information info" ng-click="information($index,parentIndex);"></a>
+              <a class="button button-icon icon ion-ios-information info" ng-click="getInformation($index,parentIndex);"></a>
             </div>
 
           </ion-item>

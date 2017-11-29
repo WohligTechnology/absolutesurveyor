@@ -1,29 +1,14 @@
-<!-- <ion-view> -->
-<ion-header-bar class="bar bar-header bar-positive">
+<ion-header-bar class="bar bar-header bar-positive" ng-controller="submitSurveyFormCtrl">
   <h1 class="title">SURVEY FORM</h1>
-  <!-- <button class="button button-clear button-primary cancel" ng-click="surveyClose()">Cancel</button> -->
 </ion-header-bar>
-<!-- <ion-content class="padding"> -->
+
 <form class="list" ng-submit="mobileSubmit(newUser)" ng-if="!msg" name="user">
 
   <label class="item item-input ">
          <span class="input-label ">Date of Survey</span>
-         <!--<input ng-model="newUser.surveyDate" type="date" name="surveyDate">
-         <span id="myDate" ng-click="state = false" ng-if="state == true">{{maxDate}}</span>-->
          <input for="myDate" type="date" class="input-space" name="surveyDate" ng-model="newUser.surveyDate" max="{{maxDate}}" required/>
        </label>
-  <!-- <label class="item item-input ">
-         <span class="input-label ">Start time</span>
-         <input type="time" name="timeInput2" ng-model="newUser.startTime" step="30" required />
 
-       </label>
-       <label class="item item-input ">
-         <span class="input-label ">End time</span>
-         {{newUser.startTime | date : "HH:mm:ss"}}
-          <input type="time" name="timeInput3" ng-model="newUser.endTime" min="{{newUser.startTime | date : 'HH:mm:ss'}}" max="20:00:00"  required />
-  {{myForm.timeInput3.$valid}}
-
-</label> -->
   <label class="item item-input ">
         <span class="input-label ">Start time</span>
         <input type="time" name="timeInput2" class="input-space" ng-model="newUser.startTime"   name="startTime" min="00:00:00" max="23:59:59" step="1" required />
@@ -31,11 +16,9 @@
       </label>
   <label class="item item-input ">
         <span class="input-label ">End time</span>
-        <!-- {{newUser.startTime | date : "HH:mm:ss"}} -->
          <input type="time" name="timeInput3" class="input-space" ng-model="newUser.endTime" name="endTime" min="{{newUser.startTime | date:'HH:mm:ss'}}" max="23:59:59" step="1" required />
-        <!-- {{myForm.timeInput3.$valid}} -->
+      
       </label>
-  <!-- <p ng-if="!myForm.timeInput3.$valid">Please enter corrrect time</p> -->
 
   </label>
   <label class="item item-input ">
@@ -43,23 +26,9 @@
          <textarea placeholder="Address" class="input-space" ng-model="newUser.address" name="address" required></textarea>
        </label>
 
-  <!--<label class="item item-input ">
-        <span class="input-label ">Latitude</span>
-          <input class="numeric-input readOnly-input" ng-readonly="true" ng-model="latitude" type="text">
-      </label>
-
-  <label class="item item-input ">
-        <span class="input-label ">Longitude</span>
-          <input class="numeric-input readOnly-input" ng-readonly="true" ng-model="longitude" type="text">
-      </label>-->
-
   <button class="button button-full button-positive" ng-disabled="user.$invalid" type="Submit">Submit</button>
-  <!--<button class="button button-full button-positive" type="Submit">Submit</button>-->
-  <!--<p class="text-center font-color" ng-if="isDisable == true">Waiting for location coordinates</p>-->
 </form>
 <div class="msg" ng-if="msg">
   <p class="text-center notask">Uploading in background</p>
   <button class="button button-full button-positive" ng-click="msgsubmit()">ok</button>
 </div>
-<!-- </ion-content> -->
-<!-- </ion-view> -->

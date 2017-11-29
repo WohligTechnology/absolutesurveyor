@@ -194,7 +194,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       })
 
       .state('app.selectSurveyor', {
-        url: '/selectSurveyor',
+        url: '/selectSurveyor/:lat/:lng/:assignId/:surveyId/:currentEmpId',
         views: {
           'menuContent': {
             templateUrl: 'templates/selectSurveyor.html',
@@ -202,8 +202,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           }
         }
       });
+
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/app/task');
+
+    var profile = $.jStorage.get('profile');
+    if (_.isEmpty(profile)) {
+      $urlRouterProvider.otherwise('/login');
+    } else {
+      $urlRouterProvider.otherwise('/app/task');
+    }
   })
 
 

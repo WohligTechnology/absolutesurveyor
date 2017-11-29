@@ -1,4 +1,4 @@
-connector.controller('TaskCtrl', function ($scope, $ionicPopup, $ionicNavBarDelegate, $state, $ionicLoading, MyServices, $timeout, LocalStorageService) {
+connector.controller('TaskCtrl', function ($scope, $ionicPopup, $ionicNavBarDelegate, $state, $ionicLoading, MyServices, $timeout, LocalStorageService, PopupService) {
 
   $scope.profile = MyServices.getProfile();
   $scope.doRefresh = function (val) {
@@ -15,16 +15,13 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $ionicNavBarDele
 
   //To select the surveyor 
   $scope.getSurveyour = function (value) {
-    var obj = {
+    $state.go('app.selectSurveyor', {
       lat: value.lat,
       lng: value.lng,
       assignId: value._id,
       surveyId: value.survey._id,
       currentEmpId: value.survey.employee
-    }
-
-    $.jStorage.set('assignmentObj', obj);
-    $state.go('app.selectSurveyor');
+    });
   };
 
   $scope.loadMore = function () {
@@ -42,29 +39,13 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $ionicNavBarDele
     });
   };
 
-  $scope.decline = {};
-  $scope.declinetask = function (surveyId, assignId, message) {
-    $scope.show();
-    $scope.decline.surveyId = surveyId;
-    $scope.decline.assignId = assignId;
-    $scope.decline.empId = $scope.id;
-    $scope.decline.message = message;
-    MyServices.Decline($scope.decline, function (data) {
-      if (data.value) {
-        $scope.hide();
-        $scope.doRefresh();
-      }
-    });
-  };
+  //To decline the task
+  $scope.declineTask = function (surveyId, assignId) {
+    PopupService.decline(surveyId, assignId);
+  }
 
-
-  $scope.showAlert = function (text) {
-    var alertPopup = $ionicPopup.alert({
-      template: text
-    });
-    alertPopup.then(function (res) {
-      // $state.go('app.task');
-    });
-  };
-
+  //To get information of task 
+  $scope.getInformation = function (value) {
+    PopupService.showTaskInfo(value);
+  }
 })

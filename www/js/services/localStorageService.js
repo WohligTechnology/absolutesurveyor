@@ -132,9 +132,6 @@ service.service('LocalStorageService', function ($rootScope, $ionicPlatform, MyS
   };
 
   this.uploadDocument = function (fileObject, objectKey, callback) {
-
-    console.log(fileObject);
-
     $cordovaFileTransfer.upload(adminurl + 'upload', fileObject.name).then(function (result) {
       result.response = JSON.parse(result.response);
       var localStorage = LocalStorageMain.getLocalValues();
@@ -148,7 +145,6 @@ service.service('LocalStorageService', function ($rootScope, $ionicPlatform, MyS
       console.log(err);
       callback();
     });
-
   };
 
   this.isItLocalStorageData = function (assignmentList) {
