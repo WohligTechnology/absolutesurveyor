@@ -12,7 +12,7 @@
           {{monthName}}
         </div>
         <div class="mutiple-task" ng-repeat="item in monthlyValues">
-          <ion-item class="item-calendar" ng-if="!item.historyTaskPendingStatus">
+          <ion-item class="item-calendar" ng-if="item.onLocalStorage != true">
             <div class="item-content" ui-sref="app.photos-documents({assignId:item._id,surveyId:item.survey._id,department:item.department})">
               <div class="calendar">
                 <div class="month">{{item.surveyDate| date:'MMM'}}</div>
@@ -28,7 +28,7 @@
             </div>
 
           </ion-item>
-          <ion-item class="item-calendar disabled-color" ng-if="item.historyTaskPendingStatus && historyTaskPending.length>0">
+          <ion-item class="item-calendar disabled-color" ng-if="item.onLocalStorage == true">
             <div class="" ng-click="showAlert('Task has been done. waiting for internet...');">
               <div class="calendar">
                 <div class="month">{{item.surveyDate| date:'MMM'}}</div>
@@ -37,13 +37,6 @@
               <div class="mr-no dis-in">{{item.name}}</div>
               <i class="ion ion-ios-cloud-upload-outline cloud"></i>
             </div>
-
-            <ion-option-button class="button decline decline-bg-color" ng-click="showPopup(item.survey._id,item._id)">Decline</ion-option-button>
-            <ion-option-button class="button decline" ng-click="getSurveyour(item)">Transfer Survey</ion-option-button>
-            <div class="">
-              <a class="button button-icon icon ion-ios-information info" ng-click="information($index);"></a>
-            </div>
-
           </ion-item>
         </div>
       </div>

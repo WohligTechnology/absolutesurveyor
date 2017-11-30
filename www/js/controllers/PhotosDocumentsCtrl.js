@@ -131,5 +131,6 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $ionicNavBarDelega
         } else if ($ionicHistory.backView().stateName == "app.history") {
             PopupService.openModal(assignmentObj, url);
         }
-    }
+    };
+
 })
