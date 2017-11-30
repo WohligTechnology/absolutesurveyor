@@ -27,7 +27,9 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $ionicNavBarDele
   $scope.loadMore = function () {
     $scope.pagination.shouldLoadMore = false;
     $scope.pagination.currentPage++;
-    MyServices.getTask({ page: $scope.pagination.currentPage }, function (data) {
+    MyServices.getTask({
+      page: $scope.pagination.currentPage
+    }, function (data) {
       $scope.pagination.result = _.concat($scope.pagination.result, data.data);
       if (data.data.length == 10) {
         $scope.pagination.shouldLoadMore = true;
