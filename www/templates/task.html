@@ -24,12 +24,12 @@
             <ion-option-button class="button decline decline-bg-color" ng-click="declineTask(item.survey._id,item._id)">Decline</ion-option-button>
             <ion-option-button class="button decline" ng-click="getSurveyour(item)">Transfer Survey</ion-option-button>
             <div class="">
-              <a class="button button-icon icon ion-ios-information info" ng-click="getInformation($index,parentIndex);"></a>
+              <a class="button button-icon icon ion-ios-information info" ng-click="getInformation(item);"></a>
             </div>
 
           </ion-item>
-          <ion-item class="item-calendar disabled-color" ng-if="item.taskPendingStatus && taskpending.length>0">
-            <div class="" ng-click="showAlert('Task has been done. waiting for internet...');">
+          <ion-item class="item-calendar disabled-color remove-padding" ng-if="item.onLocalStorage == true">
+            <div class="item-content" ng-click="showAlert('Task has been done. waiting for internet...');">
               <div class="calendar">
                 <div class="month">{{item.surveyDate| date:'MMM'}}</div>
                 <div class="date">{{item.surveyDate| date:'dd'}}</div>
@@ -37,13 +37,6 @@
               <div class="mr-no dis-in">{{item.name}}</div>
               <i class="ion ion-ios-cloud-upload-outline cloud"></i>
             </div>
-
-            <ion-option-button class="button decline decline-bg-color" ng-click="showPopup(item.survey._id,item._id)">Decline</ion-option-button>
-            <ion-option-button class="button decline" ng-click="getSurveyour(item)">Transfer Survey</ion-option-button>
-            <div class="">
-              <a class="button button-icon icon ion-ios-information info" ng-click="information($index,parentIndex);"></a>
-            </div>
-
           </ion-item>
         </div>
       </div>

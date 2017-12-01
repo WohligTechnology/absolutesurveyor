@@ -151,7 +151,7 @@ service.service('LocalStorageService', function ($rootScope, $ionicPlatform, MyS
     var localStorage = LocalStorageMain.getLocalValues();
     _.each(assignmentList, function (assignment) {
       var isThereInLocal = _.find(localStorage, function (n) {
-        return assignment._id == n._id;
+        return assignment.assignId == n._id;
       });
       if (isThereInLocal) {
         assignment.onLocalStorage = true;

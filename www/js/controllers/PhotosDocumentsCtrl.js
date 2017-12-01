@@ -72,30 +72,31 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $ionicNavBarDelega
             cssClass: 'remove'
         });
         confirmPopup.then(function (res) {
+            console.log('You are sure', image, res);
             if (res) {
                 console.log('You are sure');
                 if (arrayName === 'photos') {
-                    $scope.photos = _.flatten($scope.photos);
-                    _.remove($scope.photos, function (n) {
+                    $scope.photosChunk = _.flatten($scope.photosChunk);
+                    _.remove($scope.photosChunk, function (n) {
                         return n === image;
                     });
-                    $scope.photos = _.chunk($scope.photos, 3);
-                    console.log($scope.photos);
+                    $scope.photosChunk = _.chunk($scope.photosChunk, 3);
+                    console.log($scope.photosChunk);
                 } else if (arrayName === 'Document') {
-                    $scope.doc = _.flatten($scope.doc);
-                    _.remove($scope.doc, function (n) {
+                    $scope.docChunk = _.flatten($scope.docChunk);
+                    _.remove($scope.docChunk, function (n) {
                         return n === image;
                     });
-                    $scope.doc = _.chunk($scope.doc, 3);
-                    console.log($scope.doc);
+                    $scope.docChunk = _.chunk($scope.docChunk, 3);
+                    console.log($scope.docChunk);
 
                 } else {
-                    $scope.jir = _.flatten($scope.jir);
-                    _.remove($scope.jir, function (n) {
+                    $scope.jirChunk = _.flatten($scope.jirChunk);
+                    _.remove($scope.jirChunk, function (n) {
                         return n === image;
                     });
-                    $scope.jir = _.chunk($scope.jir, 3);
-                    console.log($scope.jir);
+                    $scope.jirChunk = _.chunk($scope.jirChunk, 3);
+                    console.log($scope.jirChunk);
                 }
             } else {
                 console.log('You are not sure');

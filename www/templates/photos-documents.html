@@ -1,18 +1,5 @@
 <ion-view view-title="Photos / Documents">
   <ion-content>
-
-    <!-- <div class="row" ng-if="imageSrc">
-      <div class="col col-25">
-        <img ng-src="{{imageSrc}}" class="full-image">
-      </div>
-    </div>
-
-
-    <div class="text-center padding">
-      <p ng-if="!imageSrc">No Photos / Documents Uploaded</p>
-      <button class="button button-positive" ng-click="openCamera()">Open Camera</button>
-      <button class="button button-positive" ng-click="openLibrary()">Open Photo Library</button>
-    </div> -->
     <form class="" method="post">
       <div class="add-button">
         <button class="button icon ion-plus-round" ng-click="showActionsheet('photos')"></button>
@@ -27,37 +14,11 @@
         <div class="item item-image">
           <div class="row" ng-repeat="pic in photosChunk">
             <div class=" col-33" ng-click="showConfirm(data,'photos')" ng-repeat="data in pic">
-              <!-- <div class="img-upload" ng-if="data" ng-style="{'background-image':'url({{data|uploadpath:100:100:'cover'}})'}"> -->
               <div class="img-upload">
                 <img ng-src="{{data.name}}" ng-if="data">
               </div>
             </div>
           </div>
-          <!-- <div class="row" ng-repeat="pic in photos">
-        <div class="img-upload col-33" ng-click="showConfirm(data,'photos')" ng-repeat="data in pic">
-          <img ng-src="{{data|uploadpath:100:100:'cover'}}" ng-if="data">
-        </div>
-
-      </div> -->
-          <!-- <div class="row">
-        <div class="col-33" ng-click="showConfirm(data,'photos')">
-          <div class="img-upload">
-            <img src="img/fundpic.jpg" alt="">
-          </div>
-        </div>
-        <div class="col-33">
-          <div class="img-upload">
-            <img src="img/fundpic.jpg" alt="">
-          </div>
-        </div>
-        <div class="col-33">
-          <div class="img-upload">
-            <img src="img/fundpic.jpg" alt="">
-          </div>
-        </div>
-
-      </div> -->
-
         </div>
       </div>
       <div class="add-button">
@@ -71,10 +32,8 @@
         <div class="item item-image">
           <div class="row" ng-repeat="pic in docChunk">
             <div class="img-upload col-33" ng-click="showConfirm(data,'Document')" ng-repeat="data in pic">
-              <!-- <div class="img-upload" ng-if="data" ng-style="{'background-image':'url({{data|uploadpath:100:100:'cover'}})'}"> -->
               <div class="img-upload">
                 <img ng-src="{{data.name}}" ng-if="data">
-                <!-- <img ng-src="{{data|uploadpath:100:100:'cover'}}" ng-if="data"> -->
               </div>
             </div>
 

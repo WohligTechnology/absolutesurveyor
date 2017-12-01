@@ -1,5 +1,5 @@
 //To show all history of user
-connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarDelegate, $state, MyServices, $timeout, $ionicLoading, LocalStorageService, PopupService) {
+connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarDelegate, $state, MyServices, $timeout, $ionicLoading, LocalStorageService, PopupService, $rootScope) {
 
     $scope.profile = MyServices.getProfile();
 
@@ -14,6 +14,14 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
         }
     };
     $scope.doRefresh(true);
+
+    $rootScope.$on('proximityCatched', function () {
+        $state.reload();
+    });
+
+    $scope.$on('$ionicView.enter', function (e) {
+        $ionicNavBarDelegate.showBar(true);
+    });
 
     //To select the surveyor 
     $scope.getSurveyour = function (value) {

@@ -53,7 +53,7 @@ service.service('PopupService', function ($ionicPopup, MyServices, $state, $ioni
     };
 
     //To show task information
-    this.openModal = function (value, url, controller) {
+    this.openModal = function (value, url) {
         this.assignmentObj = value;
         this.infoPopup = $ionicPopup.show({
             templateUrl: url

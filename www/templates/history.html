@@ -28,8 +28,8 @@
             </div>
 
           </ion-item>
-          <ion-item class="item-calendar disabled-color" ng-if="item.onLocalStorage == true">
-            <div class="" ng-click="showAlert('Task has been done. waiting for internet...');">
+          <ion-item class="item-calendar disabled-color remove-padding" ng-if="item.onLocalStorage == true">
+            <div class="item-content" ng-click="showAlert('Task has been done. waiting for internet...');">
               <div class="calendar">
                 <div class="month">{{item.surveyDate| date:'MMM'}}</div>
                 <div class="date">{{item.surveyDate| date:'dd'}}</div>

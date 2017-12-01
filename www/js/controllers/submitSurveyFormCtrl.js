@@ -1,4 +1,4 @@
-connector.controller('SubmitSurveyFormCtrl', function ($scope, $ionicPopup, PopupService, LocalStorageService) {
+connector.controller('SubmitSurveyFormCtrl', function ($scope, $ionicPopup, PopupService, LocalStorageService, $ionicHistory) {
 
     var assignmentObj = PopupService.assignmentObj;
 
@@ -11,13 +11,8 @@ connector.controller('SubmitSurveyFormCtrl', function ($scope, $ionicPopup, Popu
     var year = dateObj.getUTCFullYear();
     $scope.maxDate = year + "-" + month + "-" + day;
 
-    $scope.test = function () {
-        console.log("test");
-    }
-
     //To submit assigment object
     $scope.mobileSubmit = function (newuser) {
-        console.log("hiiii");
         newuser.surveyTime = new Date();
         $scope.document = _.cloneDeep(newuser);
         $scope.document.photos = assignmentObj.photos;
@@ -29,9 +24,9 @@ connector.controller('SubmitSurveyFormCtrl', function ($scope, $ionicPopup, Popu
         // $scope.document.latitude = $rootScope.latitude;
         // $scope.document.longitude = $rootScope.longitude;
         $scope.document.isMobile = assignmentObj.isMobile;
-        console.log("$scope.document", $scope.document);
         LocalStorageService.addToLocalStorage($scope.document);
         PopupService.infoPopup.close();
+        $ionicHistory.goBack(-2);
     }
 });
 

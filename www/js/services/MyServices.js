@@ -66,7 +66,7 @@ service.factory('MyServices', function ($http, $state) {
       }).success(callback);
     },
     mobileSubmit: function (data, callback) {
-
+      data.empId = getUserProfile()._id;
       $http({
         url: adminurl + 'Assignment/mobileSubmit',
         method: 'POST',

@@ -1,4 +1,4 @@
-connector.controller('TaskCtrl', function ($scope, $ionicPopup, $ionicNavBarDelegate, $state, $ionicLoading, MyServices, $timeout, LocalStorageService, PopupService) {
+connector.controller('TaskCtrl', function ($scope, $ionicPopup, $ionicNavBarDelegate, $state, $ionicLoading, MyServices, $timeout, LocalStorageService, PopupService, $rootScope) {
 
   $scope.profile = MyServices.getProfile();
   $scope.doRefresh = function (val) {
@@ -12,6 +12,14 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $ionicNavBarDele
     }
   };
   $scope.doRefresh(true);
+
+  $rootScope.$on('proximityCatched', function () {
+    $state.reload();
+  });
+
+  $scope.$on('$ionicView.enter', function (e) {
+    $ionicNavBarDelegate.showBar(true);
+  });
 
   //To select the surveyor 
   $scope.getSurveyour = function (value) {
@@ -31,7 +39,8 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $ionicNavBarDele
       $scope.pagination.result = _.concat($scope.pagination.result, data.data);
       if (data.data.length == 10) {
         $scope.pagination.shouldLoadMore = true;
-      }
+      };
+      LocalStorageService.isItLocalStorageData($scope.pagination.result);
       $scope.pagination.resultGroup = _.groupBy($scope.pagination.result, function (n) {
         return moment(n.surveyDate).format("MMM YYYY");
       });
@@ -46,6 +55,7 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $ionicNavBarDele
 
   //To get information of task 
   $scope.getInformation = function (value) {
-    PopupService.showTaskInfo(value);
+    var url = 'templates/modal/info.html';
+    PopupService.openModal(value, url);
   }
 })
