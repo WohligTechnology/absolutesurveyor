@@ -41,17 +41,23 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
     $scope.loadMore = function () {
         $scope.pagination.shouldLoadMore = false;
         $scope.pagination.currentPage++;
-        MyServices.getHistory({ page: $scope.pagination.currentPage }, function (data) {
-            $scope.pagination.result = _.concat($scope.pagination.result, data.data);
-            if (data.data.length == 10) {
-                $scope.pagination.shouldLoadMore = true;
-            }
-            LocalStorageService.isItLocalStorageData($scope.pagination.result);
-            $scope.pagination.resultGroup = _.groupBy($scope.pagination.result, function (n) {
-                return moment(n.surveyDate).format("MMM YYYY");
+        var url = 'Assignment/tasklistCompleted';
+        if (LocalStorageService.getOnlineStatus()) {
+            MyServices.getData(url, { page: $scope.pagination.currentPage }, function (data) {
+                $scope.pagination.result = _.concat($scope.pagination.result, data.data);
+                if (data.data.length == 10) {
+                    $scope.pagination.shouldLoadMore = true;
+                }
+                LocalStorageService.isItLocalStorageData($scope.pagination.result);
+                LocalStorageService.saveTaskOnLocalStorage($scope.pagination.result, "history");
+                $scope.pagination.resultGroup = LocalStorageService.groupDataByMonth($scope.pagination.result);
+                $scope.$broadcast('scroll.refreshComplete');
             });
-            $scope.$broadcast('scroll.refreshComplete');
-        });
+        } else if (!LocalStorageService.getOnlineStatus()) {
+            $scope.pagination.result = LocalStorageService.getTaskFromLocalStorage("history");
+            LocalStorageService.isItLocalStorageData($scope.pagination.result);
+            $scope.pagination.resultGroup = LocalStorageService.groupDataByMonth($scope.pagination.result);
+        }
     };
 
     $scope.declineTask = function (surveyId, assignId) {

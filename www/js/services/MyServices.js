@@ -11,10 +11,6 @@ service.factory('MyServices', function ($http, $state) {
     }
   }
 
-  // if($state.current != "login" && !$.jStorage.get('profile')) {
-  //      $state.go("login");
-  // } 
-
   return {
     Login: function (email, callback) {
       $http({
@@ -105,6 +101,20 @@ service.factory('MyServices', function ($http, $state) {
         data: data
       }).success(callback);
     },
+
+    //To get all Task/History
+    getData: function (url, data, callback) {
+      data.id = getUserProfile()._id;
+      $http({
+        url: adminurl + url,
+        method: 'POST',
+        withCredentials: true,
+        data: data
+      }).success(function (data) {
+        console.log("error,data", data);
+        callback(data);
+      });
+    }
   }
 });
 

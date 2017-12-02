@@ -24,9 +24,15 @@ service.service('LocalStorageService', function ($rootScope, $ionicPlatform, MyS
 
   $rootScope.$on('$cordovaNetwork:online', function (event, networkState) {
     LocalStorageMain.uploadingCompleted();
+    LocalStorageMain.setOnlineStatus(true);
     LocalStorageMain.uploadFiles(function (err, data) {
       console.log(err, data);
     });
+  });
+
+  $rootScope.$on('$cordovaNetwork:offline', function (event, networkState) {
+    console.log("I m offline man");
+    LocalStorageMain.setOnlineStatus(false);
   });
 
   //Function to Add document to local storage
@@ -34,9 +40,31 @@ service.service('LocalStorageService', function ($rootScope, $ionicPlatform, MyS
     var localStorage = this.getLocalValues();
     localStorage.push(assignment);
     this.saveStorage(localStorage);
-    this.uploadFiles(function (err, data) {
-      console.log(err, data);
-    });
+    if (this.getOnlineStatus()) {
+      this.uploadFiles(function (err, data) {
+        console.log(err, data);
+      });
+    }
+  };
+
+  this.saveTaskOnLocalStorage = function (task, page) {
+    if (page == "task") {
+      $.jStorage.set('taskData', task);
+    }else if(page == "history"){
+      $.jStorage.set('historyData', task);
+    }
+  };
+
+  this.getTaskFromLocalStorage = function (page) {
+    if (page == "history") {
+      var localStorage = $.jStorage.get('historyData');
+    }else if (page == "task") {
+      var localStorage = $.jStorage.get('taskData');
+    }
+     if (_.isEmpty(localStorage)) {
+        localStorage = [];
+      }
+      return localStorage;
   };
 
   this.saveStorage = function (localStorages) {
@@ -51,7 +79,6 @@ service.service('LocalStorageService', function ($rootScope, $ionicPlatform, MyS
     }
     return localStorage;
   };
-
 
   // Upload Files
   this.uploadFiles = function (callback) {
@@ -151,14 +178,13 @@ service.service('LocalStorageService', function ($rootScope, $ionicPlatform, MyS
     var localStorage = LocalStorageMain.getLocalValues();
     _.each(assignmentList, function (assignment) {
       var isThereInLocal = _.find(localStorage, function (n) {
-        return assignment.assignId == n._id;
+        return assignment.survey._id == n.surveyId;
       });
       if (isThereInLocal) {
         assignment.onLocalStorage = true;
       }
     });
   };
-
 
   this.isUploadingRunning = function () {
     return $.jStorage.get("uploadingRunning");
@@ -170,8 +196,21 @@ service.service('LocalStorageService', function ($rootScope, $ionicPlatform, MyS
 
   this.uploadingStarted = function () {
     $.jStorage.set("uploadingRunning", true);
+  };
+
+  this.groupDataByMonth = function (data) {
+    var finalData = _.groupBy(data, function (n) {
+      return moment(n.surveyDate).format("MMM YYYY");
+    });
+    return finalData;
+  };
+
+  this.setOnlineStatus = function (value) {
+    $.jStorage.set("onlineStatus", value);
+  };
+
+  this.getOnlineStatus = function () {
+    return $.jStorage.get("onlineStatus");
   }
-
-
 
 });
