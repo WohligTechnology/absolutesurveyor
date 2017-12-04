@@ -21,6 +21,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 ionic.Platform.exitApp();
               }
             });
+        } else {
+          LocalStorageService.setOnlineStatus(true);
         }
       }
 
