@@ -1,4 +1,4 @@
-connector.controller('TaskCtrl', function ($scope, $ionicPopup, $ionicNavBarDelegate, $state, $ionicLoading, MyServices, $timeout, LocalStorageService, PopupService, $rootScope) {
+connector.controller('TaskCtrl', function ($scope, $ionicPopup, $ionicNavBarDelegate, $state, $ionicLoading, MyServices, LocalStorageService, PopupService, $rootScope, $ionicPlatform) {
 
   $scope.profile = MyServices.getProfile();
   $scope.doRefresh = function (val) {
@@ -11,7 +11,7 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $ionicNavBarDele
       $scope.loadMore();
     }
   };
-  $scope.doRefresh(true);
+
 
   $rootScope.$on('proximityCatched', function () {
     $state.reload();
@@ -20,6 +20,16 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $ionicNavBarDele
   $scope.$on('$ionicView.enter', function (e) {
     $ionicNavBarDelegate.showBar(true);
   });
+
+  $ionicPlatform.ready(function () {
+    if (navigator.connection.type == Connection.NONE) {
+      LocalStorageService.setOnlineStatus(false);
+    } else {
+      LocalStorageService.setOnlineStatus(true);
+    };
+    $scope.doRefresh(true);
+  })
+
 
   //To select the surveyor 
   $scope.getSurveyour = function (value) {
