@@ -30,7 +30,6 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $ionicNavBarDele
     $scope.doRefresh(true);
   })
 
-
   //To select the surveyor 
   $scope.getSurveyour = function (value) {
     $state.go('app.selectSurveyor', {

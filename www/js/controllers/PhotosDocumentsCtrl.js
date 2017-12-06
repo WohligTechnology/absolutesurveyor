@@ -124,10 +124,10 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $ionicNavBarDelega
                 if (!(_.isEmpty($scope.jir))) {
                     PopupService.openModal(assignmentObj, url);
                 } else {
-                    $scope.showAlert('Please add JIR');
+                    PopupService.showAlert('Please add JIR');
                 }
             } else {
-                $scope.showAlert('Please add attachments ');
+                PopupService.showAlert('Please add attachments ');
             }
         } else if ($ionicHistory.backView().stateName == "app.history") {
             PopupService.openModal(assignmentObj, url);

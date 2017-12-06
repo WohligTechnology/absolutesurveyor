@@ -68,4 +68,13 @@ service.service('PopupService', function ($ionicPopup, MyServices, $state, $ioni
             }
         });
     };
+
+    this.showAlert=function(text){
+        var alertPopup = $ionicPopup.alert({
+            template: text
+        });
+        alertPopup.then(function (res) {
+            // $state.go('app.task');
+        });
+    }
 })
