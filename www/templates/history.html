@@ -12,7 +12,7 @@
           {{monthName}}
         </div>
         <div class="mutiple-task" ng-repeat="item in monthlyValues">
-          <ion-item class="item-calendar" ng-if="item.onLocalStorage != true">
+          <ion-item class="item-calendar remove-padding" ng-if="item.onLocalStorage != true">
             <div class="item-content" ui-sref="app.photos-documents({assignId:item._id,surveyId:item.survey._id,department:item.department})">
               <div class="calendar">
                 <div class="month">{{item.surveyDate| date:'MMM'}}</div>
@@ -20,7 +20,6 @@
               </div>
               <div class="mr-no dis-in">{{item.name}}</div>
             </div>
-
 
             <div class="">
               <a class="button button-icon icon ion-ios-information info" ng-click="getInformation(item);"></a>

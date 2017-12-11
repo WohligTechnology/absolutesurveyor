@@ -15,6 +15,7 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
     };
     $scope.doRefresh(true);
 
+
     $rootScope.$on('proximityCatched', function () {
         $state.reload();
     });
