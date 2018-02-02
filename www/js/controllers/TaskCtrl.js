@@ -29,6 +29,8 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $ionicNavBarDele
     };
     $scope.doRefresh(true);
   })
+  // $scope.doRefresh(true);
+  // LocalStorageService.setOnlineStatus(true);
 
   //To select the surveyor 
   $scope.getSurveyour = function (value) {
@@ -54,12 +56,14 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $ionicNavBarDele
         LocalStorageService.isItLocalStorageData($scope.pagination.result);
         LocalStorageService.saveTaskOnLocalStorage($scope.pagination.result, "task");
         $scope.pagination.resultGroup = LocalStorageService.groupDataByMonth($scope.pagination.result);
+        LocalStorageService.checkUploadStatusOfFile($scope.pagination.result);
         $scope.$broadcast('scroll.refreshComplete');
       });
     } else if (!LocalStorageService.getOnlineStatus()) {
       $scope.pagination.result = LocalStorageService.getTaskFromLocalStorage("task");
       LocalStorageService.isItLocalStorageData($scope.pagination.result);
       $scope.pagination.resultGroup = LocalStorageService.groupDataByMonth($scope.pagination.result);
+      LocalStorageService.checkUploadStatusOfFile($scope.pagination.result);
     }
   };
 

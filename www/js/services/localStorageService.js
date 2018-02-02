@@ -1,4 +1,4 @@
-service.service('LocalStorageService', function ($rootScope, $ionicPlatform, MyServices, $cordovaFileTransfer, $cordovaNetwork) {
+service.service('LocalStorageService', function ($rootScope, $ionicPlatform, MyServices, $cordovaFileTransfer, $cordovaNetwork, $interval) {
 
   // Local Storage Single Assignment fileObject
   // var assignmentFileObject = {
@@ -50,7 +50,7 @@ service.service('LocalStorageService', function ($rootScope, $ionicPlatform, MyS
   this.saveTaskOnLocalStorage = function (task, page) {
     if (page == "task") {
       $.jStorage.set('taskData', task);
-    }else if(page == "history"){
+    } else if (page == "history") {
       $.jStorage.set('historyData', task);
     }
   };
@@ -58,13 +58,13 @@ service.service('LocalStorageService', function ($rootScope, $ionicPlatform, MyS
   this.getTaskFromLocalStorage = function (page) {
     if (page == "history") {
       var localStorage = $.jStorage.get('historyData');
-    }else if (page == "task") {
+    } else if (page == "task") {
       var localStorage = $.jStorage.get('taskData');
     }
-     if (_.isEmpty(localStorage)) {
-        localStorage = [];
-      }
-      return localStorage;
+    if (_.isEmpty(localStorage)) {
+      localStorage = [];
+    }
+    return localStorage;
   };
 
   this.saveStorage = function (localStorages) {
@@ -87,6 +87,7 @@ service.service('LocalStorageService', function ($rootScope, $ionicPlatform, MyS
       var localStorage = this.getLocalValues();
       var assignment = _.first(localStorage);
       if (assignment) {
+
         LocalStorageMain.uploadingStarted();
         var unUploadedImages = _.filter(assignment.photos, function (n) {
           return !n.file;
@@ -98,12 +99,14 @@ service.service('LocalStorageService', function ($rootScope, $ionicPlatform, MyS
         var unUploadedDocument = _.filter(assignment.doc, function (n) {
           return !n.file;
         });
+        var totalFiles = unUploadedImages.length + unUploadedJir.length + unUploadedJir.length;
         async.series({
           unUploadedImages: function (callback) {
             if (unUploadedImages.length === 0) {
               callback();
             } else {
               async.concatLimit(unUploadedImages, 1, function (data, callback) {
+                LocalStorageMain.checkUploadStatusOfFile(totalFiles, assignment.surveyId, 1);
                 LocalStorageMain.uploadDocument(data, "photos", callback);
               }, callback);
             }
@@ -112,7 +115,6 @@ service.service('LocalStorageService', function ($rootScope, $ionicPlatform, MyS
             if (unUploadedJir.length === 0) {
               callback();
             } else {
-              console.log(unUploadedJir);
               async.eachSeries(unUploadedJir, function (data, callback) {
                 LocalStorageMain.uploadDocument(data, "jir", callback);
                 // callback();
@@ -158,6 +160,24 @@ service.service('LocalStorageService', function ($rootScope, $ionicPlatform, MyS
 
   };
 
+  //To check upload status of Files
+  this.checkUploadStatusOfFile = function (totalFiles, surveyId, count) {
+    var localStorage = $.jStorage.get("uploadingFileStatus");
+    console.log("localStorage checkUploadStatusOfFile1", localStorage);
+    if (localStorage) {
+      var isThereInLocal = _.find(localStorage, function (n) {
+        if (n.onLocalStorage == true) {
+          if (surveyId == n.surveyId) {
+            n.totalFiles = totalFiles;
+            n.count = n.count + count;
+          }
+        }
+        $.jStorage.set("uploadingFileStatus", localStorage);
+      });
+      console.log("localStorage checkUploadStatusOfFile2", localStorage);
+    }
+  }
+
   this.uploadDocument = function (fileObject, objectKey, callback) {
     $cordovaFileTransfer.upload(adminurl + 'upload', fileObject.name).then(function (result) {
       result.response = JSON.parse(result.response);
@@ -184,6 +204,7 @@ service.service('LocalStorageService', function ($rootScope, $ionicPlatform, MyS
         assignment.onLocalStorage = true;
       }
     });
+    $.jStorage.set("uploadingFileStatus", assignmentList);
   };
 
   this.isUploadingRunning = function () {
@@ -211,6 +232,37 @@ service.service('LocalStorageService', function ($rootScope, $ionicPlatform, MyS
 
   this.getOnlineStatus = function () {
     return $.jStorage.get("onlineStatus");
+  }
+
+  this.checkUploadStatusOfFile = function (value) {
+    $interval(function () {
+      var array = LocalStorageMain.getLocalValues();
+      _.each(array, function (n) {
+        var totalFiles = n.doc.length + n.photos.length + n.jir.length;
+        var count = 0;
+        _.each(n.doc, function (m) {
+          if (m.hasOwnProperty("file")) {
+            count++;
+          }
+        });
+        _.each(n.jir, function (m) {
+          if (m.hasOwnProperty("file")) {
+            count++;
+          }
+        });
+        _.each(n.photos, function (m) {
+          if (m.hasOwnProperty("file")) {
+            count++;
+          }
+        })
+        var isPresent = _.find(value, function (o) {
+          if (o.survey._id === n.surveyId) {
+            o.fileUploaded = count;
+            o.totalFiles = totalFiles;
+          };
+        });
+      })
+    }, 2000);
   }
 
 });

@@ -53,12 +53,16 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
                 LocalStorageService.saveTaskOnLocalStorage($scope.pagination.result, "history");
                 $scope.pagination.resultGroup = LocalStorageService.groupDataByMonth($scope.pagination.result);
                 $scope.$broadcast('scroll.refreshComplete');
+                LocalStorageService.checkUploadStatusOfFile($scope.pagination.result);
             });
+            console.log("1")
         } else if (!LocalStorageService.getOnlineStatus()) {
             $scope.pagination.result = LocalStorageService.getTaskFromLocalStorage("history");
             LocalStorageService.isItLocalStorageData($scope.pagination.result);
             $scope.pagination.resultGroup = LocalStorageService.groupDataByMonth($scope.pagination.result);
+            LocalStorageService.checkUploadStatusOfFile($scope.pagination.result);
         }
+
     };
 
     $scope.declineTask = function (surveyId, assignId) {

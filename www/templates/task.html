@@ -36,6 +36,8 @@
               </div>
               <div class="mr-no dis-in">{{item.name}}</div>
               <i class="ion ion-ios-cloud-upload-outline cloud"></i>
+              <span class="uploadStatusFont uploadStatusColor" ng-if="item.fileUploaded">{{item.fileUploaded}}</span>
+              <span class="uploadStatusColor" ng-if="item.totalFiles">/{{item.totalFiles}}</span>
             </div>
           </ion-item>
         </div>

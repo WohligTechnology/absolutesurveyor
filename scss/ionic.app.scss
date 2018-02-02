@@ -250,7 +250,7 @@ background: rgba(0, 0, 0, 0.12);
   display: inline-block;
   font-size: 30px;
   // margin: 0 10px;
-  margin-left: 75px;
+  margin-left: 15px;
 }
 .dis-in{
   display: inline-block;
@@ -356,4 +356,13 @@ background: rgba(0, 0, 0, 0.12);
 
 .remove-padding .popup-head{
 padding: 0px !important;
+}
+
+.uploadStatusColor{
+  color: #1c2b6e;
+}
+
+.uploadStatusFont{
+  font-size: 30px;
+  margin-left: 5px;
 }
