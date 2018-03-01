@@ -21,16 +21,16 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $ionicNavBarDele
     $ionicNavBarDelegate.showBar(true);
   });
 
-  $ionicPlatform.ready(function () {
-    if (navigator.connection.type == Connection.NONE) {
-      LocalStorageService.setOnlineStatus(false);
-    } else {
-      LocalStorageService.setOnlineStatus(true);
-    };
-    $scope.doRefresh(true);
-  })
-  // $scope.doRefresh(true);
-  // LocalStorageService.setOnlineStatus(true);
+  // $ionicPlatform.ready(function () {
+  //   if (navigator.connection.type == Connection.NONE) {
+  //     LocalStorageService.setOnlineStatus(false);
+  //   } else {
+  //     LocalStorageService.setOnlineStatus(true);
+  //   };
+  //   $scope.doRefresh(true);
+  // })
+  $scope.doRefresh(true);
+  LocalStorageService.setOnlineStatus(true);
 
   //To select the surveyor 
   $scope.getSurveyour = function (value) {
@@ -48,7 +48,9 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $ionicNavBarDele
     $scope.pagination.currentPage++;
     var url = 'Assignment/tasklist';
     if (LocalStorageService.getOnlineStatus()) {
-      MyServices.getData(url, { page: $scope.pagination.currentPage }, function (data) {
+      MyServices.getData(url, {
+        page: $scope.pagination.currentPage
+      }, function (data) {
         $scope.pagination.result = _.concat($scope.pagination.result, data.data);
         if (data.data.length == 10) {
           $scope.pagination.shouldLoadMore = true;
