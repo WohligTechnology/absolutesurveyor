@@ -1,11 +1,11 @@
-connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue, $ionicPlatform, $state) {
+connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue, $ionicPlatform, $state, $ionicPopup) {
 
   $scope.questionObj = {
     question: "Where are you? At destination?",
     questionNumber: 1,
     answer: "",
     type: "radio"
-  }
+  };
   $scope.finalArray = [];
   $scope.isText = false;
   $scope.multiOption = false;
@@ -13,6 +13,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
   $scope.isNumeric = false;
   $scope.lr, $scope.delievered, $scope.wet, $scope.damaged = null;
   $scope.short = null;
+  $scope.isQuestionSix = false;
 
   //To hide refresh button
   angular.element(document.getElementsByClassName("right-btn")).css('display', 'none');
@@ -62,7 +63,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Is destination same as LR?",
           questionNumber: 2
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -72,7 +73,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Is it Full Truck Load?",
           questionNumber: 3
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -82,7 +83,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Was Vehicle involved in an accident?",
           questionNumber: 4
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -92,7 +93,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Is RC book available?",
           questionNumber: 5
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -103,7 +104,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "",
           questionNumber: 59
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -123,7 +124,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Number of packages in 1.LR 2.Delievered 3.Short 4.Wet 5.Damaged?",
           questionNumber: 6
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isNumeric = true;
@@ -135,7 +136,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Is Packing shown to you?",
           questionNumber: 7
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -146,7 +147,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Is packing new?",
           questionNumber: 8
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -157,7 +158,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Is it Customary?",
           questionNumber: 9
-        }
+        };
         $scope.isText = false;
         $scope.isNumeric = false;
         $scope.multiOption = false;
@@ -168,7 +169,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "What was the condition of packing at time of survey?",
           questionNumber: 10
-        }
+        };
         $scope.isText = true;
         $scope.isNumeric = false;
         $scope.multiOption = false;
@@ -190,7 +191,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Is Truck present during survey?",
           questionNumber: 12
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -201,7 +202,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Is it Containerised or is it an Open vehicle?",
           questionNumber: 13
-        }
+        };
         $scope.isText = false;
         $scope.isSubmit = false;
         $scope.isNumeric = false;
@@ -212,7 +213,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Options",
           questionNumber: 14
-        }
+        };
         $scope.isText = false;
         $scope.isSubmit = false;
         $scope.isNumeric = false;
@@ -223,7 +224,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Was the light test done?",
           questionNumber: 15
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isNumeric = false;
@@ -234,7 +235,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Were there?",
           questionNumber: 16
-        }
+        };
         $scope.isText = false;
         $scope.isNumeric = false;
         $scope.isSubmit = false;
@@ -245,7 +246,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Was there Tarpaulin on the floor of the truck as well?",
           questionNumber: 17
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isNumeric = false;
@@ -256,7 +257,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Was there Tarpaulin on the floor of the truck as well?",
           questionNumber: 17
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -266,7 +267,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Was there Tarpaulin on the floor of the truck as well?",
           questionNumber: 17
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -277,7 +278,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Was there Tarpaulin on the floor of the truck as well?",
           questionNumber: 17
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -288,7 +289,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Are there any test reports available?",
           questionNumber: 18
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -299,7 +300,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Can it be repaired?",
           questionNumber: 19
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -310,7 +311,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "How much is the estimated cost?",
           questionNumber: 20
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isNumeric = true;
@@ -332,7 +333,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Are you at spot of loss?",
           questionNumber: 21
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isNumeric = false;
@@ -347,7 +348,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Where are you and Why are you here?",
           questionNumber: 22
-        }
+        };
         $scope.isText = true;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -370,7 +371,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Was there a transhipment during the journey?",
           questionNumber: 24
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isNumeric = false;
@@ -385,7 +386,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Where and Why did the transhipment happen?",
           questionNumber: 25
-        }
+        };
         $scope.isText = true;
         $scope.multiOption = false;
         $scope.isNumeric = false;
@@ -400,7 +401,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Why is packing not shown?",
           questionNumber: 26
-        }
+        };
         $scope.isText = true;
         $scope.isNumeric = false;
         $scope.multiOption = false;
@@ -419,7 +420,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Is it Adequate?",
           questionNumber: 27
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -430,7 +431,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Why is it adequate or inadequate?",
           questionNumber: 28
-        }
+        };
         $scope.isText = true;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -449,7 +450,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Options",
           questionNumber: 14
-        }
+        };
         $scope.isText = false;
         $scope.isSubmit = false;
         $scope.isNumeric = false;
@@ -460,7 +461,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Options",
           questionNumber: 14
-        }
+        };
         $scope.isText = false;
         $scope.isSubmit = false;
         $scope.isNumeric = false;
@@ -471,7 +472,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Options",
           questionNumber: 16
-        }
+        };
         $scope.isText = false;
         $scope.isSubmit = false;
         $scope.isNumeric = false;
@@ -482,7 +483,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Ask for Photos,if any?",
           questionNumber: 29
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -497,7 +498,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Test Reports, if any",
           questionNumber: 18
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -513,7 +514,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Was there a Tarpaulin or not?",
           questionNumber: 30
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -524,7 +525,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "What is the condition of truck floor?",
           questionNumber: 31
-        }
+        };
         $scope.isText = false;
         $scope.isSubmit = false;
         $scope.isNumeric = false;
@@ -535,7 +536,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "How many Tarpaulin were there?",
           questionNumber: 32
-        }
+        };
         $scope.isText = false;
         $scope.isNumeric = true;
         $scope.multiOption = false;
@@ -556,7 +557,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Was Tarpaulin removed in your presence?",
           questionNumber: 33
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isNumeric = false;
@@ -567,7 +568,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Did you spread the Tarpaulin and check for quality?",
           questionNumber: 34
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isNumeric = false;
@@ -586,7 +587,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Were there any Holes in Tarpaulin?",
           questionNumber: 35
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isNumeric = false;
@@ -597,7 +598,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Was there Tarpaulin on the floor of the truck as well?",
           questionNumber: 36
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isNumeric = false;
@@ -643,7 +644,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Is Truck present during survey?",
           questionNumber: 38
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isNumeric = false;
@@ -654,7 +655,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Is there enough space for missing packages?",
           questionNumber: 39
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -669,7 +670,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Are units missing from packages?",
           questionNumber: 40
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -684,7 +685,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "How many units are missing?",
           questionNumber: 41
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -699,7 +700,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Was there enough space for missing packages?",
           questionNumber: 42
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -710,7 +711,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Was the package tampered?",
           questionNumber: 43
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isNumeric = false;
@@ -725,7 +726,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "How was the package tampered?",
           questionNumber: 44
-        }
+        };
         $scope.isText = true;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -740,7 +741,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Collect GRN",
           questionNumber: 45
-        }
+        };
         $scope.isText = true;
         $scope.multiOption = false;
         $scope.isNumeric = false;
@@ -770,7 +771,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Did damage happen during Unloading?",
           questionNumber: 47
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -781,7 +782,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "How did damage happen during Unloading?",
           questionNumber: 48
-        }
+        };
         $scope.isText = true;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -796,7 +797,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Is it beacuse of Jerks and Jolts?",
           questionNumber: 49
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isNumeric = false;
@@ -807,7 +808,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Can Jerks and Jolts cause such magnitude of damage?",
           questionNumber: 50
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isNumeric = false;
@@ -830,7 +831,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Can it be reprocessed?",
           questionNumber: 51
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -841,7 +842,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Can it be reconditioned?",
           questionNumber: 52
-        }
+        };
         $scope.isText = false;
         $scope.isNumeric = false;
         $scope.multiOption = false;
@@ -852,7 +853,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Can it be cannibalised?",
           questionNumber: 53
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isNumeric = false;
@@ -863,7 +864,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Is it to be destroy?",
           questionNumber: 54
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -874,7 +875,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Does it have Residual value",
           questionNumber: 55
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -885,7 +886,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Input salvage value",
           questionNumber: 56
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -917,7 +918,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Can it be retained?",
           questionNumber: 57
-        }
+        };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -932,7 +933,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Dispose salvage",
           questionNumber: 58
-        }
+        };
         $scope.isText = true;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -947,7 +948,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Possible source of ingress",
           questionNumber: 61
-        }
+        };
         $scope.isText = true;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -983,7 +984,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         question: $scope.finalArray[$scope.finalArray.length - 1].question,
         questionNumber: $scope.finalArray[$scope.finalArray.length - 1].no,
         answer: $scope.finalArray[$scope.finalArray.length - 1].answer
-      }
+      };
       if ($scope.finalArray[$scope.finalArray.length - 1].type == "radio") {
         $scope.isText = false;
       } else if ($scope.finalArray[$scope.finalArray.length - 1].type == "text") {
@@ -992,7 +993,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         } else {
           $scope.isText = true;
         }
-      };
+      }
 
       if ($scope.questionObj.questionNumber == 16 || $scope.questionObj.questionNumber == 14 || $scope.questionObj.questionNumber == 13 || $scope.questionObj.questionNumber == 11 || $scope.questionObj.questionNumber == 31) {
         $scope.getMultipleOption($scope.questionObj.questionNumber);
@@ -1073,7 +1074,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
   //To calculate short in question no 6
   $scope.calculateShort = function (val, index) {
     if ($scope.questionObj.questionNumber == 6) {
-
+      $scope.isQuestionSix = true;
       if (index == 0) {
         $scope.lr = val;
       }
@@ -1096,9 +1097,23 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.damaged = val;
       }
 
-      console.log("lr, delievered", $scope.lr, $scope.delievered, $scope.wet, $scope.damaged);
-
+      if (($scope.damaged + $scope.wet) > $scope.delievered) {
+        var alertPopup = $ionicPopup.alert({
+          title: 'Error!',
+          template: 'Wet and damaged should less than delivered'
+        });
+        alertPopup.then(function (res) {
+          console.log('Thank you for not eating my delicious ice cream cone');
+        });
+      } else {
+        $scope.isQuestionSix = false;
+      }
     }
+  };
+
+  //To check whether wet and damaged are greater than delivered or not
+  $scope.validateWetAndDamaged = function (val) {
+
   };
 
   //Function to get numeric values
@@ -1124,15 +1139,17 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.numericInputArray = ["Amt. in inr", "In %"];
         $scope.numericValue[0] = $scope.amt;
         $scope.numericValue[1] = $scope.percentage;
+        break;
 
       case 56:
         $scope.numericInputArray = ["Amt. in inr", "In %"];
         $scope.numericValue[0] = $scope.amt;
         $scope.numericValue[1] = $scope.percentage;
+        break;
 
       default:
         console.log("Invalid choice");
     }
-  }
+  };
 
-})
+});
