@@ -39,7 +39,7 @@
               <div class="list list-inset numerical-input-div">
                 <label class="item item-input">
                   <span class="input-label numeric-label">{{item}}</span>
-                  <input class="numeric-input" ng-if="item != 'Short'" ng-model="numericValue[$index]" ng-change="calculateShort(numericValue[$index],$index)"
+                  <input class="numeric-input" ng-if="item != 'Short'" ng-model="numericValue[$index]" ng-change="numericAnswers(numericValue[$index],$index)"
                     type="number">
                   <input class="numeric-input readOnly-input" ng-readonly="true" ng-model="short" ng-if="item == 'Short'" type="number">
                 </label>
@@ -51,7 +51,7 @@
             <div class="list list-inset numerical-input-div">
               <label class="item item-input">
                 <span class="input-label numeric-label">Numbers Only</span>
-                <input class="numeric-input" ng-if="item != 'Short'" ng-model="numericValue[$index]" ng-change="calculateShort(numericValue[$index],$index)"
+                <input class="numeric-input" ng-if="item != 'Short'" ng-model="numericValue[$index]" ng-change="numericAnswers(numericValue[$index],$index)"
                   type="number">
                 <input class="numeric-input readOnly-input" ng-readonly="true" ng-model="short" ng-if="item == 'Short'" type="number">
               </label>
