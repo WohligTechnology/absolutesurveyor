@@ -2,6 +2,148 @@
 
   <ion-content>
     <div class="card {{class1}}">
+      <!-- For question -->
+      <div class="row">
+
+        <div class="col col-10 marin-text" ng-if="isInstructions == false">
+          <p>Q:</p>
+        </div>
+
+        <div class="col col-90 marin-text" ng-if="isInstructions == false">
+          <p>{{questionObj.question}}</p>
+        </div>
+
+        <div class="col col-90 marin-text" ng-if="isInstructions == true">
+          <p ng-repeat="item in questionObj.instructions">{{item}}</p>
+        </div>
+
+      </div>
+      <!-- For answer -->
+      <div class="marin-text">
+        <!-- For boolean values -->
+        <div class="row" ng-if="isText == false && multiOption == false && isNumeric == false && isInstructions == false">
+
+          <div class="col" ng-if="questionObj.questionNumber != 10 && questionObj.questionNumber != 12">
+            <div class="radio">
+              <ion-radio ng-model="questionObj.answer" ng-checked="answer1" ng-click="saveAnswer(questionObj.question,'Yes',questionObj.keyWord)"
+                ng-value="'Yes'">Yes</ion-radio>
+            </div>
+            <div class="radio">
+              <ion-radio ng-model="questionObj.answer" ng-checked="answer1" ng-click="saveAnswer(questionObj.question,'No',questionObj.keyWord)"
+                ng-value="'No'">No</ion-radio>
+            </div>
+          </div>
+
+          <div class="col" ng-if="questionObj.questionNumber == 10">
+            <div class="radio">
+              <ion-radio ng-model="questionObj.answer" ng-checked="answer1" ng-click="saveAnswer(questionObj.question,'Dry',questionObj.keyWord)"
+                ng-value="'Dry'">Dry</ion-radio>
+            </div>
+            <div class="radio">
+              <ion-radio ng-model="questionObj.answer" ng-checked="answer1" ng-click="saveAnswer(questionObj.question,'Liquid',questionObj.keyWord)"
+                ng-value="'Liquid'">Liquid</ion-radio>
+            </div>
+          </div>
+
+          <div class="col" ng-if="questionObj.questionNumber == 12">
+            <div class="radio">
+              <ion-radio ng-model="questionObj.answer" ng-checked="answer1" ng-click="saveAnswer(questionObj.question,'Packed',questionObj.keyWord)"
+                ng-value="'Packed'">Packed</ion-radio>
+            </div>
+            <div class="radio">
+              <ion-radio ng-model="questionObj.answer" ng-checked="answer1" ng-click="saveAnswer(questionObj.question,'Loose',questionObj.keyWord)"
+                ng-value="'Loose'">Loose</ion-radio>
+            </div>
+          </div>
+
+          <div class="col" ng-if="questionObj.questionNumber == 30">
+            <div class="radio">
+              <ion-radio ng-model="questionObj.answer" ng-checked="answer1" ng-click="saveAnswer(questionObj.question,'During Unloading',questionObj.keyWord)"
+                ng-value="'During Unloading'">During Unloading</ion-radio>
+            </div>
+            <div class="radio">
+              <ion-radio ng-model="questionObj.answer" ng-checked="answer1" ng-click="saveAnswer(questionObj.question,'Jerks & Jolts',questionObj.keyWord)"
+                ng-value="'Jerks & Jolts'">Jerks & Jolts</ion-radio>
+            </div>
+          </div>
+
+
+        </div>
+        <p ng-if="isWarning==true"> This is not destination and note the same.</p>
+
+        <div class="row" ng-if="multiOption == true && multiOptionAndTextBox == true">
+
+          <div class="col">
+            <div class="radio" ng-repeat="item in multiArrayObj.multiArray">
+              <ion-radio ng-model="questionObj.answer" ng-if="questionObj.questionNumber !=34" ng-checked="answer1" ng-value="item">{{item}}</ion-radio>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" ng-if="multiOption == true && multiOptionAndTextBox == false">
+          <div class="col">
+            <div class="radio" ng-repeat="item in multiArrayObj.multiArray">
+              <ion-radio ng-model="questionObj.answer" ng-checked="answer1" ng-click="saveAnswer(questionObj.question,item,questionObj.keyWord)"
+                ng-value="item">{{item}}</ion-radio>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col col-90 marin-text" ng-if="multiOptionAndTextBox == true">
+            <p>{{multiArrayObj.subQuestion}}</p>
+          </div>
+        </div>
+
+
+        <div class="row" ng-if="multiOptionAndTextBox == true">
+          <div class="col">
+            <textarea class="text-area-css" ng-model="questionObj.details" rows="15" placeholder="Description"></textarea>
+          </div>
+        </div>
+
+
+        <div class="row" ng-if="isText == true && multiOptionAndTextBox != true">
+          <div class="col">
+            <textarea class="text-area-css" ng-model="questionObj.answer" rows="15" placeholder="Description"></textarea>
+          </div>
+        </div>
+
+        <!-- For numeric -->
+        <div class="row" ng-if="isText == false && multiOption == false && isNumeric == true">
+          <div class="col" ng-if="questionObj.questionNumber != 32">
+            <div ng-repeat="item in numericInputArray track by $index">
+              <div class="list list-inset numerical-input-div">
+                <label class="item item-input">
+                  <span class="input-label numeric-label">{{item}}</span>
+                  <input class="numeric-input" ng-if="item != 'Short'" ng-model="numericValue[$index]" ng-change="numericAnswers(numericValue[$index],$index)"
+                    type="number">
+                  <input class="numeric-input readOnly-input" ng-readonly="true" ng-model="short" ng-if="item == 'Short'" type="number">
+                </label>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Buttons -->
+        <div class="row">
+          <div class="col text-center">
+            <button class="button button-positive marine-btn-width" ng-click="saveAnswer(questionObj.question,questionObj.answer)" ng-if="(isText== true || isNumeric == true || questionObj.questionNumber == 29) && multiOptionAndTextBox != true && isSubmit == false && isInstructions == false">Next</button>
+            <button class="button button-positive marine-btn-width" ng-click="saveAnswer(questionObj.question,questionObj.answer)" ng-if="isInstructions == true">Next</button>
+            <button class="button button-positive marine-btn-width" ng-click="saveAnswer(questionObj.question,questionObj.answer,questionObj.details)"
+              ng-if="multiOptionAndTextBox ==true">Next</button>
+            <br>
+            <button class="button button-positive marine-btn-width " ng-click="back()" ng-if="questionObj.questionNumber !=1">Back</button>
+            <br>
+            <button class="button button-positive marine-btn-width " ng-if="isSubmit == true" ng-click="submit()">Submit</button>
+          </div>
+        </div>
+      </div>
+  </ion-content>
+
+  <!-- <ion-content>
+    <div class="card {{class1}}">
       <div class="row">
         <div class="col col-10 marin-text">
           <p>Q:</p>
@@ -44,7 +186,6 @@
                   <input class="numeric-input readOnly-input" ng-readonly="true" ng-model="short" ng-if="item == 'Short'" type="number">
                 </label>
               </div>
-              <!--<ion-radio ng-model="questionObj.answer" ng-checked="answer1" ng-click="saveAnswer(questionObj.question,item)" ng-value="item">{{item}}</ion-radio>-->
             </div>
           </div>
           <div class="col" ng-if="questionObj.questionNumber == 32 || questionObj.questionNumber == 41">
@@ -74,5 +215,5 @@
         <button class="button button-positive marine-btn-width " ng-if="isSubmit == true" ng-click="submit()">Submit</button>
       </div>
     </div>
-  </ion-content>
+  </ion-content> -->
 </ion-view>

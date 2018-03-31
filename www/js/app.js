@@ -13,9 +13,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       if (window.Connection) {
         if (navigator.connection.type == Connection.NONE) {
           $ionicPopup.confirm({
-            title: "Internet Disconnected",
-            content: "The internet is disconnected on your device."
-          })
+              title: "Internet Disconnected",
+              content: "The internet is disconnected on your device."
+            })
             .then(function (result) {
               if (!result) {
                 ionic.Platform.exitApp();
@@ -60,7 +60,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             console.log(data);
             if (data && data.targetUrl) {
               var state = $injector.get($state);
-              $ionicHistory.clearCache().then(function () { state.go(data.targetUrl) })
+              $ionicHistory.clearCache().then(function () {
+                state.go(data.targetUrl)
+              })
               // state.go(data.targetUrl);
             }
           };
@@ -114,7 +116,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
   .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     $ionicConfigProvider.views.maxCache(2);
-    $ionicConfigProvider.views.swipeBackEnabled(false)
+    $ionicConfigProvider.views.swipeBackEnabled(false);
     $stateProvider
 
       .state('login', {
@@ -248,4 +250,3 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
     };
   });
-

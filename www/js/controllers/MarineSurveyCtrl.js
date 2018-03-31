@@ -1,54 +1,201 @@
 connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue, $ionicPlatform, $state, $ionicPopup, PopupService) {
 
-  $scope.questionObj = {
-    question: "Where are you? At destination?",
-    questionNumber: 1,
-    answer: "",
-    type: "radio"
-  };
+  //Variables
   $scope.finalArray = [];
   $scope.isText = false;
-  $scope.multiOption = false;
+  $scope.multiOption = true;
   $scope.isSubmit = false;
   $scope.isNumeric = false;
+  $scope.isInstructions = false;
+  $scope.multiOptionAndTextBox = true;
   $scope.lr, $scope.delievered, $scope.wet, $scope.damaged = null;
   $scope.short = null;
   $scope.isQuestionSix = false;
 
-  //To hide refresh button
-  angular.element(document.getElementsByClassName("right-btn")).css('display', 'none');
-
-  //Get question after time out
-  $scope.getQuestionInTimeout = function (no) {
-    $timeout(function () {
-      $scope.getQuestion(no, "text");
-    }, 100);
+  //First question
+  $scope.questionObj = {
+    question: "Where are you? At destination?",
+    questionNumber: 1,
+    keyWord: "test",
+    answer: "",
+    details: "",
+    type: "text"
   };
 
+  // $timeout(function () {
+  //   $scope.getQuestion(31, "text");
+  // }, 100);
+
+
+  //Function to get multiple options(more than two)
+  $scope.getMultipleOption = function (qno) {
+    $scope.class1 = "";
+    $scope.multiArrayObj = {};
+    switch (qno) {
+      case 1:
+        $scope.multiArrayObj.multiArray = ["Origin", "Destination", "Accident Spot", "Other"];
+        $scope.multiArrayObj.subQuestion = "Address of location(Enter full address in as much detail as possinle)"
+        $scope.multiOption = true;
+        $scope.multiOptionAndTextBox = true;
+        break;
+
+      case 103:
+        $scope.multiArrayObj.multiArray = ["Transit not started", "Returned from midway", "Returned from destination"];
+        $scope.multiArrayObj.subQuestion = "What happened?";
+        $scope.multiOption = true;
+        $scope.multiOptionAndTextBox = true;
+        break;
+
+      case 34:
+        $scope.multiArrayObj.multiArray = ["Unloaded", "Partially Unloaded", "Not Unloaded"];
+        $scope.multiOption = true;
+        $scope.multiOptionAndTextBox = false;
+        break;
+
+      case 35:
+        $scope.multiArrayObj.multiArray = ["Containerised", "Open Vehicle"];
+        $scope.multiOption = true;
+        $scope.multiOptionAndTextBox = false;
+        break;
+
+      case 37:
+        $scope.multiArrayObj.multiArray = ["Holes", "Welding", "Door Caps", "Others"];
+        $scope.multiOption = true;
+        $scope.multiOptionAndTextBox = false;
+        break;
+
+      case 40:
+        $scope.multiArrayObj.multiArray = ["Good", "Average", "Bad"];
+        $scope.multiOption = true;
+        $scope.multiOptionAndTextBox = false;
+        break;
+
+      default:
+        console.log("Invalid choice");
+    }
+  };
+
+  $scope.getMultipleOption(1); // uncomment this
+
   //Function to save answer
-  $scope.saveAnswer = function (value1, value2) {
+  $scope.saveAnswer = function (value1, value2, keyWord) {
     $scope.class1 = "fadeOutLeftBig animated";
     var no;
-    // angular.element(document.getElementById('#test')).addClass("red");
     var obj = {};
-    if (value2 == "Yes" || value2 == "No" || value2 == "Wet" || value2 == "Unloaded" || value2 == "Containerised" || value2 == "Holes" || value2 == "Partially Unloaded" || value2 == "Not Unloaded" || value2 == "Welding" || value2 == "Door Caps" || value2 == "Others" || value2 == "Open Vehicle" || value2 == "Good" || value2 == "Average" || value2 == "Bad" || value2 == "Short" || value2 == "Damage") {
+    if (value2 == "Yes" || value2 == "No" || value2 == "Dry" || value2 == "Liquid" || value2 == "Loose" || value2 == "Packed" || value2 == "Unloaded" || value2 == "Containerised" || value2 == "Holes" || value2 == "Partially Unloaded" || value2 == "Not Unloaded" || value2 == "Containerised" || value2 == "Open Vehicle") {
+      var val;
+
+      if (value2 == "Yes") {
+        val = true;
+      } else if (value2 == "No") {
+        val = false;
+      }
+
       obj = {
         question: value1,
         answer: value2,
+        ans: val,
+        keyWord: keyWord,
         no: $scope.questionObj.questionNumber,
         type: "radio"
       };
+      if ($scope.questionObj.questionNumber == 10) {
+        delete obj.val;
+        if (obj.answer == "Dry") {
+          obj.isDry = true;
+          $scope.cargoType = "Dry";
+        } else if (obj.answer == "Liquid") {
+          obj.isLiquid = true;
+          $scope.cargoType = "Liquid";
+        }
+      } else if ($scope.questionObj.questionNumber == 12) {
+        delete obj.val;
+        if (obj.answer == "Loose") {
+          obj.isLoose = true;
+          $scope.cargoPackageType = "Loose";
+        } else if (obj.answer == "Packed") {
+          obj.isPacked = true;
+          $scope.cargoPackageType = "Packed";
+        }
+      }
+
+      if ($scope.questionObj.questionNumber == 2) {
+        if (obj.answer == "Yes") {
+          $scope.isTruckPresent = true;
+        } else if (obj.answer == "No") {
+          $scope.isTruckPresent = false;
+        }
+      }
       no = $scope.questionObj.questionNumber;
       // $scope.questionObj = {};
       $scope.finalArray.push(obj);
       console.log("$scope.finalArray", $scope.finalArray);
-      $timeout(function () {
-        $scope.getQuestion(no, value2);
-      }, 100);
+      if ($scope.questionObj.questionNumber == 100) {
+        if (obj.answer == "Yes") {
+          $scope.getQuestion(no, value2);
+        } else if (obj.answer == "No") {
+          $scope.finalArray[0].answer = "Other";
+          $scope.isWarning = true;
+        }
+      } else {
+        $timeout(function () {
+          if ($scope.questionObj.questionNumber == 10) {
+            $scope.getQuestion(no, "text");
+          } else if ($scope.questionObj.questionNumber == 12) {
+            if (($scope.cargoType == "Dry" && $scope.cargoPackageType == "Packed") || ($scope.cargoType == "Liquid" && $scope.cargoPackageType == "Packed")) {
+              $scope.getQuestion(12, "packed");
+            } else if (($scope.cargoType == "Dry" && $scope.cargoPackageType == "Loose") || ($scope.cargoType == "Liquid" && $scope.cargoPackageType == "Loose")) {
+              $scope.getQuestion(12, "loose");
+            }
+          } else {
+            $scope.getQuestion(no, value2);
+          }
+        }, 100);
+      }
+
     } else {
 
       switch ($scope.questionObj.questionNumber) {
-        case 59:
+
+        case 103:
+          obj = {
+            question: value1,
+            answer: value2,
+            details: keyWord,
+            no: $scope.questionObj.questionNumber,
+            type: "text"
+          };
+          no = $scope.questionObj.questionNumber;
+          $scope.finalArray.push(obj);
+          $scope.getQuestionInTimeout(no);
+          break;
+
+        case 1:
+          obj = {
+            question: value1,
+            answer: value2,
+            details: keyWord,
+            no: $scope.questionObj.questionNumber,
+            type: "text"
+          };
+
+          no = $scope.questionObj.questionNumber;
+          $scope.finalArray.push(obj);
+          if (obj.answer == "Origin") {
+            $scope.getQuestion(1, "Origin");
+          } else if (obj.answer == "Destination") {
+            $scope.getQuestion(1, "Destination");
+          } else if (obj.answer == "Accident Spot") {
+            $scope.getQuestion(1, "Accident Spot");
+            $scope.multiOptionAndTextBox = false;
+          } else if (obj.answer == "Other") {
+            $scope.multiOptionAndTextBox = false;
+            $scope.getQuestion(1, "Other");
+          }
+
+          break;
+
+        case 11:
 
           obj = {
             question: value1,
@@ -70,30 +217,64 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
           }
           break;
 
-        case 6:
+        case 13:
           obj = {
             question: value1,
             answer: {
               lr: $scope.lr,
               delievered: $scope.delievered,
-              short: $scope.short,
-              wet: $scope.wet,
-              damaged: $scope.damaged
+              short: $scope.short
             },
             no: $scope.questionObj.questionNumber,
             type: "text"
           };
 
           no = $scope.questionObj.questionNumber;
-          if (_.isNumber($scope.wet) && _.isNumber($scope.short) && _.isNumber($scope.damaged) && _.isNumber($scope.delievered) && _.isNumber($scope.lr)) {
+          if (_.isNumber($scope.short) && _.isNumber($scope.delievered) && _.isNumber($scope.lr)) {
             $scope.finalArray.push(obj);
-            $scope.getQuestionInTimeout(no);
+            $scope.getQuestionInTimeout(14);
           } else {
             PopupService.showAlert('All field must be filled');
           }
           break;
 
-        case 32:
+        case 14:
+          obj = {
+            question: value1,
+            answer: {
+              cargoWtOld: $scope.cargoWtOld,
+              cargoWtNow: $scope.cargoWtNow
+            },
+            no: $scope.questionObj.questionNumber,
+            type: "text"
+          };
+
+          no = $scope.questionObj.questionNumber;
+          if (_.isNumber($scope.cargoWtOld) && _.isNumber($scope.cargoWtNow)) {
+            $scope.finalArray.push(obj);
+            $scope.getQuestionInTimeout(14);
+          } else {
+            PopupService.showAlert('All field must be filled');
+          }
+          break;
+
+        case 31:
+          obj = {
+            question: value1,
+            answer: value2,
+            keyWord: $scope.questionObj.keyWord,
+            no: $scope.questionObj.questionNumber,
+            type: "text"
+          };
+          no = $scope.questionObj.questionNumber;
+          if ($scope.isTruckPresent == true) {
+
+          } else {
+
+          }
+          break;
+
+        case 41:
 
           obj = {
             question: value1,
@@ -111,62 +292,36 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
           }
           break;
 
-        case 20:
-
-          obj = {
-            question: value1,
-            answer: {
-              amt: $scope.amt,
-              percentage: $scope.percentage,
-            },
-            no: $scope.questionObj.questionNumber,
-            type: "text"
-          };
-
-          no = $scope.questionObj.questionNumber;
-          if (_.isNumber($scope.amt) && _.isNumber($scope.percentage)) {
-            $scope.finalArray.push(obj);
-            $scope.getQuestionInTimeout(no);
-          } else {
-            PopupService.showAlert('All field must be filled');
-          }
-          break;
-
-        case 56:
-
-          obj = {
-            question: value1,
-            answer: {
-              salvageAmt: $scope.salvageAmt,
-              salvagePercentage: $scope.salvagePercentage
-            },
-            no: $scope.questionObj.questionNumber,
-            type: "text"
-          };
-
-          no = $scope.questionObj.questionNumber;
-          if (_.isNumber($scope.salvageAmt) && _.isNumber($scope.salvagePercentage)) {
-            $scope.finalArray.push(obj);
-            $scope.getQuestionInTimeout(no);
-          } else {
-            PopupService.showAlert('All field must be filled');
-          }
-          break;
-
         default:
           obj = {
             question: value1,
             answer: value2,
+            keyWord: $scope.questionObj.keyWord,
             no: $scope.questionObj.questionNumber,
             type: "text"
           };
 
           no = $scope.questionObj.questionNumber;
+          if (no == 23 && $scope.cargoPackageType == "Packed") {
+            $scope.getQuestionInTimeout(23);
+          } else if (no == 23 && $scope.cargoPackageType == "Loose") {
+            console.log("Package type is loose");
+          } else {
+            $scope.getQuestionInTimeout(no);
+          }
+
           $scope.finalArray.push(obj);
-          $scope.getQuestionInTimeout(no);
       }
+      // $scope.finalArray.push(obj);
       console.log("$scope.finalArray", $scope.finalArray);
     }
+  };
+
+  //Get question after time out
+  $scope.getQuestionInTimeout = function (no) {
+    $timeout(function () {
+      $scope.getQuestion(no, "text");
+    }, 100);
   };
 
   //To get question
@@ -174,929 +329,782 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
     $scope.class1 = "";
     var demo = no + "-" + ans;
     switch (demo) {
-      case "1-Yes":
+
+      case "1-Origin":
         $scope.questionObj = {
-          question: "Is destination same as LR?",
-          questionNumber: 2
+          question: "Why are you here?",
+          questionNumber: 103,
+          keyWord: "test",
+          answer: "",
+          details: "",
+          type: "text"
         };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        break;
-      case "2-Yes":
-        $scope.questionObj = {
-          question: "Is it Full Truck Load?",
-          questionNumber: 3
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        break;
-      case "3-Yes":
-        $scope.questionObj = {
-          question: "Was Vehicle involved in an accident?",
-          questionNumber: 4
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        break;
-      case "4-Yes":
-        $scope.questionObj = {
-          question: "Is RC book available?",
-          questionNumber: 5
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
+
+        $scope.getMultipleOption(103);
         break;
 
-      case "5-Yes":
+      case "1-Destination":
         $scope.questionObj = {
-          question: "Enter GVW (Gross Vehicle Weight),RLW(Registered Laden Weight), ULW(Unladen Weight) in Kgs",
-          questionNumber: 59
+          question: "Is place of survey same as LR destination",
+          questionNumber: 100,
+          keyWord: "test",
+          answer: "",
+          type: "radio"
         };
-        $scope.isText = false;
         $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = true;
-        $scope.getNumericOption($scope.questionObj.questionNumber);
+        $scope.multiOptionAndTextBox = false;
         break;
 
-      case "5-No":
-        $scope.getQuestion(5, "text");
-        break;
-
-      case "59-text":
-        $scope.getQuestion(5, "text");
-        break;
-
-      case "5-text":
+      case "1-Accident Spot":
         $scope.questionObj = {
-          question: "Number of packages in 1.LR 2.Delievered 3.Short 4.Wet 5.Damaged?",
-          questionNumber: 6
+          question: "Why is consignment at this place? Explain",
+          questionNumber: 101,
+          keyWord: "accidentSpot",
+          answer: "",
+          type: "text"
         };
-        $scope.isText = false;
         $scope.multiOption = false;
-        $scope.isNumeric = true;
-        $scope.isSubmit = false;
-        $scope.getNumericOption($scope.questionObj.questionNumber);
-        break;
-
-      case "6-text":
-        $scope.questionObj = {
-          question: "Is Packing shown to you?",
-          questionNumber: 7
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        break;
-
-      case "7-Yes":
-        $scope.questionObj = {
-          question: "Is packing new?",
-          questionNumber: 8
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        break;
-
-      case "8-Yes":
-        $scope.questionObj = {
-          question: "Is it Customary?",
-          questionNumber: 9
-        };
-        $scope.isText = false;
-        $scope.isNumeric = false;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        break;
-
-      case "9-Yes":
-        $scope.questionObj = {
-          question: "What was the condition of packing at time of survey?",
-          questionNumber: 10
-        };
         $scope.isText = true;
-        $scope.isNumeric = false;
+        break;
+
+      case "1-Other":
+        $scope.questionObj = {
+          question: "Why is consignment at this place? Explain",
+          questionNumber: 102,
+          keyWord: "otherLocation",
+          answer: "",
+          type: "text"
+        };
         $scope.multiOption = false;
-        $scope.isSubmit = false;
-        break;
-
-      case "10-text":
-        // $scope.questionObj = {
-        //   question: "Options",
-        //   questionNumber: 11
-        // }
-        $scope.isText = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        $scope.getMultipleOption(11);
-        break;
-
-      case "11-Wet":
-        $scope.questionObj = {
-          question: "Is Truck present during survey?",
-          questionNumber: 12
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        break;
-
-      case "12-Yes":
-        $scope.questionObj = {
-          question: "Is it Containerised or is it an Open vehicle?",
-          questionNumber: 13
-        };
-        $scope.isText = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        $scope.getMultipleOption($scope.questionObj.questionNumber);
-        break;
-
-      case "13-Unloaded":
-        $scope.questionObj = {
-          question: "Options",
-          questionNumber: 14
-        };
-        $scope.isText = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        $scope.getMultipleOption($scope.questionObj.questionNumber);
-        break;
-
-      case "14-Containerised":
-        $scope.questionObj = {
-          question: "Was the light test done?",
-          questionNumber: 15
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isNumeric = false;
-        $scope.isSubmit = false;
-        break;
-
-      case "15-Yes":
-        $scope.questionObj = {
-          question: "Were there?",
-          questionNumber: 16
-        };
-        $scope.isText = false;
-        $scope.isNumeric = false;
-        $scope.isSubmit = false;
-        $scope.getMultipleOption($scope.questionObj.questionNumber);
-        break;
-
-      case "16-Holes":
-        $scope.questionObj = {
-          question: "Was there Tarpaulin on the floor of the truck as well?",
-          questionNumber: 36
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isNumeric = false;
-        $scope.isSubmit = false;
-        break;
-
-      case "16-Welding":
-        $scope.questionObj = {
-          question: "Was there Tarpaulin on the floor of the truck as well?",
-          questionNumber: 36
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        break;
-
-      case "16-Door Caps":
-        $scope.questionObj = {
-          question: "Was there Tarpaulin on the floor of the truck as well?",
-          questionNumber: 36
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        break;
-
-      case "16-Others":
-        $scope.questionObj = {
-          question: "Was there Tarpaulin on the floor of the truck as well?",
-          questionNumber: 36
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        break;
-
-      case "17-Yes":
-        $scope.questionObj = {
-          question: "Are there any test reports available?",
-          questionNumber: 18
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        break;
-
-        //Temp delete this after test use
-      case "18-No":
-        $scope.questionObj = {
-          question: "Can it be repaired?",
-          questionNumber: 19
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        break;
-
-      case "18-Yes":
-        $scope.questionObj = {
-          question: "Can it be repaired?",
-          questionNumber: 19
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        break;
-
-      case "19-Yes":
-        $scope.questionObj = {
-          question: "How much is the estimated cost?",
-          questionNumber: 20
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isNumeric = true;
-        $scope.isSubmit = true;
-        $scope.getNumericOption($scope.questionObj.questionNumber);
-        break;
-
-        // case "20-text":
-        //   $scope.questionObj = {
-        //     question: "Estimated Costing",
-        //     questionNumber: 20
-        //   }
-        //   $scope.isText = true;
-        //   $scope.multiOption = false;
-        //   $scope.isSubmit = true;
-        //   break;
-
-      case "1-No":
-        $scope.questionObj = {
-          question: "Are you at spot of loss?",
-          questionNumber: 21
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isNumeric = false;
-        $scope.isSubmit = false;
-        break;
-
-      case "21-Yes":
-        $scope.getQuestion(2, "Yes");
-        break;
-
-      case "21-No":
-        $scope.questionObj = {
-          question: "Where are you and Why are you here?",
-          questionNumber: 22
-        };
         $scope.isText = true;
+        break;
+
+      case "103-text":
+        $scope.questionObj = {
+          question: "FTL",
+          questionNumber: 2,
+          keyWord: "FTL"
+        };
+        $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
         $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        $scope.isWarning = false;
+        $scope.multiOptionAndTextBox = false;
         break;
 
-      case "22-text":
-        $scope.getQuestion(2, "Yes");
+      case "100-Yes":
+        $scope.getQuestion(103, "text");
+        break;
+
+      case "100-No":
+        $scope.getQuestion(103, "text");
+        break;
+
+      case "101-text":
+        $scope.getQuestion(103, "text");
+        break;
+
+      case "102-text":
+        $scope.getQuestion(103, "text");
+        break;
+
+      case "2-Yes": //2-Yes
+        $scope.questionObj = {
+          question: "Is truck present",
+          questionNumber: 3,
+          keyWord: "isTruckPresent"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isInstructions = false;
+        $scope.isNumeric = false;
         break;
 
       case "2-No":
-        $scope.getQuestion(21, "No");
+        $scope.questionObj = {
+          question: "Is truck present",
+          questionNumber: 3,
+          keyWord: "isTruckPresent"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
         break;
 
-      case "23-text":
-        $scope.getQuestion(2, "Yes");
+      case "3-Yes":
+        $scope.questionObj = {
+          question: "Original truck",
+          questionNumber: 4,
+          keyWord: "isOriginalTruck"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "3-No":
+        $scope.questionObj = {
+          instructions: ["Instructions:", "take truck no", "take photos"],
+          questionNumber: 5,
+          keyWord: "isTruckPresent"
+        };
+        $scope.isText = true;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = true;
+        break;
+
+      case "4-Yes":
+        $scope.questionObj = {
+          question: "IsAccident",
+          questionNumber: 6,
+          keyWord: "isAccident"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
         break;
 
       case "4-No":
         $scope.questionObj = {
-          question: "Was there a transhipment during the journey?",
-          questionNumber: 24
+          question: "is transhipment",
+          questionNumber: 7,
+          keyWord: "isTranshipment"
         };
         $scope.isText = false;
         $scope.multiOption = false;
-        $scope.isNumeric = false;
         $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
         break;
 
-      case "24-No":
-        $scope.getQuestion(5, "text");
+      case "5-text":
+        $scope.getQuestion(4, "No");
         break;
 
-      case "24-Yes":
+      case "7-Yes":
         $scope.questionObj = {
-          question: "Where and Why did the transhipment happen?",
-          questionNumber: 25
+          question: "Place and reason",
+          questionNumber: 8,
+          keyWord: "transhipmentPlaceReason"
         };
         $scope.isText = true;
         $scope.multiOption = false;
-        $scope.isNumeric = false;
         $scope.isSubmit = false;
-        break;
-
-      case "25-text":
-        $scope.getQuestion(5, "text");
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
         break;
 
       case "7-No":
+        $scope.getQuestion(4, "Yes");
+        break;
+
+      case "6-Yes":
         $scope.questionObj = {
-          question: "Why is packing not shown?",
-          questionNumber: 26
-        };
-        $scope.isText = true;
-        $scope.isNumeric = false;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        break;
-
-      case "26-text":
-        $scope.getQuestion(10, "text");
-        break;
-
-      case "8-No":
-        $scope.getQuestion(8, "Yes");
-        break;
-
-      case "9-No":
-        $scope.questionObj = {
-          question: "Is it Adequate?",
-          questionNumber: 27
+          instructions: ["Instructions:", "place of accident", "reason", "collect FIR"],
+          questionNumber: 9,
+          keyWord: "isAccident"
         };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
         $scope.isNumeric = false;
+        $scope.isInstructions = true;
         break;
 
-      case "27-No":
+      case "6-No":
         $scope.questionObj = {
-          question: "Why is it adequate or inadequate?",
-          questionNumber: 28
+          question: "is cargo",
+          questionNumber: 10,
+          keyWord: "cargoType"
         };
-        $scope.isText = true;
+        $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
         $scope.isNumeric = false;
+        $scope.isInstructions = false;
         break;
 
-      case "27-Yes":
-        $scope.getQuestion(27, "No");
-        break;
-
-      case "28-text":
-        $scope.getQuestion(9, "Yes");
-        break;
-
-      case "13-Partially Unloaded":
+      case "9-text":
         $scope.questionObj = {
-          question: "Options",
+          question: "Enter GVW (Gross Vehicle Weight),RLW(Registered Laden Weight), ULW(Unladen Weight) in Kgs",
+          questionNumber: 11
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = true;
+        $scope.isInstructions = false;
+        $scope.getNumericOption($scope.questionObj.questionNumber);
+        break;
+
+      case "11-text":
+        $scope.getQuestion(6, "No");
+        break;
+
+      case "10-text":
+        $scope.questionObj = {
+          question: "is cargo",
+          questionNumber: 12,
+          keyWord: "cargoPackageType"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "12-packed":
+        $scope.questionObj = {
+          question: "Number of packages in 1.LR 2.Delievered 3.Short?",
+          questionNumber: 13
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isNumeric = true;
+        $scope.isSubmit = false;
+        $scope.getNumericOption($scope.questionObj.questionNumber);
+        break;
+
+      case "12-loose":
+        $scope.questionObj = {
+          question: "Weight lr",
           questionNumber: 14
         };
         $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isNumeric = true;
         $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        $scope.getMultipleOption($scope.questionObj.questionNumber);
+        $scope.getNumericOption($scope.questionObj.questionNumber);
         break;
 
-      case "13-Not Unloaded":
+      case "14-text":
         $scope.questionObj = {
-          question: "Options",
-          questionNumber: 14
+          question: "is packing available?",
+          questionNumber: 15,
+          keyWord: "isPackingAvailable"
         };
         $scope.isText = false;
+        $scope.multiOption = false;
         $scope.isSubmit = false;
         $scope.isNumeric = false;
-        $scope.getMultipleOption($scope.questionObj.questionNumber);
+        $scope.isInstructions = false;
+        break;
+
+      case "15-Yes":
+        $scope.questionObj = {
+          question: "is New?",
+          questionNumber: 16,
+          keyWord: "isNew"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
         break;
 
       case "15-No":
         $scope.questionObj = {
-          question: "Options",
-          questionNumber: 16
+          question: "why?",
+          questionNumber: 17,
+          keyWord: "noPackingWhy"
         };
-        $scope.isText = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        $scope.getMultipleOption($scope.questionObj.questionNumber);
-        break;
-
-      case "12-No":
-        $scope.questionObj = {
-          question: "Ask for Photos,if any?",
-          questionNumber: 29
-        };
-        $scope.isText = false;
+        $scope.isText = true;
         $scope.multiOption = false;
         $scope.isSubmit = false;
         $scope.isNumeric = false;
+        $scope.isInstructions = false;
         break;
 
-      case "29-text":
+      case "17-text":
         $scope.getQuestion(15, "Yes");
         break;
 
-      case "17-No":
+
+      case "16-Yes":
         $scope.questionObj = {
-          question: "Are there any test reports available?",
-          questionNumber: 18
+          question: "customary",
+          questionNumber: 18,
+          keyWord: "customary"
         };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
         $scope.isNumeric = false;
-
+        $scope.isInstructions = false;
         break;
 
-      case "3-No":
-        $scope.getQuestion(5, "text");
+      case "16-No":
+        $scope.getQuestion(16, "Yes");
         break;
 
-      case "14-Open Vehicle":
+      case "18-No":
         $scope.questionObj = {
-          question: "Was there a Tarpaulin or not?",
-          questionNumber: 30
+          question: "adequate",
+          questionNumber: 19,
+          keyWord: "adequate"
         };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
         $scope.isNumeric = false;
+        $scope.isInstructions = false;
         break;
 
-      case "30-No":
-        $scope.questionObj = {
-          question: "What is the condition of truck floor?",
-          questionNumber: 31
-        };
-        $scope.isText = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        $scope.getMultipleOption($scope.questionObj.questionNumber);
-        break;
-
-      case "30-Yes":
-        $scope.questionObj = {
-          question: "How many Tarpaulin were there?",
-          questionNumber: 32
-        };
-        $scope.isText = false;
-        $scope.isNumeric = true;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        break;
-
-        // case "30-Yes":
-        //   $scope.questionObj = {
-        //     question: "# Tarpaulin",
-        //     questionNumber: 32
-        //   }
-        //   $scope.isText = true;
-        //   $scope.multiOption = false;
-        //   $scope.isSubmit = false;
-        //   break;
-
-      case "32-text":
-        $scope.questionObj = {
-          question: "Was Tarpaulin removed in your presence?",
-          questionNumber: 33
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isNumeric = false;
-        $scope.isSubmit = false;
-        break;
-
-      case "33-Yes":
-        $scope.questionObj = {
-          question: "Did you spread the Tarpaulin and check for quality?",
-          questionNumber: 34
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isNumeric = false;
-        $scope.isSubmit = false;
-        break;
-
-      case "33-No":
-        $scope.getQuestion(33, "Yes");
-        break;
-
-      case "34-No":
-        $scope.getQuestion(30, "No");
-        break;
-
-      case "34-Yes":
-        $scope.questionObj = {
-          question: "Were there any Holes in Tarpaulin?",
-          questionNumber: 35
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isNumeric = false;
-        $scope.isSubmit = false;
-        break;
-
-      case "35-Yes":
-        $scope.questionObj = {
-          question: "Was there Tarpaulin on the floor of the truck as well?",
-          questionNumber: 36
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isNumeric = false;
-        $scope.isSubmit = false;
-        break;
-
-      case "35-No":
-        $scope.getQuestion(35, "Yes");
-        break;
-
-      case "36-No":
-        $scope.getQuestion(30, "No");
-        break;
-
-      case "36-Yes":
-        $scope.getQuestion(30, "No");
-        break;
-
-      case "31-Good":
-        // $scope.questionObj = {
-        //   question: "Tarpaulin Floor",
-        //   questionNumber: 37
-        // }
-        // $scope.isText = true;
-        // $scope.multiOption = false;
-        // $scope.isSubmit = false;
-        $scope.getQuestion(60, "text");
-        break;
-
-      case "31-Average":
-        $scope.getQuestion(60, "text");
-        break;
-
-      case "31-Bad":
-        $scope.getQuestion(60, "text");
-        break;
-
-      case "37-text":
-        $scope.getQuestion(17, "No");
-        break;
-
-      case "11-Short":
-        $scope.questionObj = {
-          question: "Is Truck present during survey?",
-          questionNumber: 38
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isNumeric = false;
-        $scope.isSubmit = false;
-        break;
-
-      case "38-Yes":
-        $scope.questionObj = {
-          question: "Is there enough space for missing packages?",
-          questionNumber: 39
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        break;
-
-      case "38-No":
-        $scope.getQuestion(39, "Yes");
-        break;
-
-      case "39-Yes":
-        $scope.questionObj = {
-          question: "Are units missing from packages?",
-          questionNumber: 40
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        break;
-
-      case "39-No":
-        $scope.getQuestion(44, "text");
-        break;
-
-      case "40-Yes":
-        $scope.questionObj = {
-          question: "How many units are missing?",
-          questionNumber: 41
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = true;
-        break;
-
-      case "40-No":
-        $scope.getQuestion(44, "text");
-        break;
-
-      case "41-text":
-        $scope.questionObj = {
-          question: "Was there enough space for missing packages?",
-          questionNumber: 42
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        break;
-
-      case "42-Yes":
-        $scope.questionObj = {
-          question: "Was the package tampered?",
-          questionNumber: 43
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isNumeric = false;
-        $scope.isSubmit = false;
-        break;
-
-      case "42-No":
-        $scope.getQuestion(44, "text");
-        break;
-
-      case "43-Yes":
-        $scope.questionObj = {
-          question: "How was the package tampered?",
-          questionNumber: 44
-        };
-        $scope.isText = true;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        break;
-
-      case "43-No":
-        $scope.getQuestion(44, "text");
-        break;
-
-      case "44-text":
-        $scope.questionObj = {
-          question: "Collect GRN",
-          questionNumber: 45
-        };
-        $scope.isText = true;
-        $scope.multiOption = false;
-        $scope.isNumeric = false;
-        $scope.isSubmit = false;
-
-        break;
-
-      case "45-text":
-        // $scope.questionObj = {
-        //   question: "Documentation invoice/packing list/Endorsed LR",
-        //   questionNumber: 46
-        // }
-        // $scope.isText = true;
-        // $scope.multiOption = false;
-        // $scope.isSubmit = true;
-        // $scope.isNumeric = false;
-
-        if ($scope.damaged != 0 && $scope.damaged != null && $scope.damaged != "") {
-          $scope.getQuestion(11, "Damage");
-        } else {
-          $scope.getQuestion(17, "Yes");
-        }
-
-        break;
-
-      case "11-Damage":
-        $scope.questionObj = {
-          question: "Did damage happen during Unloading?",
-          questionNumber: 47
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        break;
-
-      case "47-Yes":
-        $scope.questionObj = {
-          question: "How did damage happen during Unloading?",
-          questionNumber: 48
-        };
-        $scope.isText = true;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        break;
-
-      case "48-text":
-        $scope.getQuestion(17, "No");
-        break;
-
-      case "47-No":
-        $scope.questionObj = {
-          question: "Is it beacuse of Jerks and Jolts?",
-          questionNumber: 49
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isNumeric = false;
-        $scope.isSubmit = false;
-        break;
-
-      case "49-Yes":
-        $scope.questionObj = {
-          question: "Can Jerks and Jolts cause such magnitude of damage?",
-          questionNumber: 50
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isNumeric = false;
-        $scope.isSubmit = false;
-        break;
-
-      case "49-No":
-        $scope.getQuestion(17, "No");
-        break;
-
-      case "50-Yes":
-        $scope.getQuestion(17, "No");
-        break;
-
-      case "50-No":
-        $scope.getQuestion(17, "No");
+      case "18-Yes":
+        $scope.getQuestion(19, "No");
         break;
 
       case "19-No":
         $scope.questionObj = {
-          question: "Can it be reprocessed?",
-          questionNumber: 51
+          question: "Reason",
+          questionNumber: 20,
+          keyWord: "reason"
+        };
+        $scope.isText = true;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "19-Yes":
+        $scope.getQuestion(19, "No");
+        break;
+
+      case "20-text":
+        $scope.questionObj = {
+          question: "Describe the condition of packing",
+          questionNumber: 21,
+          keyWord: "conditionOfPacking"
+        };
+        $scope.isText = true;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "21-text":
+        $scope.questionObj = {
+          question: "is there any shortage?",
+          questionNumber: 22,
+          keyWord: "isShortage"
         };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
         $scope.isNumeric = false;
+        $scope.isInstructions = false;
         break;
 
-      case "51-No":
+      case "22-No":
+        PopupService.showAlert("End of marine logic");
+        break;
+
+      case "22-Yes":
         $scope.questionObj = {
-          question: "Can it be reconditioned?",
-          questionNumber: 52
+          question: "Please describe what led to shortage",
+          questionNumber: 23,
+          keyWord: "conditionOfPacking"
         };
-        $scope.isText = false;
-        $scope.isNumeric = false;
+        $scope.isText = true;
         $scope.multiOption = false;
         $scope.isSubmit = false;
-        break;
-
-      case "52-No":
-        $scope.questionObj = {
-          question: "Can it be cannibalised?",
-          questionNumber: 53
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
         $scope.isNumeric = false;
-        $scope.isSubmit = false;
+        $scope.isInstructions = false;
         break;
 
-      case "53-No":
+      case "23-text":
         $scope.questionObj = {
-          question: "Is it to be destroy?",
-          questionNumber: 54
+          question: "Are any packages missing?",
+          questionNumber: 24,
+          keyWord: "isPackageMissing"
         };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
         $scope.isNumeric = false;
+        $scope.isInstructions = false;
         break;
 
-      case "54-Yes":
+      case "24-Yes":
         $scope.questionObj = {
-          question: "Does it have Residual value",
-          questionNumber: 55
+          question: "Is there space for missing packages?",
+          questionNumber: 25,
+          keyWord: "isSpaceForMissingPackages"
         };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
         $scope.isNumeric = false;
+        $scope.isInstructions = false;
         break;
 
-      case "54-No":
+      case "25-No":
         $scope.questionObj = {
-          question: "Input salvage value",
-          questionNumber: 56
+          instructions: ["Instructions:", "Take truck number", "make notes", "take photos"],
+          questionNumber: 26,
+          keyWord: "isAccident"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = true;
+        break;
+
+      case "24-No":
+        $scope.questionObj = {
+          question: "Is content missing from packages?",
+          questionNumber: 27,
+          keyWord: "isSpaceForMissingPackages"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "27-Yes":
+        $scope.questionObj = {
+          instructions: ["Instructions:", "make notes", "take photos"],
+          questionNumber: 28,
+          keyWord: "isAccident"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = true;
+        break;
+
+      case "28-text":
+        $scope.questionObj = {
+          question: "Is there is Damage?",
+          questionNumber: 29,
+          keyWord: "isDamage"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "29-Yes":
+        $scope.questionObj = {
+          question: "How?",
+          questionNumber: 30,
+          keyWord: "damage"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "30-Unloading":
+        $scope.questionObj = {
+          question: "Describe cause of loss",
+          questionNumber: 31,
+          keyWord: "causeOfLoss"
+        };
+        $scope.isText = true;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "30-JJ":
+        $scope.questionObj = {
+          question: "Can Jerks & Jolts cause such magnitude of damage?",
+          questionNumber: 32,
+          keyWord: "causeOfLoss"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "32-Yes":
+        $scope.getQuestion(30, "Unloading");
+        break;
+
+      case "32-No":
+        $scope.getQuestion(30, "Unloading");
+        break;
+
+      case "31-text":
+        $scope.questionObj = {
+          question: "Is Wet?",
+          questionNumber: 33,
+          keyWord: "isWet"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "33-No":
+        PopupService.showAlert("End of marine logic");
+        break;
+
+      case "33-Yes":
+        $scope.questionObj = {
+          question: "?",
+          questionNumber: 34,
+          keyWord: ""
+        };
+        $scope.isText = false;
+        $scope.multiOption = true;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        $scope.getMultipleOption(34);
+        break;
+
+      case "34-Unloaded":
+        $scope.questionObj = {
+          question: "?",
+          questionNumber: 35,
+          keyWord: ""
+        };
+        $scope.isText = false;
+        $scope.multiOption = true;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        $scope.getMultipleOption(35);
+        break;
+
+      case "34-Partially Unloaded":
+        $scope.getQuestion(34, "Unloaded");
+        break;
+
+      case "34-Not Unloaded":
+        $scope.getQuestion(34, "Unloaded");
+        break;
+
+      case "35-Containerised":
+        $scope.questionObj = {
+          question: "Is light test done?",
+          questionNumber: 36,
+          keyWord: "isLight"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "36-Yes":
+        $scope.questionObj = {
+          question: "???",
+          questionNumber: 37,
+          keyWord: ""
+        };
+        $scope.isText = false;
+        $scope.multiOption = true;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        $scope.getMultipleOption(37);
+        break;
+
+      case "36-No":
+        $scope.getQuestion(36, "Yes");
+        break;
+
+      case "37-Holes":
+        $scope.questionObj = {
+          question: "Is Tarpaulin floor?",
+          questionNumber: 38,
+          keyWord: "isLight"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "37-Welding":
+        $scope.getQuestion(37, "Holes");
+        break;
+
+      case "37-Door Caps":
+        $scope.getQuestion(37, "Holes");
+        break;
+
+      case "37-Others":
+        $scope.getQuestion(37, "Holes");
+        break;
+
+      case "35-Open Vehicle":
+        $scope.questionObj = {
+          question: "Tarpaulin?",
+          questionNumber: 39,
+          keyWord: "isLight"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "39-No":
+        $scope.questionObj = {
+          question: "Floor condition?",
+          questionNumber: 40,
+          keyWord: "isLight"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        $scope.getMultipleOption(40);
+        break;
+
+      case "39-Yes":
+        $scope.questionObj = {
+          question: "# Tarpaulin?",
+          questionNumber: 41,
+          keyWord: "isLight"
         };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
         $scope.isNumeric = true;
+        $scope.isInstructions = false;
         $scope.getNumericOption($scope.questionObj.questionNumber);
         break;
 
-      case "55-No":
-        $scope.getQuestion(45, "text");
-        break;
+        // case "41-text":
+        //   $scope.questionObj = {
+        //     question: "removed in presence?",
+        //     questionNumber: 42,
+        //     keyWord: "isLight"
+        //   };
+        //   $scope.isText = false;
+        //   $scope.multiOption = false;
+        //   $scope.isSubmit = false;
+        //   $scope.isNumeric = false;
+        //   $scope.isInstructions = false;
+        //   break;
 
-      case "55-Yes":
-        $scope.getQuestion(54, "No");
-        break;
-
-      case "53-Yes":
-        $scope.getQuestion(19, "Yes");
-        break;
-
-      case "52-Yes":
-        $scope.getQuestion(19, "Yes");
-        break;
-
-      case "51-Yes":
-        $scope.getQuestion(19, "Yes");
-        break;
-
-      case "56-text":
+      case "41-text":
         $scope.questionObj = {
-          question: "Can it be retained?",
-          questionNumber: 57
+          question: "removed in presence?",
+          questionNumber: 43,
+          keyWord: "isLight"
         };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
         $scope.isNumeric = false;
+        $scope.isInstructions = false;
         break;
 
-      case "57-Yes":
-        // $scope.getQuestion(45, "text");
-        PopupService.showAlert("End of marine logic");
-        break;
-
-      case "57-No":
+      case "43-Yes":
         $scope.questionObj = {
-          question: "Dispose salvage",
-          questionNumber: 58
+          question: "spread & checked?",
+          questionNumber: 44,
+          keyWord: "isLight"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "43-No":
+        $scope.getQuestion(43, "Yes");
+        break;
+
+      case "44-Yes":
+        $scope.questionObj = {
+          question: "Holes?",
+          questionNumber: 45,
+          keyWord: "isLight"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "45-Yes":
+        $scope.questionObj = {
+          question: "Tarpaulin floor?",
+          questionNumber: 46,
+          keyWord: "isLight"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+
+      case "45-No":
+        $scope.getQuestion(45, "Yes");
+        break;
+
+
+      case "46-Yes":
+        $scope.getQuestion(39, "No");
+        break;
+
+      case "46-No":
+        $scope.getQuestion(39, "No");
+        break;
+
+      case "40-Good":
+        $scope.questionObj = {
+          question: "Possible source of ingress?",
+          questionNumber: 47,
+          keyWord: "isLight"
         };
         $scope.isText = true;
         $scope.multiOption = false;
         $scope.isSubmit = false;
         $scope.isNumeric = false;
+        $scope.isInstructions = false;
         break;
 
-      case "58-text":
-        // $scope.getQuestion(45, "text");
-        PopupService.showAlert("End of marine logic");
+      case "40-Bad":
+        $scope.getQuestion(40, "Good");
         break;
 
-      case "60-text":
-        $scope.questionObj = {
-          question: "Possible source of ingress",
-          questionNumber: 61
-        };
-        $scope.isText = true;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-
+      case "40-Average":
+        $scope.getQuestion(40, "Good");
         break;
-
-      case "61-text":
-        if ($scope.short != 0 && $scope.short != null && $scope.short != "") {
-          $scope.getQuestion(11, "Short");
-        } else if ($scope.damaged != 0 && $scope.damaged != null && $scope.damaged != "") {
-          $scope.getQuestion(11, "Damage");
-        } else {
-          $scope.getQuestion(17, "Yes");
-        }
-        break;
-
-      default:
-        console.log("Invalid choice");
     }
   };
 
@@ -1115,22 +1123,63 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         answer: $scope.finalArray[$scope.finalArray.length - 1].answer
       };
       if ($scope.finalArray[$scope.finalArray.length - 1].type == "radio") {
-        $scope.isText = false;
-      } else if ($scope.finalArray[$scope.finalArray.length - 1].type == "text") {
-        if ($scope.questionObj.questionNumber == 29) {
+        if ($scope.finalArray[$scope.finalArray.length - 1].no == 12) {
           $scope.isText = false;
-        } else {
-          $scope.isText = true;
+          $scope.multiOption = false;
+          $scope.isSubmit = false;
+          $scope.isNumeric = false;
+          $scope.isInstructions = false;
+        }
+        $scope.isText = false;
+        $scope.isInstructions = false;
+      } else if ($scope.finalArray[$scope.finalArray.length - 1].type == "text") {
+
+        var lastQuestionNo = $scope.finalArray[$scope.finalArray.length - 1].no;
+        var objNo = $scope.finalArray.length - 1;
+
+        switch (lastQuestionNo) {
+          // case 5:
+          //   $scope.getQuestion(3, "No");
+          //   break;
+
+          case 103:
+            $scope.multiOption = true;
+            $scope.multiOptionAndTextBox = true;
+            $scope.questionObj.details = $scope.finalArray[objNo].details;
+            $scope.getMultipleOption(103);
+            break;
+
+          case 1:
+            $scope.questionObj.details = $scope.finalArray[objNo].details;
+            $scope.multiOption = true;
+            $scope.multiOptionAndTextBox = true;
+            $scope.getMultipleOption(1);
+            break;
+
+          case 11:
+            // $scope.getQuestion(9, "text");
+            $scope.isText = false;
+            $scope.multiOption = false;
+            $scope.isSubmit = false;
+            $scope.isNumeric = true;
+            $scope.isInstructions = false;
+            break;
+
+
+          default:
+            $scope.isText = true;
+            $scope.isInstructions = false;
+            $scope.multiOption = false;
         }
       }
 
-      if ($scope.questionObj.questionNumber == 16 || $scope.questionObj.questionNumber == 14 || $scope.questionObj.questionNumber == 13 || $scope.questionObj.questionNumber == 11 || $scope.questionObj.questionNumber == 31) {
-        $scope.getMultipleOption($scope.questionObj.questionNumber);
-      } else {
-        $scope.multiOption = false;
+      var qNo = $scope.questionObj.questionNumber;
+
+      if (qNo == 37 || qNo == 35 || qNo == 34 || qNo == 40 || qNo == 1) {
+        $scope.getMultipleOption(qNo);
       }
 
-      if ($scope.questionObj.questionNumber == 59 || $scope.questionObj.questionNumber == 6 || $scope.questionObj.questionNumber == 41 || $scope.questionObj.questionNumber == 32 || $scope.questionObj.questionNumber == 56) {
+      if (qNo == 41 || qNo == 11) {
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isNumeric = true;
@@ -1143,68 +1192,10 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
     }
   };
 
-  //Final submit
-  $scope.submit = function () {
-    // alert("Submit called");
-    $state.go('app.photos-documents');
-  };
-
-  //Function to get multiple options(more than two)
-  $scope.getMultipleOption = function (qno) {
-    $scope.class1 = "";
-    $scope.multiArray = [];
-    switch (qno) {
-      case 11:
-        // $scope.multiArray = ["Wet", "Short", "Damage"];
-        if (_.isNumber($scope.wet) && $scope.wet != 0) {
-          $scope.surveyWet = true;
-          $scope.surveyShort = false;
-          $scope.surveyDamaged = false;
-          $scope.getQuestion(11, "Wet");
-        } else if (_.isNumber($scope.short) && $scope.short != 0) {
-          $scope.surveyWet = false;
-          $scope.surveyShort = true;
-          $scope.surveyDamaged = false;
-          $scope.getQuestion(11, "Short");
-        } else if (_.isNumber($scope.damaged) && $scope.damaged != 0) {
-          $scope.surveyWet = false;
-          $scope.surveyShort = false;
-          $scope.surveyDamaged = true;
-          $scope.getQuestion(11, "Damage");
-        } else {
-          $scope.getQuestion(17, "Yes");
-        }
-        // $scope.multiOption = true;
-        break;
-
-      case 13:
-        $scope.multiArray = ["Unloaded", "Partially Unloaded", "Not Unloaded"];
-        $scope.multiOption = true;
-        break;
-
-      case 14:
-        $scope.multiArray = ["Containerised", "Open Vehicle"];
-        $scope.multiOption = true;
-        break;
-
-      case 16:
-        $scope.multiArray = ["Holes", "Welding", "Door Caps", "Others"];
-        $scope.multiOption = true;
-        break;
-
-      case 31:
-        $scope.multiArray = ["Good", "Average", "Bad"];
-        $scope.multiOption = true;
-        break;
-
-      default:
-        console.log("Invalid choice");
-    }
-  };
 
   //To function to handle numeric values
   $scope.numericAnswers = function (val, index) {
-    if ($scope.questionObj.questionNumber == 6) {
+    if ($scope.questionObj.questionNumber == 13) {
       $scope.isQuestionSix = true;
       if (index == 0) {
         $scope.lr = val;
@@ -1219,22 +1210,18 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
       } else {
         $scope.short = null;
       }
+    }
 
-      if (index == 3) {
-        $scope.wet = val;
+    if ($scope.questionObj.questionNumber == 14) {
+      if (index == 0) {
+        $scope.cargoWtOld = val;
       }
-
-      if (index == 4) {
-        $scope.damaged = val;
-      }
-      if (($scope.damaged + $scope.wet) > $scope.delievered) {
-        PopupService.showAlert('Wet and damaged should less than delivered');
-      } else {
-        $scope.isQuestionSix = false;
+      if (index == 1) {
+        $scope.cargoWtNow = val;
       }
     }
 
-    if ($scope.questionObj.questionNumber == 59) {
+    if ($scope.questionObj.questionNumber == 11) {
       if (index == 0) {
         $scope.gvw = val;
       }
@@ -1246,7 +1233,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
       }
     }
 
-    if ($scope.questionObj.questionNumber == 32) {
+    if ($scope.questionObj.questionNumber == 41) {
       $scope.noOfTarpaulin = val;
     }
 
@@ -1276,32 +1263,37 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
     $scope.numericInputArray = [];
     $scope.numericValue = [];
     switch (qno) {
-      case 59:
+      case 11:
         $scope.numericInputArray = ["GVW", "RLW", "VLW"];
         $scope.numericValue[0] = $scope.gvw;
         $scope.numericValue[1] = $scope.rlw;
         $scope.numericValue[2] = $scope.vlw;
         break;
 
-      case 6:
-        $scope.numericInputArray = ["LR", "Delievered", "Short", "Wet", "Damaged"];
+      case 13:
+        $scope.numericInputArray = ["LR", "Delievered", "Short"];
         $scope.numericValue[0] = $scope.lr;
         $scope.numericValue[1] = $scope.delievered;
         $scope.numericValue[2] = $scope.short;
-        $scope.numericValue[3] = $scope.wet;
-        $scope.numericValue[4] = $scope.damaged;
+        break;
+
+      case 14:
+        $scope.numericInputArray = ["Wt in LR", "Wt now"];
+        $scope.numericValue[0] = $scope.cargoWtOld;
+        $scope.numericValue[1] = $scope.cargoWtNow;
         break;
 
       case 20:
         $scope.numericInputArray = ["Amt. in inr", "In %"];
-        $scope.numericValue[0] = $scope.amt;
-        $scope.numericValue[1] = $scope.percentage;
         break;
 
       case 56:
         $scope.numericInputArray = ["Amt. in inr", "In %"];
-        $scope.numericValue[0] = $scope.salvageAmt;
-        $scope.numericValue[1] = $scope.salvagePercentage;
+        break;
+
+      case 41:
+        $scope.numericInputArray = ["no"];
+        $scope.numericValue[0] = $scope.noOfTarpaulin;
         break;
 
       default:
