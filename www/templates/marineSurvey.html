@@ -1,7 +1,7 @@
 <ion-view view-title="Marine Survey">
 
   <ion-content>
-    <div class="card {{class1}}">
+    <div class="card {{class1}}" ng-if="questionObj.questionNumber != 67 && questionObj.questionNumber != 68 && questionObj.questionNumber != 58 && questionObj.questionNumber != 9 && questionObj.questionNumber != 5 && questionObj.questionNumber != 8 && questionObj.questionNumber != 50 && questionObj.questionNumber != 51 && questionObj.questionNumber != 52 && questionObj.questionNumber != 44 && questionObj.questionNumber != 55 && questionObj.questionNumber != 37">
       <!-- For question -->
       <div class="row">
 
@@ -23,7 +23,7 @@
         <!-- For boolean values -->
         <div class="row" ng-if="isText == false && multiOption == false && isNumeric == false && isInstructions == false">
 
-          <div class="col" ng-if="questionObj.questionNumber != 10 && questionObj.questionNumber != 12">
+          <div class="col" ng-if="questionObj.questionNumber != 10 && questionObj.questionNumber != 12 && questionObj.questionNumber != 30">
             <div class="radio">
               <ion-radio ng-model="questionObj.answer" ng-checked="answer1" ng-click="saveAnswer(questionObj.question,'Yes',questionObj.keyWord)"
                 ng-value="'Yes'">Yes</ion-radio>
@@ -69,7 +69,7 @@
 
 
         </div>
-        <p ng-if="isWarning==true"> This is not destination and note the same.</p>
+        <p ng-if="isWarning==true"> This is not destination, this is Other location.</p>
 
         <div class="row" ng-if="multiOption == true && multiOptionAndTextBox == true">
 
@@ -140,6 +140,278 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="card {{class1}}" ng-if="questionObj.questionNumber == 67 || questionObj.questionNumber == 68 ||questionObj.questionNumber == 58 || questionObj.questionNumber == 9 || questionObj.questionNumber == 5 || questionObj.questionNumber == 8 || questionObj.questionNumber == 44 || questionObj.questionNumber == 50 || questionObj.questionNumber == 51 || questionObj.questionNumber == 52 || questionObj.questionNumber == 55 || questionObj.questionNumber == 37">
+      <!-- For question -->
+      <div ng-if="questionObj.questionNumber == 5">
+        <div class="row">
+          <div class="col col-10 marin-text">
+            <p>Q:</p>
+          </div>
+
+          <div class="col col-90 marin-text">
+            <p>Enter truck number</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <textarea ng-model="questionObj.answer" rows="1" placeholder="Truck number"></textarea>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col marin-text">
+            <p>Instruction:</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col marin-text">
+            <p>Please take photos if available.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div ng-if="questionObj.questionNumber == 8">
+        <div class="row">
+          <div class="col col-10 marin-text">
+            <p>Q:</p>
+          </div>
+
+          <div class="col col-90 marin-text">
+            <p>Transipment</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col marin-text">
+            <p>Place:</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <textarea class="text-area-css" ng-model="questionObj.place" rows="15" placeholder="Description"></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col marin-text">
+            <p>Reason:</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <textarea class="text-area-css" ng-model="questionObj.reason" rows="15" placeholder="Description"></textarea>
+          </div>
+        </div>
+
+      </div>
+
+      <div ng-if="questionObj.questionNumber == 9">
+        <div class="row">
+          <div class="col col-10 marin-text">
+            <p>Q:</p>
+          </div>
+
+          <div class="col col-90 marin-text">
+            <p>Accident</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col marin-text">
+            <p>Place:</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <textarea class="text-area-css" ng-model="questionObj.place" rows="15" placeholder="Description"></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col marin-text">
+            <p>Reason:</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <textarea class="text-area-css" ng-model="questionObj.reason" rows="15" placeholder="Description"></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col marin-text">
+            <p>Instruction:</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col marin-text">
+            <p>Collect FIR(from insurer).</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div ng-if="questionObj.questionNumber == 37">
+
+        <div class="row">
+          <div class="col col-10 marin-text">
+            <p>Q:</p>
+          </div>
+
+          <div class="col col-90 marin-text">
+            <p>???</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <div class="radio">
+              <ion-radio ng-model="questionObj.answer[0]" name="1" ng-value="'Holes'" ng-click="resetRadio(questionObj,0)">Holes</ion-radio>
+            </div>
+            <div class="radio">
+              <ion-radio ng-model="questionObj.answer[1]" name="2" ng-value="'Welding'" ng-click="resetRadio(questionObj,1)">Welding</ion-radio>
+            </div>
+            <div class="radio">
+              <ion-radio ng-model="questionObj.answer[2]" name="3" ng-value="'Door Caps'" ng-click="resetRadio(questionObj,2)">Door Caps</ion-radio>
+            </div>
+            <div class="radio">
+              <ion-radio ng-model="questionObj.answer[3]" name="4" ng-value="'Others'" ng-click="resetRadio(questionObj,3)">Others</ion-radio>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div ng-if="questionObj.questionNumber == 51 || questionObj.questionNumber == 52">
+
+        <div class="row">
+          <div class="col marin-text">
+            <p>Make notes:</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <textarea class="text-area-css" ng-model="questionObj.notes" rows="15" placeholder="Description"></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col marin-text">
+            <p>Take photos for evidence.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div ng-if="questionObj.questionNumber == 50 || questionObj.questionNumber == 49">
+
+        <div class="row">
+          <div class="col marin-text">
+            <p>Instruction:</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col marin-text">
+            <p>Collect GRN and FIR.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div ng-if="questionObj.questionNumber == 44 || questionObj.questionNumber == 55">
+
+        <div class="row">
+          <div class="col marin-text">
+            <p>Instruction:</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col marin-text">
+            <p>Spread and checked.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div ng-if="questionObj.questionNumber == 58">
+
+        <div class="row">
+          <div class="col marin-text">
+            <p>Instruction:</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col marin-text">
+            <p>Test reports if any.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div ng-if="questionObj.questionNumber == 67">
+
+        <div class="row">
+          <div class="col marin-text">
+            <p>Instruction:</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col marin-text">
+            <p>Dispose.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div ng-if="questionObj.questionNumber == 68">
+
+        <div class="row">
+          <div class="col marin-text">
+            <p>Instruction:</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col marin-text">
+            <p>Documentation.</p>
+            <br>
+            <p>Invoice</p>
+            <br>
+            <p>Packing List</p>
+            <br>
+            <p>Endorsed LR</p>
+            <br>
+            <p>Verify documents with originals</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- For answer -->
+      <div class="marin-text">
+        <!-- Buttons -->
+        <div class="row">
+          <div class="col text-center">
+            <button class="button button-positive marine-btn-width" ng-click="saveAnswer(questionObj.question,questionObj)">Next</button>
+            <br>
+            <button class="button button-positive marine-btn-width " ng-click="back()">Back</button>
+            <br>
+            <button class="button button-positive marine-btn-width " ng-if="isSubmit == true" ng-click="submit()">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </ion-content>
 
   <!-- <ion-content>

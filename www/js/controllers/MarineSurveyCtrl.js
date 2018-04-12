@@ -13,18 +13,18 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
   $scope.isQuestionSix = false;
 
   //First question
-  $scope.questionObj = {
-    question: "Where are you? At destination?",
-    questionNumber: 1,
-    keyWord: "test",
-    answer: "",
-    details: "",
-    type: "text"
-  };
+  // $scope.questionObj = {
+  //   question: "Where are you? At destination?",
+  //   questionNumber: 1,
+  //   keyWord: "currentLocation",
+  //   answer: "",
+  //   details: "",
+  //   type: "text"
+  // };
 
-  // $timeout(function () {
-  //   $scope.getQuestion(31, "text");
-  // }, 100);
+  $timeout(function () {
+    $scope.getQuestion(31, "text");
+  }, 100);
 
 
   //Function to get multiple options(more than two)
@@ -64,7 +64,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.multiOptionAndTextBox = false;
         break;
 
-      case 40:
+      case 57:
         $scope.multiArrayObj.multiArray = ["Good", "Average", "Bad"];
         $scope.multiOption = true;
         $scope.multiOptionAndTextBox = false;
@@ -82,7 +82,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
     $scope.class1 = "fadeOutLeftBig animated";
     var no;
     var obj = {};
-    if (value2 == "Yes" || value2 == "No" || value2 == "Dry" || value2 == "Liquid" || value2 == "Loose" || value2 == "Packed" || value2 == "Unloaded" || value2 == "Containerised" || value2 == "Holes" || value2 == "Partially Unloaded" || value2 == "Not Unloaded" || value2 == "Containerised" || value2 == "Open Vehicle") {
+    if (value2 == "Yes" || value2 == "No" || value2 == "Dry" || value2 == "Liquid" || value2 == "Loose" || value2 == "Packed" || value2 == "Unloaded" || value2 == "Containerised" || value2 == "Holes" || value2 == "Partially Unloaded" || value2 == "Not Unloaded" || value2 == "Containerised" || value2 == "Open Vehicle" || value2 == "During Unloading" || value2 == "Jerks & Jolts" || value2 == "Good" || value2 == "Average" || value2 == "Bad") {
       var val;
 
       if (value2 == "Yes") {
@@ -126,6 +126,39 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
           $scope.isTruckPresent = false;
         }
       }
+
+      if ($scope.questionObj.questionNumber == 15) {
+        if (obj.answer == "Yes") {
+          $scope.isPackingAvailable = true;
+        } else if (obj.answer == "No") {
+          $scope.isPackingAvailable = false;
+        }
+      }
+
+      if ($scope.questionObj.questionNumber == 22) {
+        if (obj.answer == "Yes") {
+          $scope.isShort = true;
+        } else if (obj.answer == "No") {
+          $scope.isShort = false;
+        }
+      }
+
+      if ($scope.questionObj.questionNumber == 29) {
+        if (obj.answer == "Yes") {
+          $scope.isDamage = true;
+        } else if (obj.answer == "No") {
+          $scope.isDamage = false;
+        }
+      }
+
+      if ($scope.questionObj.questionNumber == 33) {
+        if (obj.answer == "Yes") {
+          $scope.isWet = true;
+        } else if (obj.answer == "No") {
+          $scope.isWet = false;
+        }
+      }
+
       no = $scope.questionObj.questionNumber;
       // $scope.questionObj = {};
       $scope.finalArray.push(obj);
@@ -147,6 +180,12 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
             } else if (($scope.cargoType == "Dry" && $scope.cargoPackageType == "Loose") || ($scope.cargoType == "Liquid" && $scope.cargoPackageType == "Loose")) {
               $scope.getQuestion(12, "loose");
             }
+          } else if ($scope.questionObj.questionNumber == 30) {
+            if (obj.answer == "Jerks & Jolts") {
+              $scope.getQuestion(30, "JJ");
+            } else if (obj.answer == "During Unloading") {
+              $scope.getQuestion(30, "Unloading");
+            }
           } else {
             $scope.getQuestion(no, value2);
           }
@@ -156,6 +195,66 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
     } else {
 
       switch ($scope.questionObj.questionNumber) {
+
+        case 5:
+          obj = {
+            question: value1,
+            answer: value2.answer,
+            details: keyWord,
+            no: $scope.questionObj.questionNumber,
+            type: "text"
+          };
+          no = $scope.questionObj.questionNumber;
+          $scope.finalArray.push(obj);
+          $scope.getQuestionInTimeout(no);
+          break;
+
+
+        case 8:
+          obj = {
+            question: value1,
+            place: value2.place,
+            reason: value2.reason,
+            details: keyWord,
+            no: $scope.questionObj.questionNumber,
+            questionNumber: $scope.questionObj.questionNumber,
+            type: "text"
+          };
+          no = $scope.questionObj.questionNumber;
+          $scope.finalArray.push(obj);
+          $scope.getQuestionInTimeout(no);
+          break;
+
+        case 9:
+          obj = {
+            question: value1,
+            place: value2.place,
+            reason: value2.reason,
+            details: keyWord,
+            no: $scope.questionObj.questionNumber,
+            questionNumber: $scope.questionObj.questionNumber,
+            type: "text"
+          };
+          no = $scope.questionObj.questionNumber;
+          $scope.finalArray.push(obj);
+          $scope.getQuestionInTimeout(no);
+          break;
+
+        case 44:
+          obj = {
+            question: value1,
+            place: value2.place,
+            reason: value2.reason,
+            details: keyWord,
+            no: $scope.questionObj.questionNumber,
+            questionNumber: $scope.questionObj.questionNumber,
+            type: "text"
+          };
+          no = $scope.questionObj.questionNumber;
+          $scope.finalArray.push(obj);
+          $scope.getQuestionInTimeout(no);
+          break;
+
 
         case 103:
           obj = {
@@ -267,11 +366,13 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
             type: "text"
           };
           no = $scope.questionObj.questionNumber;
-          if ($scope.isTruckPresent == true) {
+          // if ($scope.isTruckPresent == true) {
 
-          } else {
+          // } else {
 
-          }
+          // }
+          $scope.finalArray.push(obj);
+          $scope.getQuestionInTimeout(no);
           break;
 
         case 41:
@@ -284,12 +385,67 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
           };
 
           no = $scope.questionObj.questionNumber;
-          if (_.isNumber($scope.noOfTarpaulin)) {
+          if (!_.isNumber($scope.noOfTarpaulin)) {
             $scope.finalArray.push(obj);
             $scope.getQuestionInTimeout(no);
           } else {
             PopupService.showAlert('Please enter the value');
           }
+          break;
+
+        case 64:
+
+          obj = {
+            question: value1,
+            answer: {
+              salvageAmt: $scope.salvageAmt,
+              salvagePercentage: $scope.salvagePercentage
+            },
+            no: $scope.questionObj.questionNumber,
+            type: "text"
+          };
+
+          no = $scope.questionObj.questionNumber;
+          if (_.isNumber($scope.salvageAmt) && _.isNumber($scope.salvagePercentage)) {
+            $scope.finalArray.push(obj);
+            $scope.getQuestionInTimeout(no);
+          } else {
+            PopupService.showAlert('Please enter the value');
+          }
+          break;
+
+        case 69:
+
+          obj = {
+            question: value1,
+            answer: $scope.estimatedCost,
+            no: $scope.questionObj.questionNumber,
+            type: "text"
+          };
+
+          no = $scope.questionObj.questionNumber;
+          if (_.isNumber($scope.estimatedCost)) {
+            $scope.finalArray.push(obj);
+            $scope.getQuestionInTimeout(no);
+          } else {
+            PopupService.showAlert('Please enter the value');
+          }
+          break;
+
+        case 37:
+          console.log("value2", value2);
+          obj = {
+            question: "???",
+            answer: value2.answer,
+            no: $scope.questionObj.questionNumber,
+            questionNumber: $scope.questionObj.questionNumber,
+            type: "text"
+          };
+
+          no = $scope.questionObj.questionNumber;
+          $scope.finalArray.push(obj);
+          $scope.getQuestionInTimeout(37);
+
           break;
 
         default:
@@ -326,6 +482,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
 
   //To get question
   $scope.getQuestion = function (no, ans) {
+
     $scope.class1 = "";
     var demo = no + "-" + ans;
     switch (demo) {
@@ -334,7 +491,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Why are you here?",
           questionNumber: 103,
-          keyWord: "test",
+          keyWord: "WhyAtOrigin",
           answer: "",
           details: "",
           type: "text"
@@ -347,7 +504,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Is place of survey same as LR destination",
           questionNumber: 100,
-          keyWord: "test",
+          keyWord: "isDestination",
           answer: "",
           type: "radio"
         };
@@ -381,7 +538,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
 
       case "103-text":
         $scope.questionObj = {
-          question: "FTL",
+          question: "Full truck load",
           questionNumber: 2,
           keyWord: "FTL"
         };
@@ -451,20 +608,24 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
 
       case "3-No":
         $scope.questionObj = {
-          instructions: ["Instructions:", "take truck no", "take photos"],
           questionNumber: 5,
-          keyWord: "isTruckPresent"
+          keyWord: "truckNumber"
         };
-        $scope.isText = true;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        $scope.isInstructions = true;
+        // $scope.questionObj = {
+        //   instructions: ["Instructions:", "take truck no", "take photos"],
+        //   questionNumber: 5,
+        //   keyWord: "isTruckPresent"
+        // };
+        // $scope.isText = true;
+        // $scope.multiOption = false;
+        // $scope.isSubmit = false;
+        // $scope.isNumeric = false;
+        // $scope.isInstructions = true;
         break;
 
       case "4-Yes":
         $scope.questionObj = {
-          question: "IsAccident",
+          question: "Was there an accident en route?",
           questionNumber: 6,
           keyWord: "isAccident"
         };
@@ -494,7 +655,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
 
       case "7-Yes":
         $scope.questionObj = {
-          question: "Place and reason",
+          question: "Transhipment 1. place 2. reason ",
           questionNumber: 8,
           keyWord: "transhipmentPlaceReason"
         };
@@ -505,16 +666,24 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.isInstructions = false;
         break;
 
+      case "8-text":
+        $scope.getQuestion(4, "Yes");
+        break;
+
       case "7-No":
         $scope.getQuestion(4, "Yes");
         break;
 
       case "6-Yes":
         $scope.questionObj = {
-          instructions: ["Instructions:", "place of accident", "reason", "collect FIR"],
           questionNumber: 9,
-          keyWord: "isAccident"
+          keyWord: "accidentPlaceAndReason"
         };
+        // $scope.questionObj = {
+        //   instructions: ["Instructions:", "place of accident", "reason", "collect FIR"],
+        //   questionNumber: 9,
+        //   keyWord: "isAccident"
+        // };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -538,7 +707,8 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
       case "9-text":
         $scope.questionObj = {
           question: "Enter GVW (Gross Vehicle Weight),RLW(Registered Laden Weight), ULW(Unladen Weight) in Kgs",
-          questionNumber: 11
+          questionNumber: 11,
+          keyWord: "GvwRlwUlw"
         };
         $scope.isText = false;
         $scope.multiOption = false;
@@ -568,7 +738,8 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
       case "12-packed":
         $scope.questionObj = {
           question: "Number of packages in 1.LR 2.Delievered 3.Short?",
-          questionNumber: 13
+          questionNumber: 13,
+          keyWord: "NoOfPackages"
         };
         $scope.isText = false;
         $scope.multiOption = false;
@@ -580,7 +751,8 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
       case "12-loose":
         $scope.questionObj = {
           question: "Weight lr",
-          questionNumber: 14
+          questionNumber: 14,
+          keyWord: "WtLr"
         };
         $scope.isText = false;
         $scope.multiOption = false;
@@ -603,11 +775,20 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         break;
 
       case "15-Yes":
-        $scope.questionObj = {
-          question: "is New?",
-          questionNumber: 16,
-          keyWord: "isNew"
-        };
+
+        if ($scope.isPackingAvailable == true) {
+          $scope.questionObj = {
+            question: "is New?",
+            questionNumber: 16,
+            keyWord: "isNew"
+          };
+        } else {
+          $scope.questionObj = {
+            question: "was New?",
+            questionNumber: 16,
+            keyWord: "wasNew"
+          };
+        }
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
@@ -637,7 +818,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "customary",
           questionNumber: 18,
-          keyWord: "customary"
+          keyWord: "isCustomary"
         };
         $scope.isText = false;
         $scope.multiOption = false;
@@ -654,7 +835,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "adequate",
           questionNumber: 19,
-          keyWord: "adequate"
+          keyWord: "isAdequate"
         };
         $scope.isText = false;
         $scope.multiOption = false;
@@ -671,7 +852,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Reason",
           questionNumber: 20,
-          keyWord: "reason"
+          keyWord: "adequateReason"
         };
         $scope.isText = true;
         $scope.multiOption = false;
@@ -711,14 +892,15 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         break;
 
       case "22-No":
-        PopupService.showAlert("End of marine logic");
+        // PopupService.showAlert("End of marine logic");
+        $scope.getQuestion(28, "text");
         break;
 
       case "22-Yes":
         $scope.questionObj = {
           question: "Please describe what led to shortage",
           questionNumber: 23,
-          keyWord: "conditionOfPacking"
+          keyWord: "shortageDescription"
         };
         $scope.isText = true;
         $scope.multiOption = false;
@@ -753,9 +935,13 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.isInstructions = false;
         break;
 
+      case "25-Yes":
+        $scope.getQuestion(24, "No");
+        break;
+
       case "25-No":
         $scope.questionObj = {
-          instructions: ["Instructions:", "Take truck number", "make notes", "take photos"],
+          instructions: ["Instructions:", "Reload truck", "make notes", "take photos"],
           questionNumber: 26,
           keyWord: "isAccident"
         };
@@ -766,11 +952,15 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.isInstructions = true;
         break;
 
+      case "26-text":
+        $scope.getQuestion(24, "No");
+        break;
+
       case "24-No":
         $scope.questionObj = {
           question: "Is content missing from packages?",
           questionNumber: 27,
-          keyWord: "isSpaceForMissingPackages"
+          keyWord: "isContentMissingFromPackages"
         };
         $scope.isText = false;
         $scope.multiOption = false;
@@ -781,16 +971,76 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
 
       case "27-Yes":
         $scope.questionObj = {
-          instructions: ["Instructions:", "make notes", "take photos"],
-          questionNumber: 28,
-          keyWord: "isAccident"
+          question: "Is there space for missing content?",
+          questionNumber: 48,
+          keyWord: "isSpaceForMissingContent"
         };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
         $scope.isNumeric = false;
-        $scope.isInstructions = true;
+        $scope.isInstructions = false;
         break;
+
+      case "27-No":
+        $scope.questionObj = {
+          questionNumber: 50
+        };
+        break;
+
+      case "48-No":
+        $scope.questionObj = {
+          questionNumber: 52
+        };
+        break;
+
+      case "48-Yes":
+        $scope.questionObj = {
+          question: "Is there any sign of Tampering?",
+          questionNumber: 49,
+          keyWord: "isTampering"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "49-Yes":
+        $scope.questionObj = {
+          questionNumber: 51
+        };
+        break;
+
+      case "49-No":
+        $scope.getQuestion(27, "No");
+        break;
+
+      case "51-text":
+        $scope.getQuestion(27, "No");
+        break;
+
+      case "50-text":
+        $scope.getQuestion(28, "text");
+        break;
+
+      case "52-text":
+        $scope.getQuestion(27, "No");
+        break;
+
+        // case "27-Yes":
+        //   $scope.questionObj = {
+        //     instructions: ["Instructions:", "make notes", "take photos"],
+        //     questionNumber: 28,
+        //     keyWord: "isAccident"
+        //   };
+        //   $scope.isText = false;
+        //   $scope.multiOption = false;
+        //   $scope.isSubmit = false;
+        //   $scope.isNumeric = false;
+        //   $scope.isInstructions = true;
+        //   break;
 
       case "28-text":
         $scope.questionObj = {
@@ -809,13 +1059,17 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "How?",
           questionNumber: 30,
-          keyWord: "damage"
+          keyWord: "damageDescription"
         };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
         $scope.isNumeric = false;
         $scope.isInstructions = false;
+        break;
+
+      case "29-No":
+        $scope.getQuestion(31, "text");
         break;
 
       case "30-Unloading":
@@ -835,7 +1089,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Can Jerks & Jolts cause such magnitude of damage?",
           questionNumber: 32,
-          keyWord: "causeOfLoss"
+          keyWord: "canJJcauseDamage"
         };
         $scope.isText = false;
         $scope.multiOption = false;
@@ -854,19 +1108,25 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
 
       case "31-text":
         $scope.questionObj = {
-          question: "Is Wet?",
+          question: "Is there any wet damage?",
           questionNumber: 33,
-          keyWord: "isWet"
+          keyWord: "isWetDamage"
         };
         $scope.isText = false;
         $scope.multiOption = false;
+        $scope.multiOptionAndTextBox = false;
         $scope.isSubmit = false;
         $scope.isNumeric = false;
         $scope.isInstructions = false;
         break;
 
       case "33-No":
-        PopupService.showAlert("End of marine logic");
+
+        if ($scope.isShort == true && $scope.isDamage == false && $scope.isWet == false) {
+          $scope.getQuestion(66, "Yes");
+        } else {
+          $scope.getQuestion(47, "text");
+        }
         break;
 
       case "33-Yes":
@@ -909,7 +1169,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "Is light test done?",
           questionNumber: 36,
-          keyWord: "isLight"
+          keyWord: "isLightTestDone"
         };
         $scope.isText = false;
         $scope.multiOption = false;
@@ -924,48 +1184,71 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
           questionNumber: 37,
           keyWord: ""
         };
-        $scope.isText = false;
-        $scope.multiOption = true;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        $scope.isInstructions = false;
-        $scope.getMultipleOption(37);
+        // $scope.isText = false;
+        // $scope.multiOption = true;
+        // $scope.isSubmit = false;
+        // $scope.isNumeric = false;
+        // $scope.isInstructions = false;
+        // $scope.getMultipleOption(37);
         break;
 
       case "36-No":
         $scope.getQuestion(36, "Yes");
         break;
 
-      case "37-Holes":
+      case "37-text":
         $scope.questionObj = {
-          question: "Is Tarpaulin floor?",
+          question: "Is there a Tarpaulin on the floor?",
           questionNumber: 38,
-          keyWord: "isLight"
+          keyWord: "isTarpaulingOnFloorContainerised"
         };
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isSubmit = false;
         $scope.isNumeric = false;
         $scope.isInstructions = false;
+        $scope.multiOption = false;
+        $scope.multiOptionAndTextBox = false;
         break;
 
-      case "37-Welding":
-        $scope.getQuestion(37, "Holes");
+      case "38-Yes":
+        $scope.questionObj = {
+          question: "Please describe the condition of tarpauling?",
+          questionNumber: 53,
+          keyWord: "conditionOfTarpaulinContainerised"
+        };
+        $scope.isText = true;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
         break;
 
-      case "37-Door Caps":
-        $scope.getQuestion(37, "Holes");
+      case "53-text":
+        PopupService.showAlert("End of marine logic");
         break;
 
-      case "37-Others":
-        $scope.getQuestion(37, "Holes");
+      case "38-Yes":
+        PopupService.showAlert("End of marine logic");
         break;
+
+        // case "37-Welding":
+        //   $scope.getQuestion(37, "Holes");
+        //   break;
+
+        // case "37-Door Caps":
+        //   $scope.getQuestion(37, "Holes");
+        //   break;
+
+        // case "37-Others":
+        //   $scope.getQuestion(37, "Holes");
+        //   break;
 
       case "35-Open Vehicle":
         $scope.questionObj = {
-          question: "Tarpaulin?",
+          question: "Is there tarpaulin the top?",
           questionNumber: 39,
-          keyWord: "isLight"
+          keyWord: "isTarpaulinOnTop"
         };
         $scope.isText = false;
         $scope.multiOption = false;
@@ -975,24 +1258,27 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         break;
 
       case "39-No":
-        $scope.questionObj = {
-          question: "Floor condition?",
-          questionNumber: 40,
-          keyWord: "isLight"
-        };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        $scope.isInstructions = false;
-        $scope.getMultipleOption(40);
+
+        $scope.getQuestion(45, "Yes");
+
+        // $scope.questionObj = {
+        //   question: "Floor condition?",
+        //   questionNumber: 40,
+        //   keyWord: "isLight"
+        // };
+        // $scope.isText = false;
+        // $scope.multiOption = false;
+        // $scope.isSubmit = false;
+        // $scope.isNumeric = false;
+        // $scope.isInstructions = false;
+        // $scope.getMultipleOption(40);
         break;
 
       case "39-Yes":
         $scope.questionObj = {
-          question: "# Tarpaulin?",
+          question: "No of Tarpaulin?",
           questionNumber: 41,
-          keyWord: "isLight"
+          keyWord: "noOfTarulin"
         };
         $scope.isText = false;
         $scope.multiOption = false;
@@ -1017,9 +1303,9 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
 
       case "41-text":
         $scope.questionObj = {
-          question: "removed in presence?",
+          question: "Was tarpaulin removed in your presence?",
           questionNumber: 43,
-          keyWord: "isLight"
+          keyWord: "isTarpaulinRemovedInUrPresence"
         };
         $scope.isText = false;
         $scope.multiOption = false;
@@ -1032,24 +1318,19 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.questionObj = {
           question: "spread & checked?",
           questionNumber: 44,
-          keyWord: "isLight"
+          keyWord: "spreadAndCheckedInstruction"
         };
-        $scope.isText = false;
-        $scope.multiOption = false;
-        $scope.isSubmit = false;
-        $scope.isNumeric = false;
-        $scope.isInstructions = false;
         break;
 
       case "43-No":
         $scope.getQuestion(43, "Yes");
         break;
 
-      case "44-Yes":
+      case "44-text":
         $scope.questionObj = {
           question: "Holes?",
           questionNumber: 45,
-          keyWord: "isLight"
+          keyWord: "holesTarpaulinOnTop"
         };
         $scope.isText = false;
         $scope.multiOption = false;
@@ -1060,9 +1341,9 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
 
       case "45-Yes":
         $scope.questionObj = {
-          question: "Tarpaulin floor?",
+          question: "Is there Tarpaulin on the floor?",
           questionNumber: 46,
-          keyWord: "isLight"
+          keyWord: "isTarpaulingOnFloorOpenVehicle"
         };
         $scope.isText = false;
         $scope.multiOption = false;
@@ -1071,25 +1352,79 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.isInstructions = false;
         break;
 
-
       case "45-No":
         $scope.getQuestion(45, "Yes");
         break;
 
-
       case "46-Yes":
-        $scope.getQuestion(39, "No");
+        $scope.questionObj = {
+          question: "Was tarpaulin removed in your presence?",
+          questionNumber: 54,
+          keyWord: "isTarpaulinRemovedInUrPresenceFloor"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
         break;
 
-      case "46-No":
-        $scope.getQuestion(39, "No");
+      case "54-Yes":
+        $scope.questionObj = {
+          question: "spread & checked?",
+          questionNumber: 55,
+          keyWord: "spreadAndCheckedInstruction"
+        };
         break;
 
-      case "40-Good":
+      case "54-No":
+        $scope.questionObj = {
+          question: "spread & checked?",
+          questionNumber: 55,
+          keyWord: "spreadAndCheckedInstruction"
+        };
+        break;
+
+
+      case "55-text":
+        $scope.questionObj = {
+          question: "Holes?",
+          questionNumber: 56,
+          keyWord: "holesTarpaulinOnFloor"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+        // case "46-Yes":
+        //   $scope.getQuestion(39, "No");
+        //   break;
+
+        // case "46-No":
+        //   $scope.getQuestion(39, "No");
+        //   break;
+
+      case "56-Yes":
+        $scope.questionObj = {
+          question: "Floor condition?",
+          questionNumber: 57,
+          keyWord: "floorConditionOpenVehicle"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        $scope.getMultipleOption(57);
+        break;
+
+      case "57-Good":
         $scope.questionObj = {
           question: "Possible source of ingress?",
           questionNumber: 47,
-          keyWord: "isLight"
+          keyWord: "ingressOpenVehicle"
         };
         $scope.isText = true;
         $scope.multiOption = false;
@@ -1098,12 +1433,179 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.isInstructions = false;
         break;
 
-      case "40-Bad":
+      case "57-Bad":
         $scope.getQuestion(40, "Good");
         break;
 
-      case "40-Average":
+      case "57-Average":
         $scope.getQuestion(40, "Good");
+        break;
+
+      case "47-text":
+        $scope.questionObj = {
+          questionNumber: 58,
+          keyWord: "testReportInstruction"
+        };
+        break;
+
+      case "58-text":
+        $scope.questionObj = {
+          question: "repair?",
+          questionNumber: 59,
+          keyWord: "isRepairable"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "59-Yes":
+        $scope.questionObj = {
+          question: "Estimated Costing?",
+          questionNumber: 69,
+          keyWord: "estimatedCosting"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = true;
+        $scope.isInstructions = false;
+        $scope.getNumericOption($scope.questionObj.questionNumber);
+        break;
+
+      case "59-No":
+        $scope.questionObj = {
+          question: "reprocess?",
+          questionNumber: 60,
+          keyWord: "reprocess"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "60-Yes":
+        $scope.getQuestion(59, "Yes");
+        break;
+
+      case "60-No":
+        $scope.questionObj = {
+          question: "recondition?",
+          questionNumber: 61,
+          keyWord: "reprocess"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "61-Yes":
+        $scope.getQuestion(59, "Yes");
+        break;
+
+      case "61-No":
+        $scope.questionObj = {
+          question: "canbalisation?",
+          questionNumber: 62,
+          keyWord: "canbalisation"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "62-Yes":
+        $scope.getQuestion(59, "Yes");
+        break;
+
+      case "62-No":
+        $scope.questionObj = {
+          question: "Destroy?",
+          questionNumber: 63,
+          keyWord: "canbalisation"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "63-No":
+        $scope.questionObj = {
+          question: "Salvage Value?",
+          questionNumber: 64,
+          keyWord: "salvageValue"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = true;
+        $scope.isInstructions = false;
+        $scope.getNumericOption($scope.questionObj.questionNumber);
+        break;
+
+      case "63-Yes":
+        $scope.questionObj = {
+          question: "Dose it have residual value?",
+          questionNumber: 65,
+          keyWord: "salvageValue"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "65-Yes":
+        $scope.getQuestion(63, "No");
+        break;
+
+      case "64-text":
+        $scope.questionObj = {
+          question: "Retain?",
+          questionNumber: 66,
+          keyWord: "retain"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "66-Yes":
+        $scope.questionObj = {
+          question: "Retain?",
+          questionNumber: 68,
+          keyWord: "retain"
+        };
+        break;
+
+      case "66-No":
+        $scope.questionObj = {
+          question: "Dispose?",
+          questionNumber: 67,
+          keyWord: "dispose"
+        };
+        $scope.isText = false;
+        $scope.multiOption = false;
+        $scope.isSubmit = false;
+        $scope.isNumeric = false;
+        $scope.isInstructions = false;
+        break;
+
+      case "67-text":
+        $scope.getQuestion(66, "Yes");
         break;
     }
   };
@@ -1122,7 +1624,9 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         questionNumber: $scope.finalArray[$scope.finalArray.length - 1].no,
         answer: $scope.finalArray[$scope.finalArray.length - 1].answer
       };
+      var lastQuestionNo = $scope.finalArray[$scope.finalArray.length - 1].no;
       if ($scope.finalArray[$scope.finalArray.length - 1].type == "radio") {
+
         if ($scope.finalArray[$scope.finalArray.length - 1].no == 12) {
           $scope.isText = false;
           $scope.multiOption = false;
@@ -1130,11 +1634,17 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
           $scope.isNumeric = false;
           $scope.isInstructions = false;
         }
+
+        if (lastQuestionNo == 36 || lastQuestionNo == 46) {
+          $scope.multiOption = false;
+          $scope.multiOptionAndTextBox = false;
+        }
+        $scope.multiOption = false;
         $scope.isText = false;
         $scope.isInstructions = false;
       } else if ($scope.finalArray[$scope.finalArray.length - 1].type == "text") {
 
-        var lastQuestionNo = $scope.finalArray[$scope.finalArray.length - 1].no;
+
         var objNo = $scope.finalArray.length - 1;
 
         switch (lastQuestionNo) {
@@ -1165,8 +1675,25 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
             $scope.isInstructions = false;
             break;
 
+          case 8:
+            console.log("$scope.finalArray[8]", $scope.finalArray[objNo]);
+            $scope.questionObj = $scope.finalArray[objNo];
+            break;
+
+          case 9:
+            console.log("$scope.finalArray[9]", $scope.finalArray[objNo]);
+            $scope.questionObj = $scope.finalArray[objNo];
+            break;
+
+          case 37:
+            console.log("$scope.finalArray[objNo]", $scope.finalArray[objNo]);
+            $scope.questionObj = $scope.finalArray[objNo];
+            $scope.questionObj.answer = $scope.finalArray[objNo].answer;
+            break;
+
 
           default:
+
             $scope.isText = true;
             $scope.isInstructions = false;
             $scope.multiOption = false;
@@ -1175,11 +1702,11 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
 
       var qNo = $scope.questionObj.questionNumber;
 
-      if (qNo == 37 || qNo == 35 || qNo == 34 || qNo == 40 || qNo == 1) {
+      if (qNo == 35 || qNo == 34 || qNo == 57 || qNo == 1) {
         $scope.getMultipleOption(qNo);
       }
 
-      if (qNo == 41 || qNo == 11) {
+      if (qNo == 41 || qNo == 11 || qNo == 64 || qNo == 69) {
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isNumeric = true;
@@ -1247,13 +1774,17 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
 
     }
 
-    if ($scope.questionObj.questionNumber == 56) {
+    if ($scope.questionObj.questionNumber == 64) {
       if (index == 0) {
         $scope.salvageAmt = val;
       }
       if (index == 1) {
         $scope.salvagePercentage = val;
       }
+    }
+
+    if ($scope.questionObj.questionNumber == 69) {
+      $scope.estimatedCost = val;
     }
   };
 
@@ -1296,9 +1827,56 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.numericValue[0] = $scope.noOfTarpaulin;
         break;
 
+      case 69:
+        $scope.numericInputArray = ["Est Cost"];
+        $scope.numericValue[0] = $scope.estimatedCost;
+        break;
+
+
+      case 64:
+        $scope.numericInputArray = ["Amt. in inr", "In %"];
+        $scope.numericValue[0] = $scope.salvageAmt;
+        $scope.numericValue[1] = $scope.salvagePercentage;
+        break;
+
       default:
         console.log("Invalid choice");
     }
+  };
+
+
+  //Function to reset radio buttons of q no 37
+  var isEmpty = [true, true, true, true];
+  $scope.resetRadio = function (value, index) {
+
+    if (index == 0 && value.answer[index] != "" && isEmpty[0] == false) {
+      value.answer[index] = "";
+      isEmpty[0] = true;
+    } else if (index == 0 && value.answer[index] != "" && isEmpty[0] == true) {
+      isEmpty[0] = false;
+    }
+
+    if (index == 1 && value.answer[index] != "" && isEmpty[1] == false) {
+      value.answer[index] = "";
+      isEmpty[1] = true;
+    } else if (index == 1 && value.answer[index] != "" && isEmpty[1] == true) {
+      isEmpty[1] = false;
+    }
+
+    if (index == 2 && value.answer[index] != "" && isEmpty[2] == false) {
+      value.answer[index] = "";
+      isEmpty[2] = true;
+    } else if (index == 2 && value.answer[index] != "" && isEmpty[2] == true) {
+      isEmpty[2] = false;
+    }
+
+    if (index == 3 && value.answer[index] != "" && isEmpty[3] == false) {
+      value.answer[index] = "";
+      isEmpty[3] = true;
+    } else if (index == 3 && value.answer[index] != "" && isEmpty[3] == true) {
+      isEmpty[3] = false;
+    }
+
   };
 
 });
