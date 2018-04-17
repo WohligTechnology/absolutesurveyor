@@ -1,7 +1,7 @@
 <ion-view view-title="Marine Survey">
 
   <ion-content>
-    <div class="card {{class1}}" ng-if="questionObj.questionNumber != 67 && questionObj.questionNumber != 68 && questionObj.questionNumber != 58 && questionObj.questionNumber != 9 && questionObj.questionNumber != 5 && questionObj.questionNumber != 8 && questionObj.questionNumber != 50 && questionObj.questionNumber != 51 && questionObj.questionNumber != 52 && questionObj.questionNumber != 44 && questionObj.questionNumber != 55 && questionObj.questionNumber != 37">
+    <div class="card {{class1}}" ng-if="questionObj.questionNumber != 71 && questionObj.questionNumber != 70 && questionObj.questionNumber != 67 && questionObj.questionNumber != 68 && questionObj.questionNumber != 58 && questionObj.questionNumber != 9 && questionObj.questionNumber != 5 && questionObj.questionNumber != 8 && questionObj.questionNumber != 50 && questionObj.questionNumber != 51 && questionObj.questionNumber != 52 && questionObj.questionNumber != 44 && questionObj.questionNumber != 55 && questionObj.questionNumber != 37">
       <!-- For question -->
       <div class="row">
 
@@ -10,7 +10,7 @@
         </div>
 
         <div class="col col-90 marin-text" ng-if="isInstructions == false">
-          <p>{{questionObj.question}}</p>
+          <p ng-bind-html="questionObj.question">{{questionObj.question}}</p>
         </div>
 
         <div class="col col-90 marin-text" ng-if="isInstructions == true">
@@ -111,7 +111,7 @@
 
         <!-- For numeric -->
         <div class="row" ng-if="isText == false && multiOption == false && isNumeric == true">
-          <div class="col" ng-if="questionObj.questionNumber != 32">
+          <div class="col" ng-if="questionObj.questionNumber != 11">
             <div ng-repeat="item in numericInputArray track by $index">
               <div class="list list-inset numerical-input-div">
                 <label class="item item-input">
@@ -124,6 +124,20 @@
             </div>
           </div>
 
+          <div class="col" ng-if="questionObj.questionNumber == 11">
+            <div ng-repeat="item in numericInputArray track by $index">
+              <div class="list list-inset numerical-input-div">
+                <label class="item item-input">
+                  <span class="input-label numeric-label">{{item}}</span>
+                  <input class="numeric-input" ng-if="item != 'Short'" ng-model="numericValue[$index]" ng-change="numericAnswers(numericValue[$index],$index)"
+                    type="number">
+                </label>
+              </div>
+            </div>
+            <br>
+            <p>Please take pic of RC book</p>
+          </div>
+
         </div>
 
         <!-- Buttons -->
@@ -131,6 +145,7 @@
           <div class="col text-center">
             <button class="button button-positive marine-btn-width" ng-click="saveAnswer(questionObj.question,questionObj.answer)" ng-if="(isText== true || isNumeric == true || questionObj.questionNumber == 29) && multiOptionAndTextBox != true && isSubmit == false && isInstructions == false">Next</button>
             <button class="button button-positive marine-btn-width" ng-click="saveAnswer(questionObj.question,questionObj.answer)" ng-if="isInstructions == true">Next</button>
+            <button class="button button-positive marine-btn-width" ng-click="saveAnswer(questionObj.question,questionObj.answer)" ng-if="isWarning==true">Next</button>
             <button class="button button-positive marine-btn-width" ng-click="saveAnswer(questionObj.question,questionObj.answer,questionObj.details)"
               ng-if="multiOptionAndTextBox ==true">Next</button>
             <br>
@@ -142,7 +157,7 @@
       </div>
     </div>
 
-    <div class="card {{class1}}" ng-if="questionObj.questionNumber == 67 || questionObj.questionNumber == 68 ||questionObj.questionNumber == 58 || questionObj.questionNumber == 9 || questionObj.questionNumber == 5 || questionObj.questionNumber == 8 || questionObj.questionNumber == 44 || questionObj.questionNumber == 50 || questionObj.questionNumber == 51 || questionObj.questionNumber == 52 || questionObj.questionNumber == 55 || questionObj.questionNumber == 37">
+    <div class="card {{class1}}" ng-if="questionObj.questionNumber == 71 || questionObj.questionNumber == 70 ||questionObj.questionNumber == 67 || questionObj.questionNumber == 68 ||questionObj.questionNumber == 58 || questionObj.questionNumber == 9 || questionObj.questionNumber == 5 || questionObj.questionNumber == 8 || questionObj.questionNumber == 44 || questionObj.questionNumber == 50 || questionObj.questionNumber == 51 || questionObj.questionNumber == 52 || questionObj.questionNumber == 55 || questionObj.questionNumber == 37">
       <!-- For question -->
       <div ng-if="questionObj.questionNumber == 5">
         <div class="row">
@@ -157,7 +172,7 @@
 
         <div class="row">
           <div class="col">
-            <textarea ng-model="questionObj.answer" rows="1" placeholder="Truck number"></textarea>
+            <textarea ng-model="questionObj.answer" alpha-numeric-vehical rows="1" placeholder="Truck number"></textarea>
           </div>
         </div>
         <br>
@@ -255,7 +270,7 @@
 
         <div class="row">
           <div class="col marin-text">
-            <p>Collect FIR(from insurer).</p>
+            <p>Collect FIR.</p>
           </div>
         </div>
 
@@ -269,7 +284,7 @@
           </div>
 
           <div class="col col-90 marin-text">
-            <p>???</p>
+            <p>Were there?</p>
           </div>
         </div>
 
@@ -296,13 +311,13 @@
 
         <div class="row">
           <div class="col marin-text">
-            <p>Make notes:</p>
+            <p>Instruction:</p>
           </div>
         </div>
 
         <div class="row">
-          <div class="col">
-            <textarea class="text-area-css" ng-model="questionObj.notes" rows="15" placeholder="Description"></textarea>
+          <div class="col marin-text">
+            <p>Make notes:</p>
           </div>
         </div>
 
@@ -354,7 +369,8 @@
         </div>
         <div class="row">
           <div class="col marin-text">
-            <p>Test reports if any.</p>
+            <!-- <p>Collect test reports, if any.</p> -->
+            <p>Are there any test reports available?</p>
           </div>
         </div>
 
@@ -393,6 +409,41 @@
             <p>Endorsed LR</p>
             <br>
             <p>Verify documents with originals</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div ng-if="questionObj.questionNumber == 70">
+
+        <div class="row">
+          <div class="col marin-text">
+            <p>Instruction:</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col marin-text">
+            <p>Ask for photos if any?.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div ng-if="questionObj.questionNumber == 71">
+
+        <div class="row">
+          <div class="col col-10 marin-text">
+            <p>Q:</p>
+          </div>
+
+          <div class="col col-90 marin-text">
+            <p>Is place of survey same as LR destination:</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col marin-text">
+            <p> This is not destination, this is Other location.</p>
           </div>
         </div>
 
