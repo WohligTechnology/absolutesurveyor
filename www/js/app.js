@@ -188,7 +188,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       })
 
       .state('app.marineSurvey', {
-        url: '/marineSurvey',
+        url: '/marineSurvey/:assignId/:surveyId/:department',
         views: {
           'menuContent': {
             templateUrl: 'templates/marineSurvey.html',
@@ -266,4 +266,4 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         ngModelCtrl.$parsers.push(fromUser);
       }
     };
-  });;
+  });

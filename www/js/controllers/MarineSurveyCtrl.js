@@ -1,4 +1,4 @@
-connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue, $ionicPlatform, $state, $ionicPopup, PopupService) {
+connector.controller('MarineSurveyCtrl', function ($scope, $stateParams, $timeout, MyFlagValue, $ionicPlatform, $state, $ionicPopup, PopupService) {
 
   //Variables
   $scope.finalArray = [];
@@ -13,18 +13,18 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
   $scope.isQuestionSix = false;
 
   //First question
-  // $scope.questionObj = {
-  //   question: "Where are you? At destination?",
-  //   questionNumber: 1,
-  //   keyWord: "currentLocation",
-  //   answer: "",
-  //   details: "",
-  //   type: "text"
-  // };
+  $scope.questionObj = {
+    question: "Where are you? At destination?",
+    questionNumber: 1,
+    keyWord: "currentLocation",
+    answer: "",
+    details: "",
+    type: "text"
+  };
 
-  $timeout(function () {
-    $scope.getQuestion(47, "text");
-  }, 100);
+  // $timeout(function () {
+  //   $scope.getQuestion(47, "text");
+  // }, 100);
 
 
   //Function to get multiple options(more than two)
@@ -214,11 +214,21 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
       switch ($scope.questionObj.questionNumber) {
 
         case 68:
-          PopupService.showAlert("End of marine logic");
+          $state.go("app.photos-documents", {
+            assignId: $stateParams.assignId,
+            surveyId: $stateParams.surveyId,
+            department: $stateParams.department
+          });
+          // PopupService.showAlert("End of marine logic");
           break;
 
         case 69:
-          PopupService.showAlert("End of marine logic");
+          $state.go("app.photos-documents", {
+            assignId: $stateParams.assignId,
+            surveyId: $stateParams.surveyId,
+            department: $stateParams.department
+          });
+          // PopupService.showAlert("End of marine logic");
           break;
 
         case 5:
@@ -354,7 +364,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
             answer: {
               gvw: $scope.gvw,
               rlw: $scope.rlw,
-              vlw: $scope.vlw
+              ulw: $scope.vlw
             },
             no: $scope.questionObj.questionNumber,
             type: "text"
@@ -362,8 +372,14 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
 
           no = $scope.questionObj.questionNumber;
           if (_.isNumber($scope.gvw) && _.isNumber($scope.rlw) && _.isNumber($scope.vlw)) {
-            $scope.finalArray.push(obj);
-            $scope.getQuestionInTimeout(no);
+            if ($scope.gvw >= ($scope.rlw + $scope.vlw)) {
+              if ($scope.gvw > ($scope.rlw + $scope.vlw))
+                obj.overloading = true;
+              $scope.finalArray.push(obj);
+              $scope.getQuestionInTimeout(no);
+            } else {
+              PopupService.showAlert('GVW should be greater than RLW and ULW');
+            }
           } else {
             PopupService.showAlert('All field must be filled');
           }
@@ -463,11 +479,11 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
           };
 
           no = $scope.questionObj.questionNumber;
-          if (_.isNumber($scope.salvageAmt) && _.isNumber($scope.salvagePercentage)) {
+          if (_.isNumber($scope.salvageAmt) || _.isNumber($scope.salvagePercentage)) {
             $scope.finalArray.push(obj);
             $scope.getQuestionInTimeout(no);
           } else {
-            PopupService.showAlert('Please enter the value');
+            PopupService.showAlert('Please enter the value in atleast one field');
           }
           break;
 
@@ -517,11 +533,11 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
           no = $scope.questionObj.questionNumber;
           if (no == 23 && $scope.cargoPackageType == "Packed") {
             $scope.getQuestionInTimeout(23);
-          }
-          // else if (no == 23 && $scope.cargoPackageType == "Loose") {
-          //   console.log("Package type is loose");
-          // } 
-          else {
+          } else if (no == 23 && $scope.cargoPackageType == "Loose") {
+            $timeout(function () {
+              $scope.getQuestion(27, "No");
+            }, 100);
+          } else {
             $scope.getQuestionInTimeout(no);
           }
           if ($scope.questionObj.questionNumber != 71)
@@ -1543,11 +1559,11 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         break;
 
       case "57-Bad":
-        $scope.getQuestion(40, "Good");
+        $scope.getQuestion(57, "Good");
         break;
 
       case "57-Average":
-        $scope.getQuestion(40, "Good");
+        $scope.getQuestion(57, "Good");
         break;
 
       case "47-text":
@@ -1826,7 +1842,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
         $scope.getMultipleOption(qNo);
       }
 
-      if (qNo == 41 || qNo == 11 || qNo == 64 || qNo == 69 || qNo == 13) {
+      if (qNo == 41 || qNo == 11 || qNo == 64 || qNo == 69 || qNo == 13 || qNo == 14) {
         $scope.isText = false;
         $scope.multiOption = false;
         $scope.isNumeric = true;
@@ -1915,7 +1931,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $timeout, MyFlagValue
     $scope.numericValue = [];
     switch (qno) {
       case 11:
-        $scope.numericInputArray = ["GVW", "RLW", "VLW"];
+        $scope.numericInputArray = ["GVW", "RLW", "ULW"];
         $scope.numericValue[0] = $scope.gvw;
         $scope.numericValue[1] = $scope.rlw;
         $scope.numericValue[2] = $scope.vlw;
