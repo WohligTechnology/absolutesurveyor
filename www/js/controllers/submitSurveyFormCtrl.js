@@ -1,4 +1,4 @@
-connector.controller('SubmitSurveyFormCtrl', function ($scope, $ionicPopup, PopupService, LocalStorageService, $ionicHistory) {
+connector.controller('SubmitSurveyFormCtrl', function ($scope, $ionicPopup, PopupService, LocalStorageService, $ionicHistory, marineLogic) {
 
   var assignmentObj = PopupService.assignmentObj;
 
@@ -21,6 +21,10 @@ connector.controller('SubmitSurveyFormCtrl', function ($scope, $ionicPopup, Popu
     $scope.document.assignId = assignmentObj.assignId;
     $scope.document.surveyId = assignmentObj.surveyId;
     $scope.document.status = assignmentObj.status;
+    $scope.document.department = assignmentObj.department;
+    if (assignmentObj.department == "Marine Cargo") {
+      $scope.document.departmentWiseSurvey = marineLogic.getMarineLogicObj();
+    }
     // $scope.document.latitude = $rootScope.latitude;
     // $scope.document.longitude = $rootScope.longitude;
     $scope.document.isMobile = assignmentObj.isMobile;

@@ -146,7 +146,7 @@
             <button class="button button-positive marine-btn-width" ng-click="saveAnswer(questionObj.question,questionObj.answer)" ng-if="(isText== true || isNumeric == true || questionObj.questionNumber == 29) && multiOptionAndTextBox != true && isSubmit == false && isInstructions == false">Next</button>
             <button class="button button-positive marine-btn-width" ng-click="saveAnswer(questionObj.question,questionObj.answer)" ng-if="isInstructions == true">Next</button>
             <button class="button button-positive marine-btn-width" ng-click="saveAnswer(questionObj.question,questionObj.answer)" ng-if="isWarning==true">Next</button>
-            <button class="button button-positive marine-btn-width" ng-click="saveAnswer(questionObj.question,questionObj.answer,questionObj.details)"
+            <button class="button button-positive marine-btn-width" ng-click="saveAnswer(questionObj.question,questionObj.answer,questionObj)"
               ng-if="multiOptionAndTextBox ==true">Next</button>
             <br>
             <button class="button button-positive marine-btn-width " ng-click="back()" ng-if="questionObj.questionNumber !=1">Back</button>

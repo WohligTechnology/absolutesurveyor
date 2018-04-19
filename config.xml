@@ -69,8 +69,6 @@
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     </platform>
     <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
-    <engine name="ios" spec="^4.4.0" />
-    <engine name="android" spec="~6.3.0" />
     <plugin name="cordova-plugin-background-mode" spec="^0.7.2" />
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
     <plugin name="cordova-plugin-device" spec="^1.1.7" />
@@ -101,4 +99,6 @@
         <variable name="ACCOUNT_LABEL" value="@string/app_name" />
     </plugin>
     <plugin name="cordova-plugin-request-location-accuracy" spec="^2.2.2" />
+    <engine name="ios" spec="^4.4.0" />
+    <engine name="android" spec="^6.3.0" />
 </widget>

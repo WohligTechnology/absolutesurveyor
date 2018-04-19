@@ -21,16 +21,16 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $ionicNavBarDele
     $ionicNavBarDelegate.showBar(true);
   });
 
-  // $ionicPlatform.ready(function () {
-  //   if (navigator.connection.type == Connection.NONE) {
-  //     LocalStorageService.setOnlineStatus(false);
-  //   } else {
-  //     LocalStorageService.setOnlineStatus(true);
-  //   };
-  //   $scope.doRefresh(true);
-  // })
-  $scope.doRefresh(true);
-  LocalStorageService.setOnlineStatus(true);
+  $ionicPlatform.ready(function () {
+    if (navigator.connection.type == Connection.NONE) {
+      LocalStorageService.setOnlineStatus(false);
+    } else {
+      LocalStorageService.setOnlineStatus(true);
+    };
+    $scope.doRefresh(true);
+  })
+  // $scope.doRefresh(true);
+  // LocalStorageService.setOnlineStatus(true);
 
   //To select the surveyor 
   $scope.getSurveyour = function (value) {
