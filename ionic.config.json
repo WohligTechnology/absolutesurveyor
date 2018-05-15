@@ -1,5 +1,5 @@
 {
-  "name": "absolutesurveyors",
+  "name": "absolutesurveyorsTest",
   "app_id": "",
   "gulpStartupTasks": [
     "sass",

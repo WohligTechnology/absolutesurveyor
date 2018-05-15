@@ -120,7 +120,7 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $ionicNavBarDelega
       isMobile: true
     }
 
-    if ($ionicHistory.backView().stateName == "app.task") {
+    if ($.jStorage.get('currentState') == "app.task") {
       if (!(_.isEmpty($scope.photos) && _.isEmpty($scope.doc) && _.isEmpty($scope.jir))) {
         if (!(_.isEmpty($scope.jir))) {
           PopupService.openModal(assignmentObj, url);
@@ -130,9 +130,9 @@ connector.controller('PhotosDocumentsCtrl', function ($scope, $ionicNavBarDelega
       } else {
         PopupService.showAlert('Please add attachments ');
       }
-    } else if ($ionicHistory.backView().stateName == "app.history") {
+    } else if ($.jStorage.get('currentState') == "app.history") {
       PopupService.openModal(assignmentObj, url);
-    } else if ($ionicHistory.backView().stateName == "app.marineSurvey") {
+    } else if ($.jStorage.get('currentState') == "app.marineSurvey") {
       PopupService.openModal(assignmentObj, url);
     }
   };

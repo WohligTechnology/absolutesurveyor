@@ -14,7 +14,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $stateParams, $timeou
 
   //First question
   $scope.questionObj = {
-    question: "Where are you? At destination?",
+    question: "Where are you?",
     questionNumber: 1,
     keyWord: "currentLocation",
     answer: "",
@@ -614,7 +614,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $stateParams, $timeou
         $scope.questionObj = {
           question: "Why is consignment at this place? Explain",
           questionNumber: 101,
-          keyWord: "accidentSpot",
+          keyWord: "locationReason",
           answer: "",
           type: "text"
         };
@@ -626,7 +626,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $stateParams, $timeou
         $scope.questionObj = {
           question: "Why is consignment at this place? Explain",
           questionNumber: 102,
-          keyWord: "otherLocation",
+          keyWord: "locationReason",
           answer: "",
           type: "text"
         };
@@ -667,7 +667,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $stateParams, $timeou
 
       case "2-Yes": //2-Yes
         $scope.questionObj = {
-          question: "Is truck present",
+          question: "Is truck present?",
           questionNumber: 3,
           keyWord: "isTruckPresent"
         };
@@ -681,7 +681,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $stateParams, $timeou
 
       case "2-No":
         $scope.questionObj = {
-          question: "Is truck present",
+          question: "Is truck present?",
           questionNumber: 3,
           keyWord: "isTruckPresent"
         };
@@ -695,7 +695,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $stateParams, $timeou
 
       case "3-Yes":
         $scope.questionObj = {
-          question: "Original truck",
+          question: "Is Original truck?",
           questionNumber: 4,
           keyWord: "isOriginalTruck"
         };
@@ -739,7 +739,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $stateParams, $timeou
 
       case "4-No":
         $scope.questionObj = {
-          question: "is transhipment",
+          question: "Is transhipment?",
           questionNumber: 7,
           keyWord: "isTranshipment"
         };
@@ -865,7 +865,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $stateParams, $timeou
 
       case "14-text":
         $scope.questionObj = {
-          question: "is packing available?",
+          question: "Is packing available?",
           questionNumber: 15,
           keyWord: "isPackingAvailable"
         };
@@ -882,13 +882,13 @@ connector.controller('MarineSurveyCtrl', function ($scope, $stateParams, $timeou
           $scope.questionObj = {
             question: "Is packing new?",
             questionNumber: 16,
-            keyWord: "isNew"
+            keyWord: "packingNew"
           };
         } else {
           $scope.questionObj = {
             question: "Was packing new?",
             questionNumber: 16,
-            keyWord: "wasNew"
+            keyWord: "packingNew"
           };
         }
         $scope.isText = false;
@@ -922,13 +922,13 @@ connector.controller('MarineSurveyCtrl', function ($scope, $stateParams, $timeou
           $scope.questionObj = {
             question: "Is customary?",
             questionNumber: 18,
-            keyWord: "isCustomary"
+            keyWord: "packingCustomary"
           };
         } else {
           $scope.questionObj = {
             question: "Was customary?",
             questionNumber: 18,
-            keyWord: "wasCustomary"
+            keyWord: "packingCustomary"
           };
         }
         $scope.isText = false;
@@ -948,13 +948,13 @@ connector.controller('MarineSurveyCtrl', function ($scope, $stateParams, $timeou
           $scope.questionObj = {
             question: "Is adequate?",
             questionNumber: 19,
-            keyWord: "isAdequate"
+            keyWord: "packingAdequate"
           };
         } else {
           $scope.questionObj = {
             question: "Was adequate?",
             questionNumber: 19,
-            keyWord: "wasAdequate"
+            keyWord: "packingAdequate"
           };
         }
 
@@ -1001,7 +1001,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $stateParams, $timeou
 
       case "21-text":
         $scope.questionObj = {
-          question: "is there any shortage?",
+          question: "Is there any shortage?",
           questionNumber: 22,
           keyWord: "isShortage"
         };
@@ -1021,7 +1021,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $stateParams, $timeou
         $scope.questionObj = {
           question: "Please describe what led to shortage",
           questionNumber: 23,
-          keyWord: "shortageDescription"
+          keyWord: "shortageReason"
         };
         $scope.isText = true;
         $scope.multiOption = false;
@@ -1187,7 +1187,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $stateParams, $timeou
         $scope.questionObj = {
           question: "How?",
           questionNumber: 30,
-          keyWord: "damageDescription"
+          keyWord: "damageReason"
         };
         $scope.isText = false;
         $scope.multiOption = false;
@@ -1263,7 +1263,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $stateParams, $timeou
           $scope.questionObj = {
             question: "Is truck?",
             questionNumber: 34,
-            keyWord: "isTruck"
+            keyWord: "TruckUnloadingState"
           };
           $scope.isText = false;
           $scope.multiOption = true;
@@ -1284,7 +1284,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $stateParams, $timeou
         $scope.questionObj = {
           question: "Is truck?",
           questionNumber: 35,
-          keyWord: "isTruck"
+          keyWord: "isTruckType"
         };
         $scope.isText = false;
         $scope.multiOption = true;
@@ -1323,7 +1323,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $stateParams, $timeou
         $scope.questionObj = {
           question: "Were there?",
           questionNumber: 37,
-          keyWord: ""
+          keyWord: "wereThereMultiOption"
         };
         // $scope.isText = false;
         // $scope.multiOption = true;
@@ -1534,7 +1534,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $stateParams, $timeou
 
       case "55-text":
         $scope.questionObj = {
-          question: "Are there any holes in the tarpaulin??",
+          question: "Are there any holes in the tarpaulin?",
           questionNumber: 56,
           keyWord: "holesTarpaulinOnFloor"
         };
@@ -1567,7 +1567,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $stateParams, $timeou
         $scope.questionObj = {
           question: "Possible source of ingress?",
           questionNumber: 47,
-          keyWord: "ingressOpenVehicle"
+          keyWord: "IngressSource"
         };
         $scope.isText = true;
         $scope.multiOption = false;
@@ -1594,7 +1594,7 @@ connector.controller('MarineSurveyCtrl', function ($scope, $stateParams, $timeou
 
       case "58-text":
         $scope.questionObj = {
-          question: "Can it be repaired??",
+          question: "Can it be repaired?",
           questionNumber: 59,
           keyWord: "isRepairable"
         };

@@ -24,6 +24,9 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
     $ionicNavBarDelegate.showBar(true);
   });
 
+  //Save current state that will be used in photo doc page
+  $.jStorage.set('currentState', $state.current.name);
+
   //To select the surveyor 
   $scope.getSurveyour = function (value) {
     $state.go('app.selectSurveyor', {
@@ -76,5 +79,22 @@ connector.controller('HistoryCtrl', function ($scope, $ionicPopup, $ionicNavBarD
     var url = 'templates/modal/info.html';
     PopupService.openModal(value, url);
   };
+
+  //Go to survey page
+  $scope.getSurveyPage = function (item) {
+    if (item.getAllTaskStatus.survey != 'Done' && item.department == "Marine Cargo") {
+      $state.go("app.marineSurvey", {
+        assignId: item._id,
+        surveyId: item.survey._id,
+        department: item.department
+      })
+    } else {
+      $state.go("app.photos-documents", {
+        assignId: item._id,
+        surveyId: item.survey._id,
+        department: item.department
+      })
+    }
+  }
 
 });

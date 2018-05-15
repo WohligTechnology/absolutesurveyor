@@ -1,4 +1,4 @@
-connector.controller('SubmitSurveyFormCtrl', function ($scope, $ionicPopup, PopupService, LocalStorageService, $ionicHistory, marineLogic) {
+connector.controller('SubmitSurveyFormCtrl', function ($scope, $ionicPopup, PopupService, LocalStorageService, $ionicHistory, marineLogic, $state) {
 
   var assignmentObj = PopupService.assignmentObj;
 
@@ -30,6 +30,12 @@ connector.controller('SubmitSurveyFormCtrl', function ($scope, $ionicPopup, Popu
     $scope.document.isMobile = assignmentObj.isMobile;
     LocalStorageService.addToLocalStorage($scope.document);
     PopupService.infoPopup.close();
-    $ionicHistory.goBack(-2);
+
+    if ($.jStorage.get('currentState') == "app.task") {
+      $state.go("app.task");
+    } else if ($.jStorage.get('currentState') == "app.history") {
+      $state.go("app.history");
+    }
+
   }
 });

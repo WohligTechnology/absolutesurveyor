@@ -12,6 +12,8 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $ionicNavBarDele
     }
   };
 
+  //Save current state that will be used in photo doc page
+  $.jStorage.set('currentState', $state.current.name);
 
   $rootScope.$on('proximityCatched', function () {
     $state.reload();
@@ -78,5 +80,22 @@ connector.controller('TaskCtrl', function ($scope, $ionicPopup, $ionicNavBarDele
   $scope.getInformation = function (value) {
     var url = 'templates/modal/info.html';
     PopupService.openModal(value, url);
+  };
+
+  //Go to survey page
+  $scope.getSurveyPage = function (item) {
+    if (item.getAllTaskStatus.survey != 'Done' && item.department == "Marine Cargo") {
+      $state.go("app.marineSurvey", {
+        assignId: item._id,
+        surveyId: item.survey._id,
+        department: item.department
+      })
+    } else {
+      $state.go("app.photos-documents", {
+        assignId: item._id,
+        surveyId: item.survey._id,
+        department: item.department
+      })
+    }
   }
 })
