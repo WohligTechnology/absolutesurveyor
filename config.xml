@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="2220009" id="com.wohligTest.absoluteTest" version="11" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="2220011" id="com.wohlig.absolute" version="13" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>ABM Test</name>
     <description>Absolute Surveyors</description>
     <author email="info@wohlig.com" href="http://wohlig.com/">Wohlig Technology</author>
@@ -11,7 +11,7 @@
     <preference name="SplashScreenDelay" value="2001" />
     <preference name="FadeSplashScreenDuration" value="2001" />
     <preference name="android-minSdkVersion" value="16" />
-    <preference name="android-targetSdkVersion" value="25" />
+    <preference name="android-targetSdkVersion" value="26" />
     <preference name="BackupWebStorage" value="none" />
     <preference name="SplashScreen" value="screen" />
     <preference name="AndroidPersistentFileLocation" value="Compatibility" />
